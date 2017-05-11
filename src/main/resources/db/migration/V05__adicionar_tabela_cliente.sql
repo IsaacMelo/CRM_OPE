@@ -8,7 +8,8 @@ CREATE TABLE cliente (
     logradouro VARCHAR(50),
     numero VARCHAR(15),
     complemento VARCHAR(20),
+    bairro VARCHAR(50),
     cep VARCHAR(15),
-    codigo_cidade BIGINT(20),
-    FOREIGN KEY (codigo_cidade) REFERENCES cidade(codigo)
+    cidade VARCHAR(50),
+    estado VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

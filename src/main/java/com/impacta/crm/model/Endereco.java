@@ -3,9 +3,6 @@ package com.impacta.crm.model;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Embeddable
 public class Endereco implements Serializable {
@@ -20,12 +17,11 @@ public class Endereco implements Serializable {
 	
 	private String cep;
 	
-	@ManyToOne
-	@JoinColumn(name = "codigo_cidade")
-	private Cidade cidade;
+	private String cidade;
 	
-	@Transient
-	private Estado estado;
+	private String estado;
+	
+	private String bairro;
 
 	public String getLogradouro() {
 		return logradouro;
@@ -59,28 +55,30 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Cidade getCidade() {
+	public String getCidade() {
 		return cidade;
 	}
 
-	public void setCidade(Cidade cidade) {
+	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
 
-	public Estado getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Estado estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	public String getNomeCidadeSiglaEstado() {
-		if (this.cidade != null) {
-			return this.cidade.getNome() + "/" + this.cidade.getEstado().getSigla();
-		}
-		
-		return null;
+
+	public String getBairro() {
+		return bairro;
 	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	
+	
 	
 }
