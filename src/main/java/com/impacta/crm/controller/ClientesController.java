@@ -25,7 +25,6 @@ import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.model.Cliente;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.repository.Clientes;
-import com.impacta.crm.repository.Estados;
 import com.impacta.crm.repository.filter.ClienteFilter;
 import com.impacta.crm.service.CadastroClienteService;
 import com.impacta.crm.service.exception.CpfCnpjClienteJaCadastradoException;
@@ -33,9 +32,6 @@ import com.impacta.crm.service.exception.CpfCnpjClienteJaCadastradoException;
 @Controller
 @RequestMapping("/clientes")
 public class ClientesController {
-
-	@Autowired
-	private Estados estados;
 	
 	@Autowired
 	private CadastroClienteService cadastroClienteService;
@@ -47,7 +43,6 @@ public class ClientesController {
 	public ModelAndView novo(Cliente cliente) {
 		ModelAndView mv = new ModelAndView("cliente/CadastroCliente");
 		mv.addObject("tiposPessoa", TipoPessoa.values());
-		mv.addObject("estados", estados.findAll());
 		return mv;
 	}
 	

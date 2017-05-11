@@ -36,7 +36,7 @@
 			
 			<div class="row">
 				<div class="form-group  col-sm-12  bw-required" brewer:classforerror="nome">
-					<label for="nome" class="control-label">Nome</label>
+					<label for="nome" class="control-label">Razão social</label>
 					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
 				</div>
 			</div>
@@ -75,6 +75,22 @@
 			</div>
 			
 			<div class="row">
+			
+				<div class="form-group  col-sm-4">
+					<label for="cep">CEP</label>
+					<div class="bw-field-action">
+						<input type="text" class="form-control  js-cep" id="cep" data:url="@{/webservice}" th:field="*{endereco.cep}"/>
+					
+						<div class="bw-field-action__icon  js-img-loading" style="display: none">
+							<img th:src="@{/images/mini-loading.gif}"/>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+			
+			<div class="row">
+			
 				<div class="form-group  col-sm-4">
 					<label for="logradouro">Logradouro</label>
 					<input type="text" class="form-control" id="logradouro" th:field="*{endereco.logradouro}"/>
@@ -89,34 +105,21 @@
 					<label for="complemento">Complemento</label>
 					<input type="text" class="form-control" id="complemento" th:field="*{endereco.complemento}"/>
 				</div>
-			</div>
-			
-			<div class="row">
+				
 				<div class="form-group  col-sm-4">
-					<label for="cep">CEP</label>
-					<input type="text" class="form-control  js-cep" id="cep" th:field="*{endereco.cep}"/>
+					<label for="bairro">Bairro</label>
+					<input type="text" class="form-control" id="bairro" th:field="*{endereco.bairro}"/>
 				</div>
 				
 				<div class="form-group  col-sm-4">
 					<label for="estado">Estado</label>
-					<select id="estado" class="form-control" th:field="*{endereco.estado}">
-	                    <option value="">Selecione o estado</option>
-	                    <option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}">São Paulo</option>
-	                </select>
+					<input type="text" class="form-control" id="estado" th:field="*{endereco.estado}"/>
 				</div>
 				
 				<div class="form-group  col-sm-4">
 					<label  for="cidade">Cidade</label>
-					<div class="bw-field-action">
-						<input type="hidden" id="inputHiddenCidadeSelecionada" th:value="*{endereco.cidade} != null ? *{endereco.cidade.codigo}"/>
-						<select id="cidade" class="form-control" data:url="@{/cidades}" th:field="*{endereco.cidade}">
-						</select>
-						
-						<div class="bw-field-action__icon  js-img-loading" style="display: none">
-							<img th:src="@{/images/mini-loading.gif}"/>
-						</div>
-					</div>
-				</div>
+					<input type="text" class="form-control" id="cidade" th:field="*{endereco.cidade}"/>
+				</div>		
 			</div>
 			
 			<button type="submit" class="btn  btn-primary">Salvar</button>				
@@ -126,7 +129,7 @@
 
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/cliente.mascara-cpf-cnpj.js}"></script>
-	<script th:src="@{/javascripts/cliente.combo-estado-cidade.js}"></script>
+	<script th:src="@{/javascripts/cliente.pesquisa-de-cep.js}"></script>
 </th:block>
 
 </html>
