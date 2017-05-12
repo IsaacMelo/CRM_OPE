@@ -4,23 +4,31 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Embeddable
 public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank(message = "Logradouro é obrigatório")
 	private String logradouro;
 	
+	@NotBlank(message = "Número é obrigatório")
 	private String numero;
 	
 	private String complemento;
 	
+	@NotBlank(message = "CEP é obrigatório")
 	private String cep;
 	
+	@NotBlank(message = "Cidade é obrigatório")
 	private String cidade;
 	
+	@NotBlank(message = "Estado é obrigatório")
 	private String estado;
 	
+	@NotBlank(message = "Logradouro é obrigatório")
 	private String bairro;
 
 	public String getLogradouro() {

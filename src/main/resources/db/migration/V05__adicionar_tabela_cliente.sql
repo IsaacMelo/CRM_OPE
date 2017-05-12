@@ -5,6 +5,7 @@ CREATE TABLE cliente (
     cpf_cnpj VARCHAR(30),
     telefone VARCHAR(20),
     email VARCHAR(50) NOT NULL,
+    ativo BOOLEAN DEFAULT true,
     logradouro VARCHAR(50),
     numero VARCHAR(15),
     complemento VARCHAR(20),

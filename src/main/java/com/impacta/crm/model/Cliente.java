@@ -14,6 +14,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
@@ -52,11 +53,16 @@ public class Cliente implements Serializable {
 	@Column(name = "cpf_cnpj")
 	private String cpfOuCnpj;
 
+	@NotBlank(message = "Telefone é obrigatório")
 	private String telefone;
 
+	@NotBlank(message = "E-mail é obrigatório")
 	@Email(message = "E-mail inválido")
 	private String email;
+	
+	private Boolean ativo;
 
+	@Valid
 	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
@@ -130,7 +136,20 @@ public class Cliente implements Serializable {
 	public String getCpfOuCnpjSemFormatacao() {
 		return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
 	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
 
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public boolean isNovo(){
+		return this.codigo == null;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

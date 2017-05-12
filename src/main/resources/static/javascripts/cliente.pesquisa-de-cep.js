@@ -3,6 +3,7 @@ var Brewer = Brewer || {};
 Brewer.CampoCEP = (function(){
 	
 	function CampoCEP(){
+		this.inputCodigo = $('#codigo');
 		this.inputCep = $('#cep');
 		this.inputLogradouro = $('#logradouro');
 		this.inputBairro = $('#bairro');
@@ -12,8 +13,10 @@ Brewer.CampoCEP = (function(){
 	}
 	
 	CampoCEP.prototype.iniciar = function(){
-		reset.call(this);
-		this.inputCep.on('change',buscarCEP.bind(this));
+		if(!this.inputCodigo.val()){
+			reset.call(this);
+		}
+		this.inputCep.on('blur',buscarCEP.bind(this));
 	}
 	
 	function buscarCEP(){
@@ -24,12 +27,20 @@ Brewer.CampoCEP = (function(){
 				contentType: 'application/json',
 				data: { 'cep': this.inputCep.val().replace('.','').replace('-','') }, 
 				beforeSend: iniciarRequisicao.bind(this),
-				complete: finalizarRequisicao.bind(this)
+				complete: finalizarRequisicao.bind(this),
+				error: inputManual.bind(this),
 			});
 			resposta.done(render.bind(this));
 		}else{
 			reset.call(this);
 		}
+	}
+	
+	function inputManual(){
+		this.inputLogradouro.attr('disabled', false);
+		this.inputBairro.attr('disabled', false);
+		this.inputCidade.attr('disabled', false);
+		this.inputEstado.attr('disabled', false);
 	}
 	
 	function render(data){
@@ -43,7 +54,10 @@ Brewer.CampoCEP = (function(){
 			this.inputCidade.attr('disabled', false);
 			this.inputEstado.attr('disabled', false);
 		}else{
-			reset.call(this);
+			this.inputLogradouro.attr('disabled', false);
+			this.inputBairro.attr('disabled', false);
+			this.inputCidade.attr('disabled', false);
+			this.inputEstado.attr('disabled', false);
 		}
 		
 	}
@@ -76,14 +90,6 @@ $(function() {
 	
 	var consultaCep = new Brewer.CampoCEP();
 	consultaCep.iniciar();
-	
-	/*var comboEstado = new Brewer.ComboEstado();
-	comboEstado.iniciar();
-	
-	var comboCidade = new Brewer.ComboCidade(comboEstado);
-	comboCidade.iniciar();*/
-	
 
-	
 });
 
