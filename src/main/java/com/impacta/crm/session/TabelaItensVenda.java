@@ -13,6 +13,8 @@ class TabelaItensVenda {
 
 	private String uuid;
 	private List<ItemVenda> itens = new ArrayList<>();
+	private List<ItemVenda> itensAlterados = new ArrayList<>();
+	private List<ItemVenda> itensDeletados = new ArrayList<>();
 	
 	public TabelaItensVenda(String uuid) {
 		this.uuid = uuid;
@@ -25,8 +27,8 @@ class TabelaItensVenda {
 				.orElse(BigDecimal.ZERO);
 	}
 	
-	public void adicionarItem(Produto produto, Integer quantidade) {
-		Optional<ItemVenda> itemVendaOptional = buscarItemPorCerveja(produto);
+	public void adicionarItem(long codigo, Produto produto, Integer quantidade) {
+		Optional<ItemVenda> itemVendaOptional = buscarItemPorProduto(produto);
 		
 		ItemVenda itemVenda = null;
 		if (itemVendaOptional.isPresent()) {
@@ -34,6 +36,7 @@ class TabelaItensVenda {
 			itemVenda.setQuantidade(itemVenda.getQuantidade() + quantidade);
 		} else {
 			itemVenda = new ItemVenda();
+			if(codigo != 0) itemVenda.setCodigo(codigo);
 			itemVenda.setProduto(produto);
 			itemVenda.setQuantidade(quantidade);
 			itemVenda.setValorUnitario(produto.getValor());
@@ -42,12 +45,44 @@ class TabelaItensVenda {
 		}
 	}
 	
+	private void adicionarItemAlterado(Produto produto, ItemVenda itemVenda) {
+		Optional<ItemVenda> itemAlteradoVendaOptional = buscarItemAlteradoPorProduto(produto);
+		
+		if (!itemAlteradoVendaOptional.isPresent()) {
+			ItemVenda itemVendaAlterado = new ItemVenda();
+			itemVendaAlterado.setCodigo(itemVenda.getCodigo());
+			itemVendaAlterado.setProduto(itemVenda.getProduto());
+			itemVendaAlterado.setQuantidade(itemVenda.getQuantidade());
+			itemVendaAlterado.setValorUnitario(itemVenda.getValorUnitario());
+			itemVendaAlterado.setComissao(itemVenda.getComissao());
+			itemVendaAlterado.setVenda(itemVenda.getVenda());
+			itemVendaAlterado.setProduto(itemVenda.getProduto());
+			itensAlterados.add(0, itemVendaAlterado);
+		}
+	}
+	
+	private void adicionarItemDeletado(ItemVenda itemVenda) {
+		ItemVenda itemVendaDeletado = new ItemVenda();
+		itemVendaDeletado.setCodigo(itemVenda.getCodigo());
+		itemVendaDeletado.setProduto(itemVenda.getProduto());
+		itemVendaDeletado.setQuantidade(itemVenda.getQuantidade());
+		itemVendaDeletado.setValorUnitario(itemVenda.getValorUnitario());
+		itemVendaDeletado.setComissao(itemVenda.getComissao());
+		itemVendaDeletado.setVenda(itemVenda.getVenda());
+		itemVendaDeletado.setProduto(itemVenda.getProduto());
+		itensDeletados.add(0, itemVendaDeletado);
+	}
+	
 	public void alterarQuantidadeItens(Produto produto, Integer quantidade) {
-		ItemVenda itemVenda = buscarItemPorCerveja(produto).get();
+		ItemVenda itemVenda = buscarItemPorProduto(produto).get();
+		adicionarItemAlterado(produto, itemVenda);		
 		itemVenda.setQuantidade(quantidade);
 	}
 	
 	public void excluirItem(Produto produto) {
+		ItemVenda itemVenda = buscarItemPorProduto(produto).get();
+		adicionarItemDeletado(itemVenda);
+		
 		int indice = IntStream.range(0, itens.size())
 				.filter(i -> itens.get(i).getProduto().equals(produto))
 				.findAny().getAsInt();
@@ -62,8 +97,22 @@ class TabelaItensVenda {
 		return itens;
 	}
 	
-	private Optional<ItemVenda> buscarItemPorCerveja(Produto produto) {
+	public List<ItemVenda> getItensAlterados() {
+		return itensAlterados;
+	}
+	
+	public List<ItemVenda> getItensDeletados() {
+		return itensDeletados;
+	}
+	
+	private Optional<ItemVenda> buscarItemPorProduto(Produto produto) {
 		return itens.stream()
+				.filter(i -> i.getProduto().equals(produto))
+				.findAny();
+	}
+	
+	private Optional<ItemVenda> buscarItemAlteradoPorProduto(Produto produto) {
+		return itensAlterados.stream()
 				.filter(i -> i.getProduto().equals(produto))
 				.findAny();
 	}

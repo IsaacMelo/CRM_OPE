@@ -2,8 +2,9 @@ package com.impacta.crm.model;
 
 public enum StatusVenda {
 
-	ORCAMENTO("Orçamento"), 
+	 
 	EMITIDA("Emitida"), 
+	ORCAMENTO("Orçamento"),
 	CANCELADA("Cancelada");
 
 	private String descricao;

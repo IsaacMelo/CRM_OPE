@@ -16,9 +16,9 @@ public class TabelasItensSession {
 
 	private Set<TabelaItensVenda> tabelas = new HashSet<>();
 
-	public void adicionarItem(String uuid, Produto produto, int quantidade) {
+	public void adicionarItem(String uuid, long codigo, Produto produto, int quantidade) {
 		TabelaItensVenda tabela = buscarTabelaPorUuid(uuid);
-		tabela.adicionarItem(produto, quantidade);
+		tabela.adicionarItem(codigo, produto, quantidade);
 		tabelas.add(tabela);
 	}
 
@@ -34,6 +34,14 @@ public class TabelasItensSession {
 
 	public List<ItemVenda> getItens(String uuid) {
 		return buscarTabelaPorUuid(uuid).getItens();
+	}
+	
+	public List<ItemVenda> getItensAlterados(String uuid) {
+		return buscarTabelaPorUuid(uuid).getItensAlterados();
+	}
+	
+	public List<ItemVenda> getItensDeletados(String uuid) {
+		return buscarTabelaPorUuid(uuid).getItensDeletados();
 	}
 	
 	public Object getValorTotal(String uuid) {

@@ -86,6 +86,10 @@ public class ItemVenda {
 	public void setVenda(Venda venda) {
 		this.venda = venda;
 	}
+	
+	public boolean isNovo() {
+		return codigo == null;
+	}
 
 	@Override
 	public int hashCode() {
