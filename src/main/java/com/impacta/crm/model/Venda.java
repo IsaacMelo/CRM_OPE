@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -65,10 +66,21 @@ public class Venda {
 
 	@Enumerated(EnumType.STRING)
 	private StatusVenda status = StatusVenda.ORCAMENTO;
+	
+	@NotNull(message = "A forma de pagamento é obrigatório")
+	@ManyToOne
+	@JoinColumn(name = "codigo_pagamento")
+	private FormaPagamento formaPagamento;
 
 	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemVenda> itens = new ArrayList<>();
-
+	
+	@Transient
+	private List<ItemVenda> itensAlterados = new ArrayList<>();
+	
+	@Transient
+	private List<ItemVenda> itensDeletados = new ArrayList<>();
+	
 	@Transient
 	private String uuid;
 
@@ -167,6 +179,14 @@ public class Venda {
 	public void setStatus(StatusVenda status) {
 		this.status = status;
 	}
+	
+	public FormaPagamento getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(FormaPagamento formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
 
 	public List<ItemVenda> getItens() {
 		return itens;
@@ -200,13 +220,39 @@ public class Venda {
 		this.horarioEntrega = horarioEntrega;
 	}
 
-	public boolean isNova() {
-		return codigo == null;
-	}
-	
 	public void adicionarItens(List<ItemVenda> itens) {
 		this.itens = itens;
 		this.itens.forEach(i -> i.setVenda(this));
+	}
+	
+	public void adicionarItensAlterados(List<ItemVenda> itensAlterados) {
+		this.itensAlterados = itensAlterados;
+		this.itensAlterados.forEach(i -> i.setVenda(this));
+	}
+	
+	public void adicionarItensDeletados(List<ItemVenda> itensDeletados) {
+		this.itensDeletados = itensDeletados;
+		this.itensDeletados.forEach(i -> i.setVenda(this));
+	}
+	
+	public List<ItemVenda> getItensAlterados() {
+		return itensAlterados;
+	}
+	
+	public List<ItemVenda> getItensDeletados() {
+		return itensDeletados;
+	}
+
+	public void setItensAlterados(List<ItemVenda> itensAlterados) {
+		this.itensAlterados = itensAlterados;
+	}
+	
+	public void setItensDeletados(List<ItemVenda> itensDeletados) {
+		this.itensDeletados = itensDeletados;
+	}
+	
+	public boolean isNova() {
+		return codigo == null;
 	}
 	
 	public BigDecimal getValorTotalItens() {

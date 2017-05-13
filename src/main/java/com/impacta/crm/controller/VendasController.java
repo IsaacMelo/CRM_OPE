@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.impacta.crm.controller.page.PageWrapper;
+import com.impacta.crm.controller.validator.VendaItemValidator;
 import com.impacta.crm.controller.validator.VendaValidator;
 import com.impacta.crm.dto.VendaMes;
 import com.impacta.crm.dto.VendaOrigem;
@@ -35,6 +37,7 @@ import com.impacta.crm.model.ItemVenda;
 import com.impacta.crm.model.StatusVenda;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.model.Venda;
+import com.impacta.crm.repository.FormaPagamentos;
 import com.impacta.crm.repository.Produtos;
 import com.impacta.crm.repository.Vendas;
 import com.impacta.crm.repository.filter.VendaFilter;
@@ -50,6 +53,9 @@ public class VendasController {
 	private Produtos produtos;
 	
 	@Autowired
+	private FormaPagamentos formaPagamentos;
+	
+	@Autowired
 	private TabelasItensSession tabelaItens;
 	
 	@Autowired
@@ -57,6 +63,9 @@ public class VendasController {
 	
 	@Autowired
 	private VendaValidator vendaValidator;
+	
+	@Autowired
+	private VendaItemValidator vendaItemValidator;
 	
 	@Autowired
 	private Vendas vendas;
@@ -67,6 +76,7 @@ public class VendasController {
 	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
+		binder.setValidator(vendaItemValidator);
 	}
 	
 	@GetMapping("/nova")
@@ -80,6 +90,8 @@ public class VendasController {
 		mv.addObject("valorDesconto", venda.getValorDesconto());
 		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
 		mv.addObject("valorComissao", venda.getValorComissao());
+		mv.addObject("formaPagamentos", formaPagamentos.findAll());
+		if(venda.getStatus() == StatusVenda.EMITIDA) mv.addObject("statusVenda", true); 
 		
 		return mv;
 	}
@@ -101,6 +113,7 @@ public class VendasController {
 	@PostMapping(value = "/nova", params = "emitir")
 	public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		validarVenda(venda, result);
+		vendaItemValidator.validate(venda, result);
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
@@ -129,9 +142,9 @@ public class VendasController {
 	}
 	
 	@PostMapping("/item")
-	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
-		Produto produto = produtos.findOne(codigoCerveja);
-		tabelaItens.adicionarItem(uuid, produto, 1);
+	public ModelAndView adicionarItem(Produto produto,Venda venda, Long codigoCerveja,BindingResult result, String uuid) {
+		produto = produtos.findOne(codigoCerveja);
+		tabelaItens.adicionarItem(uuid, 0, produto, 1);
 		return mvTabelaItensVenda(uuid);
 	}
 	
@@ -166,9 +179,14 @@ public class VendasController {
 	public ModelAndView editar(@PathVariable Long codigo) {
 		Venda venda = vendas.buscarComItens(codigo);
 		
+		if(venda.getDataHoraEntrega() != null){
+			venda.setDataEntrega(venda.getDataHoraEntrega().toLocalDate());
+			venda.setHorarioEntrega(venda.getDataHoraEntrega().toLocalTime());
+		}
+		
 		setUuid(venda);
 		for (ItemVenda item : venda.getItens()) {
-			tabelaItens.adicionarItem(venda.getUuid(), item.getProduto(), item.getQuantidade());
+			tabelaItens.adicionarItem(venda.getUuid(), item.getCodigo(), item.getProduto(), item.getQuantidade());
 		}
 		
 		ModelAndView mv = nova(venda);
@@ -208,6 +226,8 @@ public class VendasController {
 	
 	private void validarVenda(Venda venda, BindingResult result) {
 		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
+		venda.adicionarItensAlterados(tabelaItens.getItensAlterados(venda.getUuid()));
+		venda.adicionarItensDeletados(tabelaItens.getItensDeletados(venda.getUuid()));
 		venda.calcularValorTotal();
 		venda.calcularValorComissao();
 		

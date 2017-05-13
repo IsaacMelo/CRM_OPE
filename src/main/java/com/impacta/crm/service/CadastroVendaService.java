@@ -46,10 +46,19 @@ public class CadastroVendaService {
 
 	@Transactional
 	public void emitir(Venda venda) {
+		long codigo;
+		if(venda.isNova()) codigo = 0; else codigo = venda.getCodigo();
+		
+		Venda vendaTmp = vendas.findOne(codigo);
+		
+		if(vendaTmp != null){
+			if(vendaTmp.getStatus() == StatusVenda.EMITIDA)
+			venda.setStatus(StatusVenda.EMITIDA);
+		}
+		
+		publisher.publishEvent(new VendaEvent(venda));
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
-		
-		//publisher.publishEvent(new VendaEvent(venda));
 	}
 
 	@PreAuthorize("#venda.usuario == principal.usuario or hasRole('CANCELAR_VENDA')")
@@ -59,6 +68,8 @@ public class CadastroVendaService {
 		
 		vendaExistente.setStatus(StatusVenda.CANCELADA);
 		vendas.save(vendaExistente);
+		
+		publisher.publishEvent(new VendaEvent(vendaExistente));
 	}
 
 }

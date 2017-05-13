@@ -56,6 +56,20 @@ Brewer.MaskCep = (function() {
 	
 }());
 
+Brewer.MaskTime = (function() {
+	
+	function MaskTime() {
+		this.inputTime = $('.js-time');
+	}
+	
+	MaskTime.prototype.enable = function() {
+		this.inputTime.mask('00:00');
+	}
+	
+	return MaskTime;
+	
+}());
+
 Brewer.MaskDate = (function() {
 	
 	function MaskDate() {
@@ -111,6 +125,9 @@ $(function() {
 	
 	var maskCep = new Brewer.MaskCep();
 	maskCep.enable();
+	
+	var maskTime = new Brewer.MaskTime();
+	maskTime.enable();
 	
 	var maskDate = new Brewer.MaskDate();
 	maskDate.enable();
