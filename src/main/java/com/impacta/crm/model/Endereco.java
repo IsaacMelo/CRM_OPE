@@ -3,29 +3,33 @@ package com.impacta.crm.model;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Embeddable
 public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank(message = "Logradouro é obrigatório")
 	private String logradouro;
 	
+	@NotBlank(message = "Número é obrigatório")
 	private String numero;
 	
 	private String complemento;
 	
+	@NotBlank(message = "CEP é obrigatório")
 	private String cep;
 	
-	@ManyToOne
-	@JoinColumn(name = "codigo_cidade")
-	private Cidade cidade;
+	@NotBlank(message = "Cidade é obrigatório")
+	private String cidade;
 	
-	@Transient
-	private Estado estado;
+	@NotBlank(message = "Estado é obrigatório")
+	private String estado;
+	
+	@NotBlank(message = "Logradouro é obrigatório")
+	private String bairro;
 
 	public String getLogradouro() {
 		return logradouro;
@@ -59,28 +63,30 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Cidade getCidade() {
+	public String getCidade() {
 		return cidade;
 	}
 
-	public void setCidade(Cidade cidade) {
+	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
 
-	public Estado getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Estado estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	public String getNomeCidadeSiglaEstado() {
-		if (this.cidade != null) {
-			return this.cidade.getNome() + "/" + this.cidade.getEstado().getSigla();
-		}
-		
-		return null;
+
+	public String getBairro() {
+		return bairro;
 	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	
+	
 	
 }

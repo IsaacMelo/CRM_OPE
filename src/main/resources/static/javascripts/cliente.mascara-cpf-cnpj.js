@@ -5,6 +5,7 @@ Brewer.MascaraCpfCnpj = (function() {
 	function MascaraCpfCnpj() {
 		this.radioTipoPessoa = $('.js-radio-tipo-pessoa');
 		this.labelCpfCnpj = $('[for=cpfOuCnpj]');
+		this.labelNomeOuRazao = $('[for=nome]');
 		this.inputCpfCnpj = $('#cpfOuCnpj');
 	}
 	
@@ -23,6 +24,7 @@ Brewer.MascaraCpfCnpj = (function() {
 	}
 	
 	function aplicarMascara(tipoPessoaSelecionada) {
+		this.labelNomeOuRazao.text(tipoPessoaSelecionada.data('documento') == 'CPF' ? 'Nome' : 'Razão social');
 		this.labelCpfCnpj.text(tipoPessoaSelecionada.data('documento'));
 		this.inputCpfCnpj.mask(tipoPessoaSelecionada.data('mascara'));
 		this.inputCpfCnpj.removeAttr('disabled');
