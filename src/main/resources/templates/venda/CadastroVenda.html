@@ -115,8 +115,8 @@
 				
 				<div class="col-sm-4  form-group  bw-required" brewer:classforerror="formaPagamento.codigo">
 					<label for="estilo" class="control-label">Forma de Pagamento</label>
-					<div class="bw-field-action">
-						<select id="formaPagamento" class="form-control" th:field="*{formaPagamento}">
+					<div class="bw-field-action" th:disabled="${venda.salvarProibido}">
+						<select th:disabled="${venda.salvarProibido}" id="formaPagamento" class="form-control" th:field="*{formaPagamento}">
 							<option value="">Selecione o Pagamento</option>
 							<option th:each="formaPagamento : ${formaPagamentos}" th:value="${formaPagamento.codigo}" th:text="${formaPagamento.nome}">Dinheiro</option>
 						</select>
@@ -187,10 +187,10 @@
 					</div> -->
 					
 					
-					<button type="submit" class="btn  btn-primary js-submit-btn" th:unless="${statusVenda}"data:acao="salvar">Salvar</button>
+					<button type="submit" class="btn  btn-primary js-submit-btn" th:unless="${statusVenda}" data:acao="salvar">Salvar</button>
 					<button type="submit" class="btn  btn-success js-submit-btn" data:acao="emitir">Emitir</button>
 					<button type="submit" class="btn  btn-secondary js-submit-btn" data:acao="enviarEmail">E-mail</button>				
-					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:unless="${venda.nova}">Cancelar</button>
+					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:unless="${venda.nova}" th:if="${statusVenda}" >Cancelar</button>
 				</div>
 			</div>
 		</form>
