@@ -82,6 +82,7 @@ public class VendasController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+		Venda vendaTmp = null;
 		
 		setUuid(venda);
 		
@@ -91,7 +92,14 @@ public class VendasController {
 		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
 		mv.addObject("valorComissao", venda.getValorComissao());
 		mv.addObject("formaPagamentos", formaPagamentos.findAll());
-		if(venda.getStatus() == StatusVenda.EMITIDA) mv.addObject("statusVenda", true); 
+		
+		if(!venda.isNova()){
+			vendaTmp = vendas.buscarComItens(venda.getCodigo());
+			if(vendaTmp.getStatus() == StatusVenda.EMITIDA){
+				venda.setStatus(StatusVenda.EMITIDA);
+				mv.addObject("statusVenda", true);
+			}
+		}
 		
 		return mv;
 	}
