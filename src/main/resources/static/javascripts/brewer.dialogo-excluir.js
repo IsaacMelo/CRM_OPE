@@ -8,9 +8,9 @@ Brewer.DialogoExcluir = (function() {
 	
 	DialogoExcluir.prototype.iniciar = function() {
 		this.exclusaoBtn.on('click', onExcluirClicado.bind(this));
-		
 		if (window.location.search.indexOf('excluido') > -1) {
-			swal('Pronto!', 'Excluído com sucesso!', 'success');
+			window.history.pushState('','',window.location.href.replace('?excluido',''));
+			swal('Pronto!', 'Excluído com sucesso!', 'success');			
 		}
 	}
 	
@@ -22,10 +22,10 @@ Brewer.DialogoExcluir = (function() {
 		
 		swal({
 			title: 'Tem certeza?',
-			text: 'Excluir "' + objeto + '"? Você não poderá recuperar depois.',
+			text: 'Excluir "' + objeto + '" ? Você não poderá recuperar depois.',
 			showCancelButton: true,
 			confirmButtonColor: '#DD6B55',
-			confirmButtonText: 'Sim, exclua agora!',
+			confirmButtonText: 'Sim, excluir agora!',
 			closeOnConfirm: false
 		}, onExcluirConfirmado.bind(this, url));
 	}
@@ -43,12 +43,10 @@ Brewer.DialogoExcluir = (function() {
 		var urlAtual = window.location.href;
 		var separador = urlAtual.indexOf('?') > -1 ? '&' : '?';
 		var novaUrl = urlAtual.indexOf('excluido') > -1 ? urlAtual : urlAtual + separador + 'excluido';
-		
 		window.location = novaUrl;
 	}
 	
 	function onErroExcluir(e) {
-		console.log('ahahahah', e.responseText);
 		swal('Oops!', e.responseText, 'error');
 	}
 	

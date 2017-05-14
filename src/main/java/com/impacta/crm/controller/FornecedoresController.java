@@ -24,76 +24,76 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.impacta.crm.controller.page.PageWrapper;
-import com.impacta.crm.model.Cliente;
+import com.impacta.crm.model.Fornecedor;
 import com.impacta.crm.model.TipoPessoa;
-import com.impacta.crm.repository.Clientes;
-import com.impacta.crm.repository.filter.ClienteFilter;
-import com.impacta.crm.service.CadastroClienteService;
+import com.impacta.crm.repository.Fornecedores;
+import com.impacta.crm.repository.filter.FornecedorFilter;
+import com.impacta.crm.service.CadastroFornecedorService;
 import com.impacta.crm.service.exception.CpfCnpjClienteJaCadastradoException;
 
 @Controller
-@RequestMapping("/clientes")
-public class ClientesController {
+@RequestMapping("/fornecedores")
+public class FornecedoresController {
+
+	@Autowired
+	private CadastroFornecedorService cadastroFornecedorService;
 	
 	@Autowired
-	private CadastroClienteService cadastroClienteService;
-	
-	@Autowired
-	private Clientes clientes;
+	private Fornecedores fornecedores;
 	
 	@RequestMapping("/novo")
-	public ModelAndView novo(Cliente cliente) {
-		ModelAndView mv = new ModelAndView("cliente/CadastroCliente");
+	public ModelAndView novo(Fornecedor fornecedor) {
+		ModelAndView mv = new ModelAndView("fornecedor/CadastroFornecedor");
 		mv.addObject("tiposPessoa", TipoPessoa.values());
 		return mv;
 	}
 	
 	@GetMapping("/{codigo}")
-	public ModelAndView editar(@PathVariable("codigo")  Cliente cliente) {
-		ModelAndView mv = novo(cliente);
-		mv.addObject(cliente);
+	public ModelAndView editar(@PathVariable("codigo")  Fornecedor fornecedor) {
+		ModelAndView mv = novo(fornecedor);
+		mv.addObject(fornecedor);
 		return mv;
 	}
 	
 	@RequestMapping(value = {"/novo", "{\\d+}"},method = RequestMethod.POST)
-	public ModelAndView salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView salvar(@Valid Fornecedor fornecedor, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
-			return novo(cliente);
+			return novo(fornecedor);
 		}
 		
 		try {
-			cadastroClienteService.salvar(cliente);
+			cadastroFornecedorService.salvar(fornecedor);
 		} catch (CpfCnpjClienteJaCadastradoException e) {
 			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());
-			return novo(cliente);
+			return novo(fornecedor);
 		}
 		
-		attributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
-		return new ModelAndView("redirect:/clientes/novo");
+		attributes.addFlashAttribute("mensagem", "Fornecedor salvo com sucesso!");
+		return new ModelAndView("redirect:/fornecedores/novo");
 	}
 	
 	@DeleteMapping("/{codigo}")
-	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Cliente cliente){
-		cadastroClienteService.excluir(cliente);
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Fornecedor cliente){
+		cadastroFornecedorService.excluir(cliente);
 		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(ClienteFilter clienteFilter, BindingResult result
+	public ModelAndView pesquisar(FornecedorFilter fornecedorFilter, BindingResult result
 			, @PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
-		ModelAndView mv = new ModelAndView("cliente/PesquisaClientes");
+		ModelAndView mv = new ModelAndView("fornecedor/PesquisaFornecedor");
 		mv.addObject("tiposPessoa", TipoPessoa.values());
 		
-		PageWrapper<Cliente> paginaWrapper = new PageWrapper<>(clientes.filtrar(clienteFilter, pageable)
+		PageWrapper<Fornecedor> paginaWrapper = new PageWrapper<>(fornecedores.filtrar(fornecedorFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
 	
 	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody List<Cliente> pesquisar(String nome) {
+	public @ResponseBody List<Fornecedor> pesquisar(String nome) {
 		validarTamanhoNome(nome);
-		return clientes.findByNomeStartingWithIgnoreCase(nome);
+		return fornecedores.findByNomeStartingWithIgnoreCase(nome);
 	}
 
 	private void validarTamanhoNome(String nome) {
@@ -106,5 +106,4 @@ public class ClientesController {
 	public ResponseEntity<Void> tratarIllegalArgumentException(IllegalArgumentException e) {
 		return ResponseEntity.badRequest().build();
 	}
-	
 }
