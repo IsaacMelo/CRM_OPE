@@ -13,7 +13,7 @@ Brewer.CampoCEP = (function(){
 	}
 	
 	CampoCEP.prototype.iniciar = function(){
-		if(!this.inputCodigo.val()){
+		if(!this.inputCep.val()){
 			reset.call(this);
 		}
 		this.inputCep.on('blur',buscarCEP.bind(this));

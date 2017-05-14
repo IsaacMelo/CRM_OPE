@@ -7,7 +7,7 @@
 	layout:decorate="~{layout/LayoutPadrao}">
 
 <head>
-	<title>Cadastro de cliente</title>
+	<title>Cadastro de Cliente</title>
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
 </head>
 
@@ -17,8 +17,8 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-10">
-					<h1 th:if="${cliente.novo}">Novo cliente</h1>
-					<h1 th:unless="${cliente.novo}" th:text="|Cliente - ${cliente.nome}|">Ediçãoo de cliente</h1>
+					<h1 th:if="${cliente.novo}">Novo Cliente</h1>
+					<h1 th:unless="${cliente.novo}" th:text="|Cliente - ${cliente.nome}|">Edição de Cliente</h1>
 				</div>
 			
 				<div class="col-sm-2">
@@ -144,8 +144,8 @@
 	<script>
 		$('.js-status').bootstrapSwitch();
 	</script>	
-	<script th:src="@{/javascripts/cliente.mascara-cpf-cnpj.js}"></script>
-	<script th:src="@{/javascripts/cliente.pesquisa-de-cep.js}"></script>
+	<script th:src="@{/javascripts/brewer.mascara-cpf-cnpj.js}"></script>
+	<script th:src="@{/javascripts/brewer.pesquisa-de-cep.js}"></script>
 	
 </th:block>
 

@@ -84,6 +84,7 @@
 		
 		<!-- ViaCep -->
 		<viacep.version>1.2.0</viacep.version>
+		
 	</properties>
 
 	<build>
@@ -218,6 +219,7 @@
 			<artifactId>viacep</artifactId>
 			<version>${viacep.version}</version>
 		</dependency>
+
 
 	</dependencies>
 
