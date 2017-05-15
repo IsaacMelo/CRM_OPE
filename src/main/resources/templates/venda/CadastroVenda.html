@@ -60,6 +60,7 @@
 							<i class="fa  fa-tag  fa-3x"></i>
 						</div>
 						<div class="aw-box__value" th:text="${venda.status.descricao}">Orçamento</div>
+						<input id="statusVenda" type="hidden" th:field="${venda.status}"/>
 						<div class="aw-box__title">Status</div>
 					</div>
 				</div>
@@ -174,23 +175,23 @@
 			
 			<div class="row" style="clear: both" th:if="${venda.salvarPermitido}">
 				<div class="col-lg-12">
-<!-- 					<div class="btn-group">
-					  <button type="submit" class="btn  btn-primary  js-submit-btn" th:unless="${venda.nova}" data:acao="salvar">Salvar</button>
+					<div class="btn-group">
+					  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar">Salvar</button>
 					  <button type="button" class="btn  btn-primary  dropdown-toggle" data-toggle="dropdown">
 					    <span class="caret"></span>
 					  </button>
 					  
 					  <ul class="dropdown-menu">
-					    <li><a href="#" class="js-submit-btn" data:acao="emitir">Salvar e emitir</a></li>
+					    <li><a href="#" class="js-submit-btn" data:acao="emitir" th:if="${venda.emitirPermitido}">Salvar e emitir</a></li>
 					    <li><a href="#" class="js-submit-btn" data:acao="enviarEmail">Salvar e enviar por e-mail</a></li>
 					  </ul>
-					</div> -->
+					</div>
+					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:if="${venda.cancelarPermitido}" >Cancelar</button>
 					
-					
-					<button type="submit" class="btn  btn-primary js-submit-btn" th:unless="${statusVenda}" data:acao="salvar">Salvar</button>
+<!-- 					<button type="submit" class="btn  btn-primary js-submit-btn" th:unless="${statusVenda}" data:acao="salvar">Salvar</button>
 					<button type="submit" class="btn  btn-success js-submit-btn" data:acao="emitir">Emitir</button>
 					<button type="submit" class="btn  btn-secondary js-submit-btn" data:acao="enviarEmail">E-mail</button>				
-					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:unless="${venda.nova}" th:if="${statusVenda}" >Cancelar</button>
+					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:unless="${venda.nova}" th:if="${statusVenda}" >Cancelar</button> -->
 				</div>
 			</div>
 		</form>

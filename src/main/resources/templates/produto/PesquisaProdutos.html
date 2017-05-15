@@ -33,31 +33,28 @@
 	<div class="container-fluid">
 		<form method="GET" th:object="${produtoFilter}">
 			<div class="row">
-				<div class="form-group  col-sm-6">
+				<div class="form-group  col-sm-4">
 					<label class="control-label" for="sku">SKU</label>
 					<input type="text" class="form-control" id="sku" autofocus="autofocus" th:field="*{sku}"/>
 				</div>
 				
-				<div class="form-group  col-sm-6" >
+				<div class="form-group  col-sm-8" >
 					<label class="control-label" for="nome">Nome</label>
 					<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
 				</div>
 			</div>
 			
 			<div class="row">
-				<div class="form-group  col-sm-6">
+				<div class="form-group  col-sm-4">
 					<label class="control-label" for="categoria">Categoria</label>
 					<select id="categoria" class="form-control" th:field="*{categoria}">
 	                    <option value="">Todos os categorias</option>
 	                    <option th:each="categoria : ${categorias}" th:text="${categoria.nome}" th:value="${categoria.codigo}"></option>
 	                </select>
 				</div>
-	
-			</div>
-			
-			<div class="row">
+
 				<div class="col-sm-6  form-group">
-					<label for="valorDe">Valor unitário</label>
+					<label for="valorDe">Valor Venda</label>
 					<div class="form-inline">
 						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="valorDe" th:field="*{valorDe}"/>
 						<label for="valorAte" class="aw-form-label-between">até</label>

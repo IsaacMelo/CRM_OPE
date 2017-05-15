@@ -85,7 +85,7 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "codigo_categoria")
 	private Categoria categoria;
 	
-	@NotNull(message = "O fornecedo é obrigatório")
+	@NotNull(message = "O fornecedor é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "codigo_fornecedor")
 	private Fornecedor fornecedor;
@@ -96,6 +96,9 @@ public class Produto implements Serializable {
 	private String contentType;
 	
 	private Boolean ativo;
+
+	@Column(name = "estoque_ativo")
+	private Boolean estoqueAtivo;
 
 	@Transient
 	private boolean novaFoto;
@@ -222,6 +225,14 @@ public class Produto implements Serializable {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	public Boolean getEstoqueAtivo() {
+		return estoqueAtivo;
+	}
+
+	public void setEstoqueAtivo(Boolean estoqueAtivo) {
+		this.estoqueAtivo = estoqueAtivo;
 	}
 
 	public String getFotoOuMock() {

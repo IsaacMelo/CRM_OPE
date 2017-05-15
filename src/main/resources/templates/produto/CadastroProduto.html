@@ -140,6 +140,15 @@
 					<label for="estoque" class="control-label">Estoque</label>
 					<input id="estoque" type="text" class="form-control  js-plain" th:field="*{quantidadeEstoque}"/>
 				</div>
+				
+				<div class="form-group  col-sm-4">
+					<label class="control-label">Controla Estoque</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" th:field="*{estoqueAtivo}"
+							data-on-text="Ativo" data-off-text="Inativo"/>
+					</div>
+				</div>
+				
 			</div>
 			
 			<div class="row">

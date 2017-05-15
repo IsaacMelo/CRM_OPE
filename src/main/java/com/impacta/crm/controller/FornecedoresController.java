@@ -93,7 +93,7 @@ public class FornecedoresController {
 	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Fornecedor> pesquisar(String nome) {
 		validarTamanhoNome(nome);
-		return fornecedores.findByNomeStartingWithIgnoreCase(nome);
+		return fornecedores.findByNomeStartingWithIgnoreCaseAndAtivoEquals(nome, true);
 	}
 
 	private void validarTamanhoNome(String nome) {

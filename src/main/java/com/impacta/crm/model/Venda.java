@@ -279,6 +279,14 @@ public class Venda {
 		return !status.equals(StatusVenda.CANCELADA);
 	}
 	
+	public boolean isCancelarPermitido() {
+		return !status.equals(StatusVenda.ORCAMENTO) && codigo != null;
+	}
+	
+	public boolean isEmitirPermitido() {
+		return status.equals(StatusVenda.ORCAMENTO);
+	}
+	
 	public boolean isSalvarProibido() {
 		return !isSalvarPermitido();
 	}

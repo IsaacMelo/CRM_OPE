@@ -50,7 +50,7 @@ public class ProdutosImpl implements ProdutosQueries {
 	@Override
 	public List<ProdutoDTO> porSkuOuNome(String skuOuNome) {
 		String jpql = "select new com.impacta.crm.dto.ProdutoDTO(codigo, sku, nome, valor, foto) "
-				+ "from Produto where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
+				+ "from Produto where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome) and ativo = 1";
 		List<ProdutoDTO> cervejasFiltradas = manager.createQuery(jpql, ProdutoDTO.class)
 					.setParameter("skuOuNome", skuOuNome + "%")
 					.getResultList();
