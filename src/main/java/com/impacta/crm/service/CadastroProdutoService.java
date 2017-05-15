@@ -27,14 +27,8 @@ public class CadastroProdutoService {
 	
 	@Transactional
 	public void excluir(Produto produto) {
-		try {
-			String foto = produto.getFoto();
-			produtos.delete(produto);
-			produtos.flush();
-			fotoStorage.excluir(foto);
-		} catch (PersistenceException e) {
-			throw new ImpossivelExcluirEntidadeException("Impossível apagar o produto. Já foi usada em alguma venda.");
-		}
+		produto.setAtivo(false);
+		produtos.save(produto);
 	}
 	
 }

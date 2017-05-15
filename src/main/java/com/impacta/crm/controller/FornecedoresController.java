@@ -73,8 +73,8 @@ public class FornecedoresController {
 	}
 	
 	@DeleteMapping("/{codigo}")
-	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Fornecedor cliente){
-		cadastroFornecedorService.excluir(cliente);
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Fornecedor forncedor){
+		cadastroFornecedorService.excluir(forncedor);
 		return ResponseEntity.ok().build();
 	}
 	

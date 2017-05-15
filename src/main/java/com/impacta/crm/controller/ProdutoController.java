@@ -25,10 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.dto.ProdutoDTO;
 import com.impacta.crm.model.Produto;
-import com.impacta.crm.model.Origem;
-import com.impacta.crm.model.Sabor;
 import com.impacta.crm.repository.Produtos;
-import com.impacta.crm.repository.Estilos;
+import com.impacta.crm.repository.Categorias;
 import com.impacta.crm.repository.filter.ProdutoFilter;
 import com.impacta.crm.service.CadastroProdutoService;
 import com.impacta.crm.service.exception.ImpossivelExcluirEntidadeException;
@@ -38,7 +36,7 @@ import com.impacta.crm.service.exception.ImpossivelExcluirEntidadeException;
 public class ProdutoController {
 	
 	@Autowired
-	private Estilos estilos;
+	private Categorias categorias;
 	
 	@Autowired
 	private CadastroProdutoService cadastroProdutoService;
@@ -49,9 +47,7 @@ public class ProdutoController {
 	@RequestMapping("/nova")
 	public ModelAndView nova(Produto produto) {
 		ModelAndView mv = new ModelAndView("produto/CadastroProduto");
-		mv.addObject("sabores", Sabor.values());
-		mv.addObject("estilos", estilos.findAll());
-		mv.addObject("origens", Origem.values());
+			mv.addObject("categorias", categorias.findAll());
 		return mv;
 	}
 	
@@ -70,9 +66,7 @@ public class ProdutoController {
 	public ModelAndView pesquisar(ProdutoFilter produtoFilter, BindingResult result
 			, @PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("produto/PesquisaProdutos");
-		mv.addObject("estilos", estilos.findAll());
-		mv.addObject("sabores", Sabor.values());
-		mv.addObject("origens", Origem.values());
+		mv.addObject("categorias", categorias.findAll());
 		
 		PageWrapper<Produto> paginaWrapper = new PageWrapper<>(produtos.filtrar(produtoFilter, pageable)
 				, httpServletRequest);

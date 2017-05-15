@@ -1,6 +1,6 @@
 package com.impacta.crm.repository.filter;
 
-public class EstiloFilter {
+public class CategoriaFilter {
 
 	private String nome;
 

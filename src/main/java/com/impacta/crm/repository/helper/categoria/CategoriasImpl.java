@@ -1,4 +1,4 @@
-package com.impacta.crm.repository.helper.estilo;
+package com.impacta.crm.repository.helper.categoria;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,11 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.impacta.crm.model.Estilo;
-import com.impacta.crm.repository.filter.EstiloFilter;
+import com.impacta.crm.model.Categoria;
+import com.impacta.crm.repository.filter.CategoriaFilter;
 import com.impacta.crm.repository.paginacao.PaginacaoUtil;
 
-public class EstilosImpl implements EstilosQueries {
+public class CategoriasImpl implements CategoriasQueries {
 	
 	@PersistenceContext
 	private EntityManager manager;
@@ -30,8 +30,8 @@ public class EstilosImpl implements EstilosQueries {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Estilo> filtrar(EstiloFilter filtro, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Estilo.class);
+	public Page<Categoria> filtrar(CategoriaFilter filtro, Pageable pageable) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Categoria.class);
 		
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
@@ -39,14 +39,14 @@ public class EstilosImpl implements EstilosQueries {
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
 	}
 	
-	private Long total(EstiloFilter filtro) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Estilo.class);
+	private Long total(CategoriaFilter filtro) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Categoria.class);
 		adicionarFiltro(filtro, criteria);
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 	}
 
-	private void adicionarFiltro(EstiloFilter filtro, Criteria criteria) {
+	private void adicionarFiltro(CategoriaFilter filtro, Criteria criteria) {
 		if (filtro != null) {
 			if (!StringUtils.isEmpty(filtro.getNome())) {
 				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));

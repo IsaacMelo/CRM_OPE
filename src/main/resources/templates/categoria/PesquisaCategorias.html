@@ -3,10 +3,11 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 	
 <head>
-	<title>Pesquisa de estilos</title>
+	<title>Pesquisa de Categorias</title>
 </head>
 
 <body>
@@ -15,13 +16,13 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-10">
-					<h1>Pesquisa de estilos</h1>
+					<h1>Pesquisa de categorias</h1>
 				</div>
 				
 				<div class="col-sm-2">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/estilos/novo}">
-							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo estilo</span>
+						<a class="btn  btn-default" th:href="@{/categorias/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova categoria</span>
 						</a>
 					</div>
 				</div>
@@ -30,11 +31,11 @@
 	</div>
 	
 	<div class="container-fluid">
-		<form method="GET" th:object="${estiloFilter}">
+		<form method="GET" th:object="${categoriaFilter}">
 			<div class="row">
 				<div class="form-group  col-sm-12">
-					<label class="control-label" for="nome">Estilo</label>
-					<input type="text" class="form-control" id="estilo" autofocus="autofocus" th:field="*{nome}"/>
+					<label class="control-label" for="nome">Categoria</label>
+					<input type="text" class="form-control" id="categoria" autofocus="autofocus" th:field="*{nome}"/>
 				</div>
 			</div>
 			
@@ -54,20 +55,23 @@
 				</thead>
 				
 				<tbody>
-					<tr th:each="estilo : ${pagina.conteudo}">
-						<td class="text-center" th:text="${estilo.codigo}">1</td>
-						<td th:text="${estilo.nome}">Pale Lager</td>
+					<tr th:each="categoria : ${pagina.conteudo}">
+						<td class="text-center" th:text="${categoria.codigo}">1</td>
+						<td th:text="${categoria.nome}">Pale Lager</td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs js-tooltip" title="Editar"> 
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+									th:href="@{/categorias/{codigo}(codigo=${categoria.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
-							</a>
-							<a class="btn  btn-link  btn-xs js-tooltip" title="Excluir">
+							</a>							
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+									data:url="@{/categorias/{codigo}(codigo=${categoria.codigo})}"
+									data:objeto="${categoria.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">
-						<td colspan="3">Nenhum estilo encontrado</td>
+						<td colspan="3">Nenhuma categoria encontrado</td>
 					</tr>
 				</tbody>
 			</table>
