@@ -14,8 +14,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "estilo")
-public class Estilo implements Serializable {
+@Table(name = "categoria")
+public class Categoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class Estilo implements Serializable {
 	@Size(max = 20, message = "O tamanho do nome não pode ser maior que {max} caracteres")
 	private String nome;
 	
-	@OneToMany(mappedBy = "estilo")
+	@OneToMany(mappedBy = "categoria")
 	private List<Produto> produtos;
 
 	public Long getCodigo() {
@@ -44,6 +44,10 @@ public class Estilo implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public boolean isNova() {
+		return codigo == null;
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class Estilo implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estilo other = (Estilo) obj;
+		Categoria other = (Categoria) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
