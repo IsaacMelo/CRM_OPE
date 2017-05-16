@@ -36,28 +36,32 @@ public class VendaItemValidator implements Validator {
 		
 		for (ItemVenda item : venda.getItens()) {
 			Produto produto = item.getProduto();
-		
-			qtdMinEstoque 	= produto.getQuantidadeMinima();
-			qtdEstoque 		= produto.getQuantidadeEstoque();
-			qtdTotalVenda   = qtdEstoque - qtdMinEstoque;
 			
-			Optional<ItemVenda> itemAlteradoOptional = buscarItemPorProduto(venda.getItensAlterados(),produto);
-			
-			
-			if(itemAlteradoOptional.isPresent() || item.isNovo() || venda.getStatus() == StatusVenda.ORCAMENTO){
-
-				//Caso exista item alterado, estão pega o valor da diferença 
-				if(itemAlteradoOptional.isPresent() && !item.isNovo() && venda.getStatus() == StatusVenda.EMITIDA){
-					ItemVenda ItemAlterado = itemAlteradoOptional.get();
-					qtdTotalVenda = qtdTotalVenda - (item.getQuantidade() - ItemAlterado.getQuantidade());
-				}else{
-					qtdTotalVenda = qtdTotalVenda - item.getQuantidade();
-				}
+			//Verifca se o produto esta com o controle de estoque ativo
+			if(produto.getEstoqueAtivo()){
 				
-				if(qtdTotalVenda < 0){
-					errors.reject("", "Produto "+produto.getNome()+" com saldo minimo no estoque ("+produto.getQuantidadeMinima()+")");
-				}	
+				qtdMinEstoque 	= produto.getQuantidadeMinima();
+				qtdEstoque 		= produto.getQuantidadeEstoque();
+				qtdTotalVenda   = qtdEstoque - qtdMinEstoque;
+				
+				Optional<ItemVenda> itemAlteradoOptional = buscarItemPorProduto(venda.getItensAlterados(),produto);
+				
+				if(itemAlteradoOptional.isPresent() || item.isNovo() || venda.getStatus() == StatusVenda.ORCAMENTO){
+
+					//Caso exista item alterado, estão pega o valor da diferença 
+					if(itemAlteradoOptional.isPresent() && !item.isNovo() && venda.getStatus() == StatusVenda.EMITIDA){
+						ItemVenda ItemAlterado = itemAlteradoOptional.get();
+						qtdTotalVenda = qtdTotalVenda - (item.getQuantidade() - ItemAlterado.getQuantidade());
+					}else{
+						qtdTotalVenda = qtdTotalVenda - item.getQuantidade();
+					}
+					
+					if(qtdTotalVenda < 0){
+						errors.reject("", "Produto "+produto.getNome()+" com saldo minimo no estoque ("+produto.getQuantidadeMinima()+")");
+					}	
+				}				
 			}
+
 		}
 		
 	}
