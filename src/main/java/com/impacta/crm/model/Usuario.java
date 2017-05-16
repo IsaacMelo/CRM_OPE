@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.impacta.crm.validation.AtributoConfirmacao;
 
 @AtributoConfirmacao(atributo = "senha", atributoConfirmacao = "confirmacaoSenha"
@@ -50,7 +51,8 @@ public class Usuario implements Serializable {
 	private String confirmacaoSenha;
 
 	private Boolean ativo;
-
+	
+	@JsonIgnore
 	@Size(min = 1, message = "Selecione pelo menos um grupo")
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "codigo_usuario")
