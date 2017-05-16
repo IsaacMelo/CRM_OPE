@@ -7,18 +7,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.impacta.crm.dto.FiltroRelatorioComissaoVendedor;
 import com.impacta.crm.dto.PeriodoRelatorio;
-import com.impacta.crm.model.Cliente;
-import com.impacta.crm.model.StatusVenda;
-import com.impacta.crm.model.Usuario;
-import com.impacta.crm.model.Venda;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -48,14 +50,19 @@ public class RelatoriosController {
 	}
 	
 	@GetMapping("/comissaoVendedor")
-	public ModelAndView relatorioComissaoVendedor() {
+	public ModelAndView relatorioComissaoVendedor(FiltroRelatorioComissaoVendedor filtroRelatorioComissao) {
 		ModelAndView mv = new ModelAndView("relatorio/RelatorioComissaoVendedor");
-		mv.addObject(new FiltroRelatorioComissaoVendedor());
 		return mv;
 	}
 	
-	@PostMapping("/comissaoVendedor")
-	public ModelAndView gerarRelatorioComissaoVendedor(FiltroRelatorioComissaoVendedor filtroRelatorioComissao) {
+	@RequestMapping(value = "/comissaoVendedor", method = RequestMethod.POST)
+	public ModelAndView gerarRelatorioComissaoVendedor(@Valid FiltroRelatorioComissaoVendedor filtroRelatorioComissao, 
+			BindingResult result, RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			return relatorioComissaoVendedor(filtroRelatorioComissao);
+		}
+		
 		Map<String, Object> parametros = new HashMap<>();
 		
 		Date dataInicio = Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataInicio()
@@ -67,8 +74,9 @@ public class RelatoriosController {
 		parametros.put("data_inicio", dataInicio);
 		parametros.put("data_final", dataFim);
 		parametros.put("codigo_usuario", filtroRelatorioComissao.getCodigoVendedor());
-		
+		 
 		return new ModelAndView("relatorio_comissao_vendedor", parametros);
+
 	}
 	
 }
