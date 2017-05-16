@@ -60,7 +60,7 @@ public class ProdutosImpl implements ProdutosQueries {
 	
 	@Override
 	public ValorItensEstoque valorItensEstoque() {
-		String query = "select new com.impacta.crm.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Produto";
+		String query = "select new com.impacta.crm.dto.ValorItensEstoque(sum(valorCompra * quantidadeEstoque), sum(quantidadeEstoque)) from Produto";
 		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
 	

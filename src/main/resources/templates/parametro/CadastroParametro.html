@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:brewer="http://brewer.algaworks.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Cadastro de Parametro</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Edição de Parametro</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+	
+		<form method="POST" th:object="${parametro}" th:action="@{/parametros/novo}">
+			<brewer:message/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  bw-required" brewer:classforerror="host">
+					<label for="host" class="control-label">Host</label>
+					<input type="text" class="form-control" id="host" autofocus="autofocus" th:field="*{host}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  bw-required" brewer:classforerror="usuario">
+					<label for="usuario" class="control-label">Usuário</label>
+					<input type="text" class="form-control" id="usuario" autofocus="autofocus" th:field="*{usuario}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3 bw-required" brewer:classforerror="senha">
+					<label for="senha" class="control-label">Senha</label> 
+					<input type="password" class="form-control" id="senha" th:field="*{senha}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3" brewer:classforerror="confirmacaoSenha">
+					<label for="confirmacaoSenha" class="control-label">Confirmação de senha</label> 
+					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-2  form-group  bw-required" brewer:classforerror="comissao">
+					<label for="comissao" class="control-label">Comissão</label>
+					<div class="input-group">
+						<input id="comissao" type="text" class="form-control  js-plain" th:field="*{comissao}"/>
+						<div class="input-group-addon">%</div>
+					</div>
+				</div>	
+			</div>
+				
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
+	</div>
+</section>
+
+</html>
