@@ -35,6 +35,7 @@ CREATE TABLE produto (
     codigo_categoria BIGINT(20) NOT NULL,
 	codigo_fornecedor BIGINT(20) NOT NULL,
     ativo BOOLEAN DEFAULT true,
+    estoque_ativo BOOLEAN DEFAULT true,
 	FOREIGN KEY (codigo_categoria) REFERENCES categoria(codigo),
 	FOREIGN KEY (codigo_fornecedor) REFERENCES fornecedor(codigo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

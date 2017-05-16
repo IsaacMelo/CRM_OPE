@@ -93,13 +93,13 @@ public class VendasController {
 		mv.addObject("valorComissao", venda.getValorComissao());
 		mv.addObject("formaPagamentos", formaPagamentos.findAll());
 		
-		if(!venda.isNova()){
+/*		if(!venda.isNova()){
 			vendaTmp = vendas.buscarComItens(venda.getCodigo());
 			if(vendaTmp.getStatus() == StatusVenda.EMITIDA){
-				venda.setStatus(StatusVenda.EMITIDA);
+				//venda.setStatus(StatusVenda.EMITIDA);
 				mv.addObject("statusVenda", true);
 			}
-		}
+		}*/
 		
 		return mv;
 	}
@@ -113,8 +113,19 @@ public class VendasController {
 		
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
-		cadastroVendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		if(venda.getStatus() == StatusVenda.ORCAMENTO){
+			attributes.addFlashAttribute("mensagem", "Orçamento salvo com sucesso");
+			cadastroVendaService.salvar(venda);
+		
+		}else if(venda.getStatus() == StatusVenda.EMITIDA){
+			vendaItemValidator.validate(venda, result);
+			if (result.hasErrors()) {
+				return nova(venda);
+			}
+			attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+			cadastroVendaService.emitir(venda);
+		}
+		
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 
@@ -129,7 +140,8 @@ public class VendasController {
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
 		cadastroVendaService.emitir(venda);
-		attributes.addFlashAttribute("mensagem", "Venda emitida com sucesso");
+
+		attributes.addFlashAttribute("mensagem", String.format("Venda salva com sucesso", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
@@ -142,10 +154,21 @@ public class VendasController {
 		
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
-		venda = cadastroVendaService.salvar(venda);
-		mailer.enviar(venda);
+		if(venda.getStatus() == StatusVenda.ORCAMENTO){
+			attributes.addFlashAttribute("mensagem", String.format("Orçamento salvo com sucesso e e-mail enviado"));
+			cadastroVendaService.salvar(venda);
 		
-		attributes.addFlashAttribute("mensagem", String.format("Venda nº %d salva com sucesso e e-mail enviado", venda.getCodigo()));
+		}else if(venda.getStatus() == StatusVenda.EMITIDA){
+			vendaItemValidator.validate(venda, result);
+			if (result.hasErrors()) {
+				return nova(venda);
+			}
+			attributes.addFlashAttribute("mensagem", String.format("Venda salva com sucesso e e-mail enviado"));
+			cadastroVendaService.emitir(venda);
+		}
+		
+		mailer.enviar(venda);
+				
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	

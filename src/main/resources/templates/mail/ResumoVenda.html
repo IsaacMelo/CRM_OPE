@@ -18,12 +18,11 @@
 		<th:block th:each="item : ${venda.itens}">
 			<tr style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
 				<td style="width: 50px; padding-bottom: 10px; padding-top: 10px">
-					<img style="width: 40px" src="../../static/images/cerveja-mock.png" th:src="|cid:${mockCerveja}|" th:unless="${item.cerveja.temFoto()}"/>
-					<img style="width: 40px" src="../../static/images/cerveja-mock.png" th:src="|cid:foto-${item.cerveja.codigo}|" th:if="${item.cerveja.temFoto()}"/>
+					<img style="width: 40px" src="../../static/images/cerveja-mock.png" th:src="|cid:${mockCerveja}|" th:unless="${item.produto.temFoto()}"/>
+					<img style="width: 40px" src="../../static/images/cerveja-mock.png" th:src="|cid:foto-${item.produto.codigo}|" th:if="${item.produto.temFoto()}"/>
 				</td>
 				<td style="vertical-align: top; padding-bottom: 10px; padding-top: 10px">
-					<div style="display: block; font-weight: bold; font-size: 16px" th:text="${item.cerveja.nome}">Bhrama Lata 350 ml</div>
-					<div style="color: #8e8e8e" th:text="${item.cerveja.origem.descricao}">Nacional</div>
+					<div style="display: block; font-weight: bold; font-size: 16px" th:text="${item.produto.nome}">Bhrama Lata 350 ml</div>
 					<div style="color: #8e8e8e" th:text="|${item.quantidade} x R$${#numbers.formatDecimal(item.valorUnitario, 1, 2)}|">1 x R$1,90</div>
 				</td>
 				<td style="vertical-align: top; text-align: right; padding-bottom: 10px; padding-top: 10px">
@@ -38,7 +37,6 @@
 					</td>
 					<td style="vertical-align: top; padding-bottom: 10px; padding-top: 10px">
 						<div style="display: block; font-weight: bold; font-size: 16px">Heineken</div>
-						<div style="color: #8e8e8e">Internacional</div>
 						<div style="color: #8e8e8e">450 x R$3,93</div>
 					</td>
 					<td style="vertical-align: top; text-align: right; padding-bottom: 10px; padding-top: 10px">
