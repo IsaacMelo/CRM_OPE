@@ -2,17 +2,13 @@ package com.impacta.crm.repository.filter;
 
 import java.math.BigDecimal;
 
-import com.impacta.crm.model.Estilo;
-import com.impacta.crm.model.Origem;
-import com.impacta.crm.model.Sabor;
+import com.impacta.crm.model.Categoria;
 
 public class ProdutoFilter {
 
 	private String sku;
 	private String nome;
-	private Estilo estilo;
-	private Sabor sabor;
-	private Origem origem;
+	private Categoria categoria;
 	private BigDecimal valorDe;
 	private BigDecimal valorAte;
 
@@ -32,28 +28,12 @@ public class ProdutoFilter {
 		this.nome = nome;
 	}
 
-	public Estilo getEstilo() {
-		return estilo;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setEstilo(Estilo estilo) {
-		this.estilo = estilo;
-	}
-
-	public Sabor getSabor() {
-		return sabor;
-	}
-
-	public void setSabor(Sabor sabor) {
-		this.sabor = sabor;
-	}
-
-	public Origem getOrigem() {
-		return origem;
-	}
-
-	public void setOrigem(Origem origem) {
-		this.origem = origem;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	public BigDecimal getValorDe() {

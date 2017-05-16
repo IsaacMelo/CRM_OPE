@@ -49,8 +49,8 @@ public class ProdutosImpl implements ProdutosQueries {
 	
 	@Override
 	public List<ProdutoDTO> porSkuOuNome(String skuOuNome) {
-		String jpql = "select new com.impacta.crm.dto.ProdutoDTO(codigo, sku, nome, origem, valor, foto) "
-				+ "from Produto where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
+		String jpql = "select new com.impacta.crm.dto.ProdutoDTO(codigo, sku, nome, valor, foto) "
+				+ "from Produto where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome) and ativo = 1";
 		List<ProdutoDTO> cervejasFiltradas = manager.createQuery(jpql, ProdutoDTO.class)
 					.setParameter("skuOuNome", skuOuNome + "%")
 					.getResultList();
@@ -82,15 +82,7 @@ public class ProdutosImpl implements ProdutosQueries {
 			}
 
 			if (isEstiloPresente(filtro)) {
-				criteria.add(Restrictions.eq("estilo", filtro.getEstilo()));
-			}
-
-			if (filtro.getSabor() != null) {
-				criteria.add(Restrictions.eq("sabor", filtro.getSabor()));
-			}
-
-			if (filtro.getOrigem() != null) {
-				criteria.add(Restrictions.eq("origem", filtro.getOrigem()));
+				criteria.add(Restrictions.eq("categoria", filtro.getCategoria()));
 			}
 
 			if (filtro.getValorDe() != null) {
@@ -104,7 +96,7 @@ public class ProdutosImpl implements ProdutosQueries {
 	}
 	
 	private boolean isEstiloPresente(ProdutoFilter filtro) {
-		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
+		return filtro.getCategoria() != null && filtro.getCategoria().getCodigo() != null;
 	}
 
 }

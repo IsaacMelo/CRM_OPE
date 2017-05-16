@@ -17,14 +17,14 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1 th:if="${usuario.novo}">Cadastro de usuário</h1>
-					<h1 th:unless="${usuario.novo}">Edição de usuário - [[${usuario.nome}]]</h1>
+					<h1 th:if="${usuario.novo}">Cadastro de Usuário</h1>
+					<h1 th:unless="${usuario.novo}">Edição de Usuário - [[${usuario.nome}]]</h1>
 				</div>
 				
 				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
 						<a class="btn  btn-default" th:href="@{/usuarios}">
-							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+							<i class="glyphicon glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
 						</a>
 					</div>
 				</div>

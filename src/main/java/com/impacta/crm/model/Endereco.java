@@ -28,7 +28,7 @@ public class Endereco implements Serializable {
 	@NotBlank(message = "Estado é obrigatório")
 	private String estado;
 	
-	@NotBlank(message = "Logradouro é obrigatório")
+	@NotBlank(message = "Bairro é obrigatório")
 	private String bairro;
 
 	public String getLogradouro() {

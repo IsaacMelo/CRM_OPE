@@ -29,4 +29,11 @@ public class CadastroClienteService {
 		clientes.save(cliente);
 	}
 	
+	@Transactional
+	public void excluir(Cliente cliente){
+		cliente = clientes.findOne(cliente.getCodigo());
+		cliente.setAtivo(false);
+		clientes.save(cliente);
+	}
+	
 }

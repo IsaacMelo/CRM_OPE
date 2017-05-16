@@ -84,13 +84,13 @@
 		
 		<!-- ViaCep -->
 		<viacep.version>1.2.0</viacep.version>
-		
-		<!-- itext OLD -->
+
+    <!-- itext OLD -->
 		<itext.version>2.0.7</itext.version>
 		
-		<!-- itext -->
+    <!-- itext -->
 		<itextpdf.version>5.4.2</itextpdf.version>
-
+   
 	</properties>
 
 	<build>
@@ -225,7 +225,7 @@
 			<artifactId>viacep</artifactId>
 			<version>${viacep.version}</version>
 		</dependency>
-		
+
 	</dependencies>
 
 </project>

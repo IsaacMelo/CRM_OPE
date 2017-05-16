@@ -148,6 +148,41 @@
 	text-align: right;
 }
 
+.table-clientes-col-status {
+	width: 120px;
+	text-align: right;
+}
+
+/* Colunas - Pesquisa de Fornecedores */
+.table-clientes-col-nome {
+	
+}
+
+.table-fornecedor-col-tipo-pessoa {
+	width: 120px;
+	text-align: center;
+}
+
+.table-fornecedor-col-cpf-cnpj {
+	width: 140px;
+	text-align: right;
+}
+
+.table-fornecedor-col-telefone {
+	width: 140px;
+	text-align: right;
+}
+
+.table-fornecedor-col-cidade-estado {
+	width: 140px;
+	text-align: right;
+}
+
+.table-fornecedor-col-status {
+	width: 120px;
+	text-align: right;
+}
+
 /* Colunas - Pesquisa de cidades */
 .table-cidades-col-nome {
 	

@@ -1,6 +1,7 @@
 package com.impacta.crm.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -10,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -24,16 +26,18 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.impacta.crm.model.validation.ClienteGroupSequenceProvider;
+import com.impacta.crm.model.validation.FornecedorGroupSequenceProvider;
 import com.impacta.crm.model.validation.group.CnpjGroup;
 import com.impacta.crm.model.validation.group.CpfGroup;
 
-
 @Entity
-@Table(name = "cliente")
-@GroupSequenceProvider(ClienteGroupSequenceProvider.class)
-public class Cliente implements Serializable {
+@Table(name = "fornecedor")
+@GroupSequenceProvider(FornecedorGroupSequenceProvider.class)
+public class Fornecedor implements Serializable{
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -62,6 +66,9 @@ public class Cliente implements Serializable {
 	private String email;
 	
 	private Boolean ativo;
+	
+	@OneToMany(mappedBy = "fornecedor")
+	private List<Produto> produtos;
 
 	@Valid
 	@JsonIgnore
@@ -149,8 +156,7 @@ public class Cliente implements Serializable {
 	public boolean isNovo(){
 		return this.codigo == null;
 	}
-	
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -167,7 +173,7 @@ public class Cliente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cliente other = (Cliente) obj;
+		Fornecedor other = (Fornecedor) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
@@ -175,5 +181,5 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-
+	
 }

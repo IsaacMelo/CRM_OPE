@@ -7,7 +7,7 @@
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 	
 <head>
-	<title>Pesquisa de produtos</title>
+	<title>Pesquisa de Produtos</title>
 </head>
 
 <body>
@@ -16,13 +16,13 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1>Pesquisa de produtos</h1>
+					<h1>Pesquisa de Produtos</h1>
 				</div>
 				
 				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
 						<a class="btn  btn-default" th:href="@{/produtos/nova}">
-							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo produto</span>
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Produto</span>
 						</a>
 					</div>
 				</div>
@@ -33,54 +33,28 @@
 	<div class="container-fluid">
 		<form method="GET" th:object="${produtoFilter}">
 			<div class="row">
-				<div class="form-group  col-sm-6">
+				<div class="form-group  col-sm-4">
 					<label class="control-label" for="sku">SKU</label>
 					<input type="text" class="form-control" id="sku" autofocus="autofocus" th:field="*{sku}"/>
 				</div>
 				
-				<div class="form-group  col-sm-6" >
+				<div class="form-group  col-sm-8" >
 					<label class="control-label" for="nome">Nome</label>
 					<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
 				</div>
 			</div>
 			
 			<div class="row">
-				<div class="form-group  col-sm-6">
-					<label class="control-label" for="estilo">Estilo</label>
-					<select id="estilo" class="form-control" th:field="*{estilo}">
-	                    <option value="">Todos os estilos</option>
-	                    <option th:each="estilo : ${estilos}" th:text="${estilo.nome}" th:value="${estilo.codigo}"></option>
+				<div class="form-group  col-sm-4">
+					<label class="control-label" for="categoria">Categoria</label>
+					<select id="categoria" class="form-control" th:field="*{categoria}">
+	                    <option value="">Todos os categorias</option>
+	                    <option th:each="categoria : ${categorias}" th:text="${categoria.nome}" th:value="${categoria.codigo}"></option>
 	                </select>
-				</div>
-				
-				<div class="form-group  col-sm-6">
-					<label class="control-label" for="sabor">Sabor</label> 
-					<select id="sabor" class="form-control" th:field="*{sabor}">
-	                    <option value="">Todos os sabores</option>
-	                    <option th:each="sabor : ${sabores}" th:value="${sabor}" th:text="${sabor.descricao}"></option>
-	                </select>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="form-group  col-sm-6">
-					<label class="control-label">Origem</label> 
-					<div>
-	  					<th:block th:each="origem : ${origens}">
-	  						<div class="radio  radio-inline">
-		    					<input th:id="|id_${origem}|" type="radio" th:value="${origem}" th:field="*{origem}"/>
-		    					<label th:for="|id_${origem}|" th:text="${origem.descricao}">Nacional</label>
-	    					</div>
-	  					</th:block>
-	  					<div class="radio  radio-inline">
-		    				<input id="todasOrigens" type="radio" th:checked="*{origem} == null" name="origem"/>
-		    				<label for="todasOrigens" >Todas</label>
-	    				</div>
-					</div>
 				</div>
 
 				<div class="col-sm-6  form-group">
-					<label for="valorDe">Valor unitário</label>
+					<label for="valorDe">Valor Venda</label>
 					<div class="form-inline">
 						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="valorDe" th:field="*{valorDe}"/>
 						<label for="valorAte" class="aw-form-label-between">até</label>
@@ -103,9 +77,10 @@
 						<th class="table-produtos-col-nome">
 							<brewer:order page="${pagina}" field="nome" text="Nome"/>
 						</th>
-						<th class="table-produtos-col-estilo">Estilo</th>
-						<th class="table-produtos-col-origem">Origem</th>
-						<th class="table-produtos-col-valor">Valor</th>
+						<th class="table-produtos-col-estilo">Categoria</th>
+						<th class="table-produtos-col-valor">Valor venda</th>
+						<th class="table-produtos-col-quantidadeEstoque">Estoque</th>
+						<th class="table-produtos-col-status">Status</th>
 						<th class="table-produtos-col-acoes"></th>
 					</tr>
 				</thead>
@@ -116,12 +91,23 @@
 							<!-- <img th:src="@{/fotos/thumbnail.{foto}(foto=${produto.fotoOuMock})}" class="img-responsive"/> -->
 							<img th:src="${produto.urlThumbnailFoto}" class="img-responsive"/>
 						</td>
-						<td class="text-center" th:text="${produto.sku}">AA1234</td>
+						<td th:text="${produto.sku}">AA1234</td>
 						<td th:text="${produto.nome}">Cerveja Stella</td>
-						<td th:text="${produto.estilo.nome}">Lager</td>
-						<td th:text="${produto.origem.descricao}">Internacional</td>
-						<td class="text-right" th:text="|R$ ${{produto.valor}}|">R$ 8.00</td>
+						<td th:text="${produto.categoria.nome}">Lager</td>
+						<td th:text="|R$ ${{produto.valor}}|">R$ 8.00</td>
+						<td th:text="${produto.quantidadeEstoque}">R$ 8.00</td>
+						
+						<td>
+							<th:block th:if="${produto.ativo}">
+								<span class="label  label-success">Ativo</span>
+							</th:block>
+							<th:block th:if="${not produto.ativo}">
+								<span class="label  label-danger">Inativo</span>
+							</th:block>
+						</td>
+						
 						<td class="text-center">
+						
 							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
 									th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
@@ -134,7 +120,7 @@
 						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">
-						<td colspan="7">Nenhum produto encontrada</td>
+						<td colspan="7">Nenhum produto encontrado</td>
 					</tr>
 				</tbody>
 			</table>

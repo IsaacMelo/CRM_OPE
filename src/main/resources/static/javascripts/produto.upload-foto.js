@@ -11,7 +11,7 @@ Brewer.UploadFoto = (function() {
 		this.htmlFotoCervejaTemplate = $('#foto-cerveja').html();
 		this.template = Handlebars.compile(this.htmlFotoCervejaTemplate);
 		
-		this.containerFotoCerveja = $('.js-container-foto-cerveja');
+		this.containerFotoCerveja = $('.js-container-foto-produto');
 		
 		this.uploadDrop = $('#upload-drop');
 		this.imgLoading = $('.js-img-loading');
