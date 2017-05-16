@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:brewer="http://brewer.algaworks.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Relatório - Comissão Vendedor</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>
+				Relatório de comissão de vendedor
+			</h1>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${filtroRelatorioComissaoVendedor}" th:action="@{/relatorios/comissaoVendedor}" target="_self">
+			<brewer:message/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-2  bw-required">
+					<label for="dataInicio">Data inicio</label>
+					<div class="input-group" brewer:classforerror="periodoRelatorio.dataInicio">
+						<input type="text" class="form-control js-date col-sm-10" 
+							id="dataInicio" th:field="*{periodoRelatorio.dataInicio}" autocomplete="off"/>
+					</div>
+				</div>
+				<div class="form-group  col-sm-2  bw-required">
+					<label for="dataInicio">Data fim</label>
+					<div class="input-group" brewer:classforerror="periodoRelatorio.dataFim">
+						<input type="text" class="form-control js-date" 
+							id="dataFim" th:field="*{periodoRelatorio.dataFim}" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group col-sm-4">
+				 	<label class="control-label" for="nomeCliente">Vendedor</label>
+				 	<div class="input-group" brewer:classforerror="codigoVendedor">
+					    <input id="nomeUsuario" type="text" readonly="readonly" class="form-control"
+					    	placeholder="Clique na lupa para pesquisar o vendedor"/>
+					    <input id="codigoUsuario" type="hidden" th:field="*{codigoVendedor}"/>
+					    <span class="input-group-btn">
+					      <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
+					      		data-toggle="modal" data-target="#pesquisaRapidaUsuarios">
+					      	<i class="glyphicon  glyphicon-search"></i>
+					      </button>
+					    </span>
+					</div>
+				 </div>
+			</div>
+			<button type="submit" class="btn  btn-primary">Emitir</button>
+		</form>
+	</div>
+	<th:block th:replace="usuario/PesquisaRapidaUsuarios :: pesquisaRapidaUsuarios"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>	
+	<script th:src="@{/javascripts/cliente.mascara-cpf-cnpj.js}"></script>
+	<script th:src="@{/javascripts/cliente.pesquisa-de-cep.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/usuario.pesquisa-rapida.js}"></script>
+	<script>
+	$(function() {
+		$('.js-abas-venda a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
+	</script>
+</th:block>
+
+</html>

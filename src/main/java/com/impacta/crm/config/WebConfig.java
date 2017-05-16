@@ -19,7 +19,11 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
@@ -30,7 +34,7 @@ import com.impacta.crm.thymeleaf.BrewerDialect;
 @EnableCaching
 @EnableAsync
 public class WebConfig extends WebMvcConfigurerAdapter {
-
+	
 	@Bean
 	public ViewResolver jasperReportsViewResolver(DataSource datasource) {
 		JasperReportsViewResolver resolver = new JasperReportsViewResolver();
@@ -39,9 +43,26 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		resolver.setViewNames("relatorio_*");
 		resolver.setViewClass(JasperReportsMultiFormatView.class);
 		resolver.setJdbcDataSource(datasource);
-		resolver.setOrder(0);
+		resolver.setOrder(3);
 		return resolver;
 	}
+	/*
+	//Gerar PDF
+	@Bean
+	public ViewResolver iTextViewResolver(){
+		ResourceBundleViewResolver resolver = new ResourceBundleViewResolver();
+		resolver.setOrder(2);
+		resolver.setBasename("views");
+		return resolver;
+	}
+	
+	public ViewResolver iTextViewResolver2(){
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setOrder(2);
+		resolver.setPrefix("/WEB-INF/jsp/");
+		resolver.setSuffix(".jsp");
+		return resolver;
+	}*/
 	
 	@Bean
 	public BrewerDialect brewerDialect() {

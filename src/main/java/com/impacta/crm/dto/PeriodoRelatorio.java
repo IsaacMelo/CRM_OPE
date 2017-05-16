@@ -2,9 +2,14 @@ package com.impacta.crm.dto;
 
 import java.time.LocalDate;
 
-public class PeriodoRelatorio {
+import javax.validation.constraints.NotNull;
 
+public class PeriodoRelatorio {
+	
+	@NotNull(message = "Data inicio é obrigatório")
 	private LocalDate dataInicio;
+	
+	@NotNull(message = "Data fim é obrigatório")
 	private LocalDate dataFim;
 
 	public LocalDate getDataInicio() {
