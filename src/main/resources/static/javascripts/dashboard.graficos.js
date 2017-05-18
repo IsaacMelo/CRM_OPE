@@ -88,11 +88,88 @@ Brewer.GraficoVendaPorOrigem = (function() {
 	
 }());
 
+Brewer.GraficoVendaPorCategoria = (function() {
+	
+	function GraficoVendaPorCategoria() {
+		this.ctx = $('#graficoVendasPorCategoria')[0].getContext('2d');
+	}
+	
+	GraficoVendaPorCategoria.prototype.iniciar = function() {
+		$.ajax({
+			url: 'vendas/porCategoria',
+			method: 'GET', 
+			success: onDadosRecebidos.bind(this)
+		});
+	}
+	
+	function onDadosRecebidos(vendaCategoria) {
+		//função que retorna um número hexadecimal aleatório entre 0 e 255 (FF):
+		function Hx() { return parseInt((Math.random() * 255)).toString(16); }
+
+		//Função para retornar o código completo da cor, com 3 números aleatórios:
+		function CorAleat() { return "#" + Hx() + Hx() + Hx(); }
+
+		//Testando a função:
+		var nova_cor = CorAleat();
+		console.log(nova_cor);
+		
+		
+		var nome = [];
+		var quantidade = [];
+		var cor = [];
+
+		vendaCategoria.forEach(function(obj) {
+			nome.unshift(obj.nome);
+			quantidade.unshift(obj.quantidade);
+			cor = CorAleat();
+		});
+		
+		
+		var data = {
+			    labels: nome,
+			    datasets: [
+			        {
+			            data: quantidade,
+			            backgroundColor: [
+			                "#FF6384",
+			                "#36A2EB",
+			                "#FFCE56",
+			                "#9ACD32",
+			                "#CD5C5C",
+			                "#FF8C00",
+			                "#EE82EE",
+			                "#CDC8B1",
+			                "#836FFF",
+			                "#63B8FF",
+			                "#97FFFF"
+			            ]
+			        }]
+			};
+		
+		var graficoVendasPorOrigem = new Chart(this.ctx, {
+		    type: 'doughnut',
+		    data: data,
+		    options: {
+		        animation:{
+		            animateScale:true
+		        }
+		    }
+
+		});
+	}
+	
+	return GraficoVendaPorCategoria;
+	
+}());
+
 
 $(function() {
 	var graficoVendaPorMes = new Brewer.GraficoVendaPorMes();
 	graficoVendaPorMes.iniciar();
 	
-	var graficoVendaPorOrigem = new Brewer.GraficoVendaPorOrigem();
-	graficoVendaPorOrigem.iniciar();
+	//var graficoVendaPorOrigem = new Brewer.GraficoVendaPorOrigem();
+	//graficoVendaPorOrigem.iniciar();
+	
+	var graficoVendaPorCategoria = new Brewer.GraficoVendaPorCategoria();
+	graficoVendaPorCategoria.iniciar();
 });

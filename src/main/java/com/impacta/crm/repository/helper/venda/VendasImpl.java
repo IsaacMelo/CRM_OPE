@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
 import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.model.StatusVenda;
@@ -113,22 +114,10 @@ public class VendasImpl implements VendasQueries {
 	}
 	
 	@Override
-	public List<VendaOrigem> totalPorOrigem() {
-		List<VendaOrigem> vendasNacionalidade = manager.createNamedQuery("Vendas.porOrigem", VendaOrigem.class).getResultList();
+	public List<VendaCategoria> totalPorCategoria() {
+		List<VendaCategoria> vendasCategoria = manager.createNamedQuery("Vendas.porCategoria", VendaCategoria.class).getResultList();
 		
-		LocalDate now = LocalDate.now();
-		for (int i = 1; i <= 6; i++) {
-			String mesIdeal = String.format("%d/%02d", now.getYear(), now.getMonth().getValue());
-			
-			boolean possuiMes = vendasNacionalidade.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
-			if (!possuiMes) {
-				vendasNacionalidade.add(i - 1, new VendaOrigem(mesIdeal, 0, 0));
-			}
-			
-			now = now.minusMonths(1);
-		}
-		
-		return vendasNacionalidade;
+		return vendasCategoria;
 	}
 	
 	private Long total(VendaFilter filtro) {

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.controller.validator.VendaItemValidator;
 import com.impacta.crm.controller.validator.VendaValidator;
+import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
 import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.mail.Mailer;
@@ -250,9 +251,9 @@ public class VendasController {
 		return vendas.totalPorMes();
 	}
 	
-	@GetMapping("/porOrigem")
-	public @ResponseBody List<VendaOrigem> vendasPorNacionalidade() {
-		return this.vendas.totalPorOrigem();
+	@GetMapping("/porCategoria")
+	public @ResponseBody List<VendaCategoria> vendasPorCategoria() {
+		return this.vendas.totalPorCategoria();
 	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
