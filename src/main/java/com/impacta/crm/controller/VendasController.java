@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -34,10 +33,12 @@ import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.mail.Mailer;
 import com.impacta.crm.model.Produto;
 import com.impacta.crm.model.ItemVenda;
+import com.impacta.crm.model.Parametro;
 import com.impacta.crm.model.StatusVenda;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.model.Venda;
 import com.impacta.crm.repository.FormaPagamentos;
+import com.impacta.crm.repository.Parametros;
 import com.impacta.crm.repository.Produtos;
 import com.impacta.crm.repository.Vendas;
 import com.impacta.crm.repository.filter.VendaFilter;
@@ -51,6 +52,11 @@ public class VendasController {
 	
 	@Autowired
 	private Produtos produtos;
+	
+	@Autowired
+	private Parametros parametros;
+	
+	private Parametro parametro;
 	
 	@Autowired
 	private FormaPagamentos formaPagamentos;
@@ -82,8 +88,11 @@ public class VendasController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-	
+		parametro = parametros.getOne((long)1);
+		
 		setUuid(venda);
+		venda.setBaseComissao(parametro.getComissao());
+		venda.setDescontoMax(parametro.getDesconto());
 		
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
@@ -91,7 +100,8 @@ public class VendasController {
 		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
 		mv.addObject("valorComissao", venda.getValorComissao());
 		mv.addObject("formaPagamentos", formaPagamentos.findAll());
-
+		mv.addObject("baseComissao", venda.getBaseComissao());
+		
 		return mv;
 	}
 	
@@ -102,8 +112,10 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
-		
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
+				
 		if(venda.getStatus() == StatusVenda.ORCAMENTO){
 			attributes.addFlashAttribute("mensagem", "Orçamento salvo com sucesso");
 			cadastroVendaService.salvar(venda);
@@ -128,7 +140,9 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
 		
 		cadastroVendaService.emitir(venda);
 
@@ -143,7 +157,9 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
 		
 		if(venda.getStatus() == StatusVenda.ORCAMENTO){
 			attributes.addFlashAttribute("mensagem", String.format("Orçamento salvo com sucesso e e-mail enviado"));

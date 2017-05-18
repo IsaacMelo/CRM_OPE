@@ -56,6 +56,20 @@ Brewer.MaskCep = (function() {
 	
 }());
 
+Brewer.MaskCnpj = (function() {
+	
+	function MaskCnpj() {
+		this.inputCnpj = $('.js-cnpj');
+	}
+	
+	MaskCnpj.prototype.enable = function() {
+		this.inputCnpj.mask('00.000.000/0000-00');
+	}
+	
+	return MaskCnpj;
+	
+}());
+
 Brewer.MaskTime = (function() {
 	
 	function MaskTime() {
@@ -125,6 +139,9 @@ $(function() {
 	
 	var maskCep = new Brewer.MaskCep();
 	maskCep.enable();
+	
+	var maskCnpj = new Brewer.MaskCnpj();
+	maskCnpj.enable();
 	
 	var maskTime = new Brewer.MaskTime();
 	maskTime.enable();

@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.model.Categoria;
-import com.impacta.crm.model.Produto;
 import com.impacta.crm.repository.Categorias;
 import com.impacta.crm.repository.filter.CategoriaFilter;
 import com.impacta.crm.service.CadastroCategoriaService;
