@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.impacta.crm.dto.FiltroRelatorioComissaoVendedor;
 import com.impacta.crm.dto.PeriodoRelatorio;
@@ -27,14 +26,19 @@ import com.impacta.crm.dto.PeriodoRelatorio;
 public class RelatoriosController {
 	
 	@GetMapping("/vendasEmitidas")
-	public ModelAndView relatorioVendasEmitidas() {
+	public ModelAndView relatorioVendasEmitidas(PeriodoRelatorio periodoRelatorio) {
 		ModelAndView mv = new ModelAndView("relatorio/RelatorioVendasEmitidas");
-		mv.addObject(new PeriodoRelatorio());
+		mv.addObject(periodoRelatorio);
 		return mv;
 	}
 	
 	@PostMapping("/vendasEmitidas")
-	public ModelAndView gerarRelatorioVendasEmitidas(PeriodoRelatorio periodoRelatorio) {
+	public ModelAndView gerarRelatorioVendasEmitidas(@Valid PeriodoRelatorio periodoRelatorio, BindingResult result, RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			return relatorioVendasEmitidas(periodoRelatorio);
+		}
+		
 		Map<String, Object> parametros = new HashMap<>();
 		
 		Date dataInicio = Date.from(LocalDateTime.of(periodoRelatorio.getDataInicio(), LocalTime.of(0, 0, 0))
@@ -45,6 +49,7 @@ public class RelatoriosController {
 		parametros.put("format", "pdf");
 		parametros.put("data_inicio", dataInicio);
 		parametros.put("data_fim", dataFim);
+		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
 		
 		return new ModelAndView("relatorio_vendas_emitidas", parametros);
 	}
@@ -67,14 +72,15 @@ public class RelatoriosController {
 		
 		Date dataInicio = Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataInicio()
 				, LocalTime.of(0, 0, 0)).atZone(ZoneId.systemDefault()).toInstant());
-		Date dataFim = Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataFim()
+		Date dataFim = (Date) Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataFim()
 				, LocalTime.of(23, 59, 59)).atZone(ZoneId.systemDefault()).toInstant());
 		
 		parametros.put("format", "pdf");
 		parametros.put("data_inicio", dataInicio);
 		parametros.put("data_final", dataFim);
 		parametros.put("codigo_usuario", filtroRelatorioComissao.getCodigoVendedor());
-		 
+		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
+		
 		return new ModelAndView("relatorio_comissao_vendedor", parametros);
 
 	}
