@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
 import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.model.Venda;
@@ -22,6 +23,6 @@ public interface VendasQueries {
 	public BigDecimal valorTicketMedioNoAno();
 	
 	public List<VendaMes> totalPorMes();
-	public List<VendaOrigem> totalPorOrigem();
+	public List<VendaCategoria> totalPorCategoria();
 	
 }
