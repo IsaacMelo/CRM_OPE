@@ -6,13 +6,16 @@ Brewer.Venda = (function() {
 		this.valorComissaoBox = $('.js-valor-comissao-box');
 		this.valorFreteInput = $('#valorFrete');
 		this.valorDescontoInput = $('#valorDesconto');
+		this.baseComissaoInput = $('#baseComissao');
 		this.valorTotalBoxContainer = $('.js-valor-total-box-container');
 		this.valorComissaoBoxContainer = $('.js-valor-comissao-box-container');
 		
 		this.valorTotalItens = this.tabelaItens.valorTotal();
 		this.valorFrete = this.valorFreteInput.data('valor');
 		this.valorDesconto = this.valorDescontoInput.data('valor');
-	}
+		this.baseComissao = this.baseComissaoInput.data('valor');
+		
+}
 	
 	Venda.prototype.iniciar = function() {
 		this.tabelaItens.on('tabela-itens-atualizada', onTabelaItensAtualizada.bind(this));
@@ -40,7 +43,7 @@ Brewer.Venda = (function() {
 	
 	function onValoresAlterados() {
 		var valorTotal = numeral(this.valorTotalItens) + numeral(this.valorFrete) - numeral(this.valorDesconto);
-		var valorComissao = (numeral(valorTotal) / 100) * 10;
+		var valorComissao = (numeral(valorTotal) / 100) * this.baseComissao;
 		this.valorTotalBox.html(Brewer.formatarMoeda(valorTotal));
 		this.valorComissaoBox.html(Brewer.formatarMoeda(valorComissao));
 		

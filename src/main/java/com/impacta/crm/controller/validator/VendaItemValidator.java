@@ -10,7 +10,6 @@ import org.springframework.validation.Validator;
 import com.impacta.crm.model.ItemVenda;
 import com.impacta.crm.model.Produto;
 import com.impacta.crm.model.Venda;
-import com.impacta.crm.repository.Produtos;
 import com.impacta.crm.model.StatusVenda;;
 
 @Component
