@@ -4,8 +4,6 @@ import javax.persistence.Embedded;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 
 
 public class FiltroRelatorioComissaoVendedor {
