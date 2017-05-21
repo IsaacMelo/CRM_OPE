@@ -33,6 +33,7 @@
 					<ul class="nav nav-tabs  js-abas-parametro">
 					  <li role="presentation" class="active"><a href="#loja">Loja</a></li>
 					  <li role="presentation"><a href="#venda">Venda</a></li>
+					  <li role="presentation"><a href="#produto">Produto</a></li>
 					</ul>
 				</div>
 			</div>
@@ -144,6 +145,24 @@
 								<div class="input-group-addon">%</div>
 							</div>
 						</div>	
+						
+					</div>				
+				
+				</div>
+				
+				<!-- Painel Produto -->
+				<div class="tab-pane" id="produto">
+					
+					<!-- Linha 1 -->
+					<div class="row">
+
+						<div class="col-sm-2  form-group  bw-required" brewer:classforerror="margemProduto">
+							<label for="margemProduto" class="control-label">Margem produto</label>
+							<div class="input-group">
+								<input id="margemProduto" type="text" class="form-control  js-plain" th:field="*{margemProduto}"/>
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>
 						
 					</div>				
 				

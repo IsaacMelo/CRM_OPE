@@ -115,6 +115,11 @@ public class Produto implements Serializable {
 		sku = sku.toUpperCase();
 	}
 	
+	public Produto(){
+		this.ativo = true;
+		this.estoqueAtivo = true;
+	}
+	
 	public String getSku() {
 		return sku;
 	}

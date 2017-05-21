@@ -15,6 +15,7 @@ import com.impacta.crm.repository.filter.VendaFilter;
 public interface VendasQueries {
 
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable);
+	public Page<Venda> filtrarFaturada(VendaFilter filtro, Pageable pageable);
 	
 	public Venda buscarComItens(Long codigo);
 	

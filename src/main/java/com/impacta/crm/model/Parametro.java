@@ -2,6 +2,7 @@ package com.impacta.crm.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +46,12 @@ public class Parametro implements Serializable {
 	@NotNull(message = "O desconto é obrigatória")
 	@DecimalMax(value = "100.0", message = "O desconto deve ser igual ou menor que 100")
 	private BigDecimal desconto;
+	
+	@NumberFormat(pattern = "#,##0.00")
+	@NotNull(message = "A margem do produto é obrigatória")
+	@DecimalMax(value = "100.0", message = "A margem do produto deve ser igual ou menor que 100")
+	@Column(name = "margem_produto")
+	private BigDecimal margemProduto;
 	
 	@NotBlank(message = "O CNPJ é obrigatório")
 	@CNPJ(groups = CnpjGroup.class)
@@ -99,6 +106,14 @@ public class Parametro implements Serializable {
 
 	public void setDesconto(BigDecimal desconto) {
 		this.desconto = desconto;
+	}
+	
+	public BigDecimal getMargemProduto() {
+		return margemProduto;
+	}
+
+	public void setMargemProduto(BigDecimal margemProduto) {
+		this.margemProduto = margemProduto;
 	}
 
 	public String getCnpj() {

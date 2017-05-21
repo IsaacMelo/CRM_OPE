@@ -9,7 +9,8 @@ public class VendaFilter {
 
 	private Long codigo;
 	private StatusVenda status;
-
+	private String usuario;
+	
 	private LocalDate desde;
 	private LocalDate ate;
 	private BigDecimal valorMinimo;
@@ -34,6 +35,14 @@ public class VendaFilter {
 		this.status = status;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+	
 	public LocalDate getDesde() {
 		return desde;
 	}

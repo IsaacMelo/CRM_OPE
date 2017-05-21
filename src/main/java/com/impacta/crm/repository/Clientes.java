@@ -16,7 +16,6 @@ public interface Clientes extends JpaRepository<Cliente, Long>, ClientesQueries 
 
 	public List<Cliente> findByNomeStartingWithIgnoreCase(String nome);
 	
-    // Pesquisando por duas propriedades: nome e ativo.
-	List<Cliente> findByNomeStartingWithIgnoreCaseAndAtivoEquals(String nome, boolean ativo);
+   	public List<Cliente> findByNomeStartingWithIgnoreCaseAndAtivoEquals(String nome, boolean ativo);
 
 }

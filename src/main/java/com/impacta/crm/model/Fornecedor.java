@@ -75,6 +75,10 @@ public class Fornecedor implements Serializable{
 	@Embedded
 	private Endereco endereco;
 	
+	public Fornecedor(){
+		this.ativo = true;
+	}
+	
 	@PrePersist @PreUpdate
 	private void prePersistPreUpdate() {
 		this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);

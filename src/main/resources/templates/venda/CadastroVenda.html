@@ -178,17 +178,17 @@
 			<div class="row" style="clear: both" th:if="${venda.salvarPermitido}">
 				<div class="col-lg-12">
 					<div class="btn-group">
-					  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar">Salvar</button>
+					  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar"><i class="fa fa-floppy-o"></i> Salvar</button>
 					  <button type="button" class="btn  btn-primary  dropdown-toggle" data-toggle="dropdown">
 					    <span class="caret"></span>
 					  </button>
 					  
 					  <ul class="dropdown-menu">
-					    <li><a href="#" class="js-submit-btn" data:acao="emitir" th:if="${venda.emitirPermitido}">Salvar e emitir</a></li>
-					    <li><a href="#" class="js-submit-btn" data:acao="enviarEmail">Salvar e enviar por e-mail</a></li>
+					    <li><a href="#" class="js-submit-btn" data:acao="emitir" th:if="${venda.emitirPermitido}"><i class="fa fa-floppy-o"></i> Salvar e emitir</a></li>
+					    <li><a href="#" class="js-submit-btn" data:acao="enviarEmail"><i class="fa fa-envelope-o"></i> Salvar e enviar por e-mail</a></li>
 					  </ul>
 					</div>
-					<button class="btn  btn-danger  js-submit-btn" data:acao="cancelar" th:if="${venda.cancelarPermitido}" >Cancelar</button>
+					<button class="btn  btn-danger  js-submit-btn " data:acao="cancelar" th:if="${venda.cancelarPermitido}" > <i class="fa fa-trash-o fa-lg"></i> Cancelar</button>
 					
 <!-- 					<button type="submit" class="btn  btn-primary js-submit-btn" th:unless="${statusVenda}" data:acao="salvar">Salvar</button>
 					<button type="submit" class="btn  btn-success js-submit-btn" data:acao="emitir">Emitir</button>
