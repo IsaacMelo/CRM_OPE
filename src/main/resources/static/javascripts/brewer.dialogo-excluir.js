@@ -10,6 +10,7 @@ Brewer.DialogoExcluir = (function() {
 		this.exclusaoBtn.on('click', onExcluirClicado.bind(this));
 		if (window.location.search.indexOf('excluido') > -1) {
 			window.history.pushState('','',window.location.href.replace('?excluido',''));
+			window.history.pushState('','',window.location.href.replace('&excluido',''));
 			swal('Pronto!', 'Excluído com sucesso!', 'success');			
 		}
 	}
