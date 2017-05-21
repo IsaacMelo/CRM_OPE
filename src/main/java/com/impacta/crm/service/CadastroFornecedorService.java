@@ -31,7 +31,6 @@ public class CadastroFornecedorService {
 	
 	@Transactional
 	public void excluir(Fornecedor fornecedor){
-		fornecedor = fornecedores.findOne(fornecedor.getCodigo());
 		fornecedor.setAtivo(false);
 		fornecedores.save(fornecedor);
 	}

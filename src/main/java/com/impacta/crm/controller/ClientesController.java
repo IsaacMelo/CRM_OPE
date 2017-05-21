@@ -93,7 +93,7 @@ public class ClientesController {
 	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Cliente> pesquisar(String nome) {
 		validarTamanhoNome(nome);
-		return clientes.findByNomeStartingWithIgnoreCase(nome);
+		return clientes.findByNomeStartingWithIgnoreCaseAndAtivoEquals(nome, true);
 	}
 
 	private void validarTamanhoNome(String nome) {

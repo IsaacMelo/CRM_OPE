@@ -1,14 +1,18 @@
 package com.impacta.crm.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -29,16 +33,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.controller.validator.VendaItemValidator;
 import com.impacta.crm.controller.validator.VendaValidator;
+import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
 import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.mail.Mailer;
 import com.impacta.crm.model.Produto;
+import com.impacta.crm.model.Fornecedor;
 import com.impacta.crm.model.ItemVenda;
+import com.impacta.crm.model.Parametro;
 import com.impacta.crm.model.StatusVenda;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.model.Venda;
 import com.impacta.crm.repository.FormaPagamentos;
+import com.impacta.crm.repository.Parametros;
 import com.impacta.crm.repository.Produtos;
+import com.impacta.crm.repository.Usuarios;
 import com.impacta.crm.repository.Vendas;
 import com.impacta.crm.repository.filter.VendaFilter;
 import com.impacta.crm.security.UsuarioSistema;
@@ -51,6 +60,11 @@ public class VendasController {
 	
 	@Autowired
 	private Produtos produtos;
+	
+	@Autowired
+	private Parametros parametros;
+	
+	private Parametro parametro;
 	
 	@Autowired
 	private FormaPagamentos formaPagamentos;
@@ -71,6 +85,9 @@ public class VendasController {
 	private Vendas vendas;
 	
 	@Autowired
+	private Usuarios usuarios;
+	
+	@Autowired
 	private Mailer mailer;
 	
 	@InitBinder("venda")
@@ -82,9 +99,11 @@ public class VendasController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		Venda vendaTmp = null;
+		parametro = parametros.getOne((long)1);
 		
 		setUuid(venda);
+		venda.setBaseComissao(parametro.getComissao());
+		venda.setDescontoMax(parametro.getDesconto());
 		
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
@@ -92,14 +111,7 @@ public class VendasController {
 		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
 		mv.addObject("valorComissao", venda.getValorComissao());
 		mv.addObject("formaPagamentos", formaPagamentos.findAll());
-		
-		if(!venda.isNova()){
-			vendaTmp = vendas.buscarComItens(venda.getCodigo());
-			if(vendaTmp.getStatus() == StatusVenda.EMITIDA){
-				venda.setStatus(StatusVenda.EMITIDA);
-				mv.addObject("statusVenda", true);
-			}
-		}
+		mv.addObject("baseComissao", venda.getBaseComissao());
 		
 		return mv;
 	}
@@ -111,10 +123,23 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
+				
+		if(venda.getStatus() == StatusVenda.ORCAMENTO){
+			attributes.addFlashAttribute("mensagem", "Orçamento salvo com sucesso");
+			cadastroVendaService.salvar(venda);
 		
-		cadastroVendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		}else if(venda.getStatus() == StatusVenda.EMITIDA){
+			vendaItemValidator.validate(venda, result);
+			if (result.hasErrors()) {
+				return nova(venda);
+			}
+			attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+			cadastroVendaService.emitir(venda);
+		}
+		
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 
@@ -126,10 +151,13 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
 		
 		cadastroVendaService.emitir(venda);
-		attributes.addFlashAttribute("mensagem", "Venda emitida com sucesso");
+
+		attributes.addFlashAttribute("mensagem", String.format("Venda salva com sucesso", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
@@ -140,13 +168,39 @@ public class VendasController {
 			return nova(venda);
 		}
 		
-		venda.setUsuario(usuarioSistema.getUsuario());
+		if(venda.isNova()){
+			venda.setUsuario(usuarioSistema.getUsuario());	
+		}
 		
-		venda = cadastroVendaService.salvar(venda);
+		if(venda.getStatus() == StatusVenda.ORCAMENTO){
+			attributes.addFlashAttribute("mensagem", String.format("Orçamento salvo com sucesso e e-mail enviado"));
+			cadastroVendaService.salvar(venda);
+		
+		}else if(venda.getStatus() == StatusVenda.EMITIDA){
+			vendaItemValidator.validate(venda, result);
+			if (result.hasErrors()) {
+				return nova(venda);
+			}
+			attributes.addFlashAttribute("mensagem", String.format("Venda salva com sucesso e e-mail enviado"));
+			cadastroVendaService.emitir(venda);
+		}
+		
 		mailer.enviar(venda);
-		
-		attributes.addFlashAttribute("mensagem", String.format("Venda nº %d salva com sucesso e e-mail enviado", venda.getCodigo()));
+				
 		return new ModelAndView("redirect:/vendas/nova");
+	}
+	
+	@PostMapping(value = "/nova", params = "cancelar")
+	public ModelAndView cancelar(Venda venda, BindingResult result
+				, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		try {
+			cadastroVendaService.cancelar(venda);
+		} catch (AccessDeniedException e) {
+			return new ModelAndView("/403");
+		}
+		
+		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
+		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
 	}
 	
 	@PostMapping("/item")
@@ -174,10 +228,27 @@ public class VendasController {
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
 			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
+				
+		mv.addObject("todosUsuarios", usuarios.findByAtivoEquals(true));
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
 		
 		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable)
+				, httpServletRequest);
+		mv.addObject("pagina", paginaWrapper);
+		return mv;
+	}
+	
+	@GetMapping("/faturadas")
+	public ModelAndView pesquisarFaturadas(VendaFilter vendaFilter,
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
+		ModelAndView mv = new ModelAndView("/venda/PesquisaVendasFaturadas");
+
+		mv.addObject("todosUsuarios", usuarios.findByAtivoEquals(true));
+		mv.addObject("todosStatus", findStatusVenda());
+		mv.addObject("tiposPessoa", TipoPessoa.values());
+		
+		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrarFaturada(vendaFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
@@ -202,27 +273,32 @@ public class VendasController {
 		return mv;
 	}
 	
-	@PostMapping(value = "/nova", params = "cancelar")
-	public ModelAndView cancelar(Venda venda, BindingResult result
-				, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-		try {
-			cadastroVendaService.cancelar(venda);
-		} catch (AccessDeniedException e) {
-			return new ModelAndView("/403");
-		}
-		
-		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
-		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	@GetMapping("/transporte/{codigo}")
+	public ModelAndView transporte(@PathVariable("codigo") Venda venda){
+		cadastroVendaService.tranporte(venda);
+		return new ModelAndView("redirect:/vendas/faturadas");
 	}
+	
+	@GetMapping("/finalizar/{codigo}")
+	public ModelAndView finalizarVenda(@PathVariable("codigo") Venda venda){
+		cadastroVendaService.finalizar(venda);
+		return new ModelAndView("redirect:/vendas/faturadas");
+	}
+	
+	@GetMapping("/faturar/{codigo}")
+	public ModelAndView faturarVenda(@PathVariable("codigo") Venda venda){
+		cadastroVendaService.faturar(venda);
+		return new ModelAndView("redirect:/vendas");
+	}	
 	
 	@GetMapping("/totalPorMes")
 	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
 		return vendas.totalPorMes();
 	}
 	
-	@GetMapping("/porOrigem")
-	public @ResponseBody List<VendaOrigem> vendasPorNacionalidade() {
-		return this.vendas.totalPorOrigem();
+	@GetMapping("/porCategoria")
+	public @ResponseBody List<VendaCategoria> vendasPorCategoria() {
+		return this.vendas.totalPorCategoria();
 	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
@@ -246,6 +322,14 @@ public class VendasController {
 		if (StringUtils.isEmpty(venda.getUuid())) {
 			venda.setUuid(UUID.randomUUID().toString());
 		}
+	}
+	
+	private List<StatusVenda> findStatusVenda(){
+		List<StatusVenda> statusVenda = new ArrayList<StatusVenda>();
+		statusVenda.add(StatusVenda.FATURADA);
+		statusVenda.add(StatusVenda.TRANSPORTE);
+		return statusVenda;
+		
 	}
 
 }

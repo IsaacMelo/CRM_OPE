@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:brewer="http://brewer.algaworks.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Cadastro de Parametro</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Edição de Parametro</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+	
+		<form method="POST" th:object="${parametro}" th:action="@{/parametros}">
+			<brewer:message/>
+			
+			<!-- Abas -->
+			<div class="row">
+				<div class="form-group  col-lg-12">
+					<ul class="nav nav-tabs  js-abas-parametro">
+					  <li role="presentation" class="active"><a href="#loja">Loja</a></li>
+					  <li role="presentation"><a href="#venda">Venda</a></li>
+					  <li role="presentation"><a href="#produto">Produto</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<!-- Painel Loja -->
+			<div class="tab-content">
+				<div class="tab-pane active" id="loja">
+
+					<input type="hidden" th:field="*{codigo}"/>
+					
+					<div class="row">
+						<div class="form-group  col-sm-4  bw-required" brewer:classforerror="nome">
+							<label for="nome" class="control-label">Nome Fantasia</label>
+							<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+						</div>
+						
+						<div class="form-group  col-sm-8  bw-required" brewer:classforerror="razao">
+							<label for="razao" class="control-label">Nome Empresarial</label>
+							<input type="text" class="form-control" id="razao" autofocus="autofocus" th:field="*{razao}"/>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-4  bw-required" brewer:classforerror="cnpj">
+							<label for="cnpj" class="control-label">CNPJ</label>
+							<input type="text" class="form-control js-cnpj" id="cnpj" th:field="*{cnpj}" />
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="telefone">
+							<label for="telefone" class="control-label">Telefone*</label>
+							<input type="text" class="form-control  js-phone-number" id="telefone" th:field="*{telefone}"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="email">
+							<label for="email" class="control-label">E-mail*</label>
+							<input type="text" class="form-control" id="email" th:field="*{email}"/>
+						</div>
+												
+					</div>
+					
+					<div class="row">
+					
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.cep">
+							<label for="cep">CEP*</label>
+							<div class="bw-field-action" >
+								<input type="text" class="form-control  js-cep" id="cep" data:url="@{/webservice}" th:field="*{endereco.cep}"/>
+							
+								<div class="bw-field-action__icon  js-img-loading" style="display: none">
+									<img th:src="@{/images/mini-loading.gif}"/>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					<div class="row">
+					
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.logradouro">
+							<label for="logradouro">Logradouro*</label>
+							<input type="text" class="form-control" id="logradouro" th:field="*{endereco.logradouro}"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.numero">
+							<label for="numero">Número*</label>
+							<input type="text" class="form-control" id="numero" th:field="*{endereco.numero}"/>
+						</div>
+						
+						<div class="form-group  col-sm-4">
+							<label for="complemento">Complemento</label>
+							<input type="text" class="form-control" id="complemento" th:field="*{endereco.complemento}" maxlength="20"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.bairro">
+							<label for="bairro">Bairro*</label>
+							<input type="text" class="form-control" id="bairro" th:field="*{endereco.bairro}" maxlength="50"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.estado">
+							<label for="estado">Estado*</label>
+							<input type="text" class="form-control" id="estado" th:field="*{endereco.estado}" maxlength="2"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.cidade">
+							<label  for="cidade">Cidade*</label>
+							<input type="text" class="form-control" id="cidade" th:field="*{endereco.cidade}" maxlength="50"/>
+						</div>		
+					</div>
+				
+				</div>
+
+				<!-- Painel venda -->
+				<div class="tab-pane" id="venda">
+					
+					<!-- Linha 1 -->
+					<div class="row">
+
+						<div class="col-sm-2  form-group  bw-required" brewer:classforerror="comissao">
+							<label for="comissao" class="control-label">Comissão vendedor</label>
+							<div class="input-group">
+								<input id="comissao" type="text" class="form-control  js-plain" th:field="*{comissao}"/>
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-2  form-group  bw-required" brewer:classforerror="desconto">
+							<label for="comissao" class="control-label">Desconto máximo</label>
+							<div class="input-group">
+								<input id="desconto" type="text" class="form-control  js-plain" th:field="*{desconto}"/>
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>	
+						
+					</div>				
+				
+				</div>
+				
+				<!-- Painel Produto -->
+				<div class="tab-pane" id="produto">
+					
+					<!-- Linha 1 -->
+					<div class="row">
+
+						<div class="col-sm-2  form-group  bw-required" brewer:classforerror="margemProduto">
+							<label for="margemProduto" class="control-label">Margem produto</label>
+							<div class="input-group">
+								<input id="margemProduto" type="text" class="form-control  js-plain" th:field="*{margemProduto}"/>
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>
+						
+					</div>				
+				
+				</div>			
+			
+			</div>
+			
+		
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/brewer.mascara-cpf-cnpj.js}"></script>
+	<script th:src="@{/javascripts/brewer.pesquisa-de-cep.js}"></script>
+	<script>
+	$(function() {
+		$('.js-abas-parametro a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
+	</script>
+</th:block>
+
+</html>

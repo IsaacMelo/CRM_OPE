@@ -17,7 +17,7 @@ Brewer.BotaoSubmit = (function() {
 		var botaoClicado = $(evento.target);
 		var acao = botaoClicado.data('acao');
 		
-		var acaoInput = $('<input>');
+		var acaoInput = $('<input type="hidden">');
 		acaoInput.attr('name', acao);
 		
 		this.formulario.append(acaoInput);

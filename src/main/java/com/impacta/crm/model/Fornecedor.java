@@ -1,6 +1,7 @@
 package com.impacta.crm.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -10,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -64,11 +66,18 @@ public class Fornecedor implements Serializable{
 	private String email;
 	
 	private Boolean ativo;
+	
+	@OneToMany(mappedBy = "fornecedor")
+	private List<Produto> produtos;
 
 	@Valid
 	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
+	
+	public Fornecedor(){
+		this.ativo = true;
+	}
 	
 	@PrePersist @PreUpdate
 	private void prePersistPreUpdate() {

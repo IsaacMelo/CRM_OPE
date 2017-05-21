@@ -73,8 +73,8 @@ public class FornecedoresController {
 	}
 	
 	@DeleteMapping("/{codigo}")
-	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Fornecedor cliente){
-		cadastroFornecedorService.excluir(cliente);
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Fornecedor forncedor){
+		cadastroFornecedorService.excluir(forncedor);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -93,7 +93,7 @@ public class FornecedoresController {
 	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Fornecedor> pesquisar(String nome) {
 		validarTamanhoNome(nome);
-		return fornecedores.findByNomeStartingWithIgnoreCase(nome);
+		return fornecedores.findByNomeStartingWithIgnoreCaseAndAtivoEquals(nome, true);
 	}
 
 	private void validarTamanhoNome(String nome) {

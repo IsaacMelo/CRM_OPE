@@ -15,5 +15,8 @@ public interface Fornecedores extends JpaRepository<Fornecedor, Long>, Fornecedo
 	public Optional<Fornecedor> findByCpfOuCnpj(String cpfOuCnpj);
 
 	public List<Fornecedor> findByNomeStartingWithIgnoreCase(String nome);
+	
+    // Pesquisando por duas propriedades: nome e ativo.
+	List<Fornecedor> findByNomeStartingWithIgnoreCaseAndAtivoEquals(String nome, boolean ativo);
 
 }

@@ -68,6 +68,10 @@ public class Cliente implements Serializable {
 	@Embedded
 	private Endereco endereco;
 	
+	public Cliente(){
+		this.ativo = true;
+	}
+	
 	@PrePersist @PreUpdate
 	private void prePersistPreUpdate() {
 		this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);

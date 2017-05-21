@@ -25,8 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
-import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.model.StatusVenda;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.model.Venda;
@@ -48,6 +48,17 @@ public class VendasImpl implements VendasQueries {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
+		
+		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	@Override
+	public Page<Venda> filtrarFaturada(VendaFilter filtro, Pageable pageable) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
+		paginacaoUtil.preparar(criteria, pageable);
+		adicionarFiltroFaturada(filtro, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
 	}
@@ -113,22 +124,10 @@ public class VendasImpl implements VendasQueries {
 	}
 	
 	@Override
-	public List<VendaOrigem> totalPorOrigem() {
-		List<VendaOrigem> vendasNacionalidade = manager.createNamedQuery("Vendas.porOrigem", VendaOrigem.class).getResultList();
+	public List<VendaCategoria> totalPorCategoria() {
+		List<VendaCategoria> vendasCategoria = manager.createNamedQuery("Vendas.porCategoria", VendaCategoria.class).getResultList();
 		
-		LocalDate now = LocalDate.now();
-		for (int i = 1; i <= 6; i++) {
-			String mesIdeal = String.format("%d/%02d", now.getYear(), now.getMonth().getValue());
-			
-			boolean possuiMes = vendasNacionalidade.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
-			if (!possuiMes) {
-				vendasNacionalidade.add(i - 1, new VendaOrigem(mesIdeal, 0, 0));
-			}
-			
-			now = now.minusMonths(1);
-		}
-		
-		return vendasNacionalidade;
+		return vendasCategoria;
 	}
 	
 	private Long total(VendaFilter filtro) {
@@ -140,6 +139,7 @@ public class VendasImpl implements VendasQueries {
 	
 	private void adicionarFiltro(VendaFilter filtro, Criteria criteria) {
 		criteria.createAlias("cliente", "c");
+		criteria.createAlias("usuario", "u");
 		
 		if (filtro != null) {
 			if (!StringUtils.isEmpty(filtro.getCodigo())) {
@@ -148,6 +148,10 @@ public class VendasImpl implements VendasQueries {
 			
 			if (filtro.getStatus() != null) {
 				criteria.add(Restrictions.eq("status", filtro.getStatus()));
+			}
+			
+			if (filtro.getUsuario() != null) {
+				criteria.add(Restrictions.eq("u.nome", filtro.getUsuario()));
 			}
 			
 			if (filtro.getDesde() != null) {
@@ -175,7 +179,57 @@ public class VendasImpl implements VendasQueries {
 			if (!StringUtils.isEmpty(filtro.getCpfOuCnpjCliente())) {
 				criteria.add(Restrictions.eq("c.cpfOuCnpj", TipoPessoa.removerFormatacao(filtro.getCpfOuCnpjCliente())));
 			}
+			
 		}
+	}
+	
+	private void adicionarFiltroFaturada(VendaFilter filtro, Criteria criteria) {
+		criteria.createAlias("cliente", "c");
+		criteria.createAlias("usuario", "u");
+		
+		if (filtro != null) {
+			if (!StringUtils.isEmpty(filtro.getCodigo())) {
+				criteria.add(Restrictions.eq("codigo", filtro.getCodigo()));
+			}
+			
+			if (filtro.getStatus() != null) {
+				criteria.add(Restrictions.eq("status", filtro.getStatus()));
+			}
+			
+			if (filtro.getUsuario() != null) {
+				criteria.add(Restrictions.eq("u.nome", filtro.getUsuario()));
+			}
+			
+			if (filtro.getDesde() != null) {
+				LocalDateTime desde = LocalDateTime.of(filtro.getDesde(), LocalTime.of(0, 0));
+				criteria.add(Restrictions.ge("dataCriacao", desde));
+			}
+			
+			if (filtro.getAte() != null) {
+				LocalDateTime ate = LocalDateTime.of(filtro.getAte(), LocalTime.of(23, 59));
+				criteria.add(Restrictions.le("dataCriacao", ate));
+			}
+			
+			if (filtro.getValorMinimo() != null) {
+				criteria.add(Restrictions.ge("valorTotal", filtro.getValorMinimo()));
+			}
+			
+			if (filtro.getValorMaximo() != null) {
+				criteria.add(Restrictions.le("valorTotal", filtro.getValorMaximo()));
+			}
+			
+			if (!StringUtils.isEmpty(filtro.getNomeCliente())) {
+				criteria.add(Restrictions.ilike("c.nome", filtro.getNomeCliente(), MatchMode.ANYWHERE));
+			}
+			
+			if (!StringUtils.isEmpty(filtro.getCpfOuCnpjCliente())) {
+				criteria.add(Restrictions.eq("c.cpfOuCnpj", TipoPessoa.removerFormatacao(filtro.getCpfOuCnpjCliente())));
+			}
+			
+			criteria.add(Restrictions.in("status", StatusVenda.FATURADA,StatusVenda.TRANSPORTE));
+			
+		}
+		
 	}
 
 }

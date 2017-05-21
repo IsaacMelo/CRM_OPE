@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,16 +51,17 @@ public class Produto implements Serializable {
 	private String descricao;
 
 	@NumberFormat(pattern = "#,##0.00")
-	@NotNull(message = "Valor é obrigatório")
+	@NotNull(message = "Valor de venda é obrigatório")
 	@DecimalMin(value = "0.50", message = "O valor do produto deve ser maior que R$0,50")
 	@DecimalMax(value = "9999999.99", message = "O valor do produto deve ser menor que R$9.999.999,99")
 	private BigDecimal valor;
-
+	
 	@NumberFormat(pattern = "#,##0.00")
-	@NotNull(message = "O teor alcóolico é obrigatório")
-	@DecimalMax(value = "100.0", message = "O valor do teor alcóolico deve ser menor que 100")
-	@Column(name = "teor_alcoolico")
-	private BigDecimal teorAlcoolico;
+	@NotNull(message = "Valor de compra é obrigatório")
+	@DecimalMin(value = "0.10", message = "O valor de compra do produto deve ser maior que R$0,10")
+	@DecimalMax(value = "9999999.99", message = "O valor de compra produto deve ser menor que R$9.999.999,99")
+	@Column(name = "valor_compra")
+	private BigDecimal valorCompra;
 
 	@NumberFormat(pattern = "#,##0.00")
 	@NotNull(message = "A comissão é obrigatória")
@@ -74,24 +73,32 @@ public class Produto implements Serializable {
 	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
+	
+	@NumberFormat(pattern = "#,##0")
+	@NotNull(message = "A quantidade minima em estoque é obrigatória")
+	@Max(value = 9999, message = "A quantidade minima em estoque deve ser menor que 9.999")
+	@Column(name = "quantidade_minima")
+	private Integer quantidadeMinima;
 
-	@NotNull(message = "A origem é obrigatória")
-	@Enumerated(EnumType.STRING)
-	private Origem origem;
-
-	@NotNull(message = "O sabor é obrigatório")
-	@Enumerated(EnumType.STRING)
-	private Sabor sabor;
-
-	@NotNull(message = "O estilo é obrigatório")
+	@NotNull(message = "O categoria é obrigatório")
 	@ManyToOne
-	@JoinColumn(name = "codigo_estilo")
-	private Estilo estilo;
+	@JoinColumn(name = "codigo_categoria")
+	private Categoria categoria;
+	
+	@NotNull(message = "O fornecedor é obrigatório")
+	@ManyToOne
+	@JoinColumn(name = "codigo_fornecedor")
+	private Fornecedor fornecedor;
 
 	private String foto;
 
 	@Column(name = "content_type")
 	private String contentType;
+	
+	private Boolean ativo;
+
+	@Column(name = "estoque_ativo")
+	private Boolean estoqueAtivo;
 
 	@Transient
 	private boolean novaFoto;
@@ -106,6 +113,11 @@ public class Produto implements Serializable {
 	@PreUpdate
 	private void prePersistUpdate() {
 		sku = sku.toUpperCase();
+	}
+	
+	public Produto(){
+		this.ativo = true;
+		this.estoqueAtivo = true;
 	}
 	
 	public String getSku() {
@@ -147,13 +159,13 @@ public class Produto implements Serializable {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-
-	public BigDecimal getTeorAlcoolico() {
-		return teorAlcoolico;
+	
+	public BigDecimal getValorCompra() {
+		return valorCompra;
 	}
 
-	public void setTeorAlcoolico(BigDecimal teorAlcoolico) {
-		this.teorAlcoolico = teorAlcoolico;
+	public void setValorCompra(BigDecimal valorCompra) {
+		this.valorCompra = valorCompra;
 	}
 
 	public BigDecimal getComissao() {
@@ -172,30 +184,30 @@ public class Produto implements Serializable {
 		this.quantidadeEstoque = quantidadeEstoque;
 	}
 
-	public Origem getOrigem() {
-		return origem;
+	public Integer getQuantidadeMinima() {
+		return quantidadeMinima;
 	}
 
-	public void setOrigem(Origem origem) {
-		this.origem = origem;
+	public void setQuantidadeMinima(Integer quantidadeMinima) {
+		this.quantidadeMinima = quantidadeMinima;
 	}
 
-	public Sabor getSabor() {
-		return sabor;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setSabor(Sabor sabor) {
-		this.sabor = sabor;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
-	public Estilo getEstilo() {
-		return estilo;
+	public Fornecedor getFornecedor() {
+		return fornecedor;
 	}
 
-	public void setEstilo(Estilo estilo) {
-		this.estilo = estilo;
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
-
+	
 	public String getFoto() {
 		return foto;
 	}
@@ -211,9 +223,25 @@ public class Produto implements Serializable {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	public Boolean getEstoqueAtivo() {
+		return estoqueAtivo;
+	}
+
+	public void setEstoqueAtivo(Boolean estoqueAtivo) {
+		this.estoqueAtivo = estoqueAtivo;
+	}
 
 	public String getFotoOuMock() {
-		return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
+		return !StringUtils.isEmpty(foto) ? foto : "produto-mock.png";
 	}
 
 	public boolean temFoto() {

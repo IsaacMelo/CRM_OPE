@@ -75,10 +75,17 @@ public class Usuario implements Serializable {
 	
 	@Transient
 	private String confirmacaoSenha;
+<<<<<<< HEAD
 	
 	@OneToMany(mappedBy = "usuario", targetEntity = ContaBancaria.class ,cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE}, orphanRemoval = true)
 	private List<ContaBancaria> contas = new ArrayList<>();
 
+=======
+
+	private Boolean ativo;
+	
+	@JsonIgnore
+>>>>>>> master
 	@Size(min = 1, message = "Selecione pelo menos um grupo")
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "codigo_usuario")

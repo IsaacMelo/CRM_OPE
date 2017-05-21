@@ -14,6 +14,10 @@
           			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
         		</li>
         		
+        		<li class="aw-menu__item" brewer:menu="@{/parametros}">
+          			<a th:href="@{/parametros}"><i class="fa  fa-fw  fa-cog"></i><span>Configurações</span></a>
+        		</li>
+        		
         		<li class="aw-menu__item">
           			<a href="#">
             			<i class="fa  fa-fw  fa-credit-card"></i><span>Vendas</span>
@@ -28,6 +32,10 @@
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
 			            	<a th:href="@{/vendas}">Pesquisa de vendas</a>
 			            </li>
+			            
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/faturadas}">
+			            	<a th:href="@{/vendas/faturadas}">Vendas faturadas</a>
+			            </li>
 			        </ul>
 			    </li>
 
@@ -38,8 +46,8 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/estilos.*}">
-			            	<a th:href="@{/estilos}">Estilos</a>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/categorias.*}">
+			            	<a th:href="@{/categorias}">Categorias</a>
 			            </li>
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/produtos.*}">
 			            	<a th:href="@{/produtos}">Produtos</a>
@@ -73,8 +81,13 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/relatorios.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasEmitidas}">
 			            	<a th:href="@{/relatorios/vendasEmitidas}">Vendas emitidas</a>
+			            </li>
+          			</ul>
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/comissaoVendedor}">
+			            	<a th:href="@{/relatorios/comissaoVendedor}">Comissão Vendedor</a>
 			            </li>
           			</ul>
         		</li>

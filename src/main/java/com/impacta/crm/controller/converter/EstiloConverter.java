@@ -3,16 +3,16 @@ package com.impacta.crm.controller.converter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
-import com.impacta.crm.model.Estilo;
+import com.impacta.crm.model.Categoria;
 
-public class EstiloConverter implements Converter<String, Estilo> {
+public class EstiloConverter implements Converter<String, Categoria> {
 
 	@Override
-	public Estilo convert(String codigo) {
+	public Categoria convert(String codigo) {
 		if (!StringUtils.isEmpty(codigo)) {
-			Estilo estilo = new Estilo();
-			estilo.setCodigo(Long.valueOf(codigo));
-			return estilo;
+			Categoria categoria = new Categoria();
+			categoria.setCodigo(Long.valueOf(codigo));
+			return categoria;
 		}
 		
 		return null;

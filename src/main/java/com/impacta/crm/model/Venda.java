@@ -83,6 +83,12 @@ public class Venda {
 	
 	@Transient
 	private String uuid;
+	
+	@Transient
+	private BigDecimal baseComissao;
+	
+	@Transient
+	private BigDecimal descontoMax;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Transient
@@ -203,6 +209,22 @@ public class Venda {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+	
+	public BigDecimal getBaseComissao() {
+		return baseComissao;
+	}
+
+	public void setBaseComissao(BigDecimal baseComissao) {
+		this.baseComissao = baseComissao;
+	}
+	
+	public BigDecimal getDescontoMax() {
+		return descontoMax;
+	}
+
+	public void setDescontoMax(BigDecimal descontoMax) {
+		this.descontoMax = descontoMax;
+	}
 
 	public LocalDate getDataEntrega() {
 		return dataEntrega;
@@ -267,7 +289,7 @@ public class Venda {
 	}
 	
 	public void calcularValorComissao() {
-		this.valorComissao = calcularValorComissao(getValorTotal(), new BigDecimal(10));
+		this.valorComissao = calcularValorComissao(getValorTotal(), getBaseComissao());
 	}
 	
 	public Long getDiasCriacao() {
@@ -276,7 +298,18 @@ public class Venda {
 	}
 	
 	public boolean isSalvarPermitido() {
-		return !status.equals(StatusVenda.CANCELADA);
+		return !status.equals(StatusVenda.CANCELADA) 
+				&& !status.equals(StatusVenda.FINALIZADA) 
+				&& !status.equals(StatusVenda.FATURADA)
+				&& !status.equals(StatusVenda.TRANSPORTE);
+	}
+	
+	public boolean isCancelarPermitido() {
+		return !status.equals(StatusVenda.ORCAMENTO) && codigo != null;
+	}
+	
+	public boolean isEmitirPermitido() {
+		return status.equals(StatusVenda.ORCAMENTO);
 	}
 	
 	public boolean isSalvarProibido() {
@@ -291,7 +324,9 @@ public class Venda {
 	}
 	
 	private BigDecimal calcularValorComissao(BigDecimal valorTotal, BigDecimal pct) {
-		return valorTotal.multiply(pct).divide(new BigDecimal(100));
+		return valorTotal
+				.multiply(pct)
+				.divide(new BigDecimal(100));
 	}
 
 	@Override

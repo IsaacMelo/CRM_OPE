@@ -33,16 +33,24 @@
 	<div class="container-fluid">
 		<form method="GET" th:object="${vendaFilter}" th:action="@{/vendas}">
 			<div class="row">
-				<div class="form-group  col-sm-6">
+				<div class="form-group  col-sm-3">
 					<label class="control-label" for="codigo">Código</label>
 					<input type="text" class="form-control" id="codigo" autofocus="autofocus" th:field="*{codigo}"/>
 				</div>
 				
-				<div class="form-group  col-sm-6">
+				<div class="form-group  col-sm-3">
 					<label for="status" class="control-label">Status</label>
 					<select id="status" class="form-control" th:field="*{status}">
 	                    <option value="">Todos os status</option>
 	                    <option th:each="status : ${todosStatus}" th:value="${status}" th:text="${status.descricao}"></option>
+	                </select>
+				</div>
+				
+				<div class="form-group  col-sm-6">
+					<label for="usuario" class="control-label">Vendedor</label>
+					<select id="usuario" class="form-control" th:field="*{usuario}">
+	                    <option value="">Todos os Vendedores</option>
+	                    <option th:each="usuario : ${todosUsuarios}" th:value="${usuario.nome}" th:text="${usuario.nome}"></option>
 	                </select>
 				</div>
 			</div>
@@ -109,10 +117,17 @@
 						<td th:text="|R$ ${{venda.valorTotal}}|"></td>
 						<td th:text="${venda.usuario.nome}"></td>
 						<td th:text="${venda.status.descricao}"></td>
-	                 	<td class="text-center">
-		   					<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+	                 	<td >
+		   					
+		   					<a class="btn  btn-link icon_black btn-xs  js-tooltip" title="Editar" 
 		   							th:href="@{/vendas/{codigo}(codigo=${venda.codigo})}">
 		   						<i class="glyphicon glyphicon-pencil"></i>
+		   					</a>
+		   					
+		   					<a class="btn  btn-link btn-xs  js-tooltip" title="Faturar"
+		   							th:if="${venda.status.descricao == 'Emitida' ? true : False}"
+		   							th:href="@{/vendas/faturar/{codigo}(codigo=${venda.codigo})}">
+		   						<i class="fa fa-usd fa-lg"></i>
 		   					</a>
 	                 	</td>
 	                </tr>
