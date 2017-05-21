@@ -42,6 +42,7 @@
 			<brewer:message/>
 			
 			<input type="hidden" th:field="*{codigo}"/>
+			<input type="hidden" id="margemProduto" data:valor="${margemProduto}"/>
 	
 			<div class="row">
 				<div class="col-sm-2  form-group  bw-required" brewer:classforerror="sku">
@@ -110,15 +111,23 @@
 						<input id="valorCompra" type="text" class="form-control  js-decimal" th:field="*{valorCompra}"/>
 					</div>
 				</div>
+
+				<div class="col-sm-3  form-group">
+					<label for="valorSugerido" class="control-label">Valor sugerido</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<div class="form-control" th:disabled="true"><span class="js-valor-sugerido-box" data:valor="${valorSugerido}" th:text="${valorSugerido}">0,00</span></div>
+					</div>
+				</div>
 				
 				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="valor">
 					<label for="valor" class="control-label">Valor venda</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
-						<input id="valor" type="text" class="form-control  js-decimal" th:field="*{valor}"/>
+						<input id="valor" type="text" class="form-control  js-decimal" data:valor="${valor}" th:field="*{valor}"/>
 					</div>
 				</div>
-
+				
 				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="comissao">
 					<label for="comissao" class="control-label">Comissão</label>
 					<div class="input-group">
@@ -191,8 +200,10 @@
 	<script th:src="@{/javascripts/produto.upload-foto.js}"></script>
 	<script th:src="@{/javascripts/fornecedor.pesquisa-rapida.js}"></script>
 	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/produto.js}"></script>
 	<script>
 		$('.js-status').bootstrapSwitch();
+		
 	</script>	
 </th:block>
 	

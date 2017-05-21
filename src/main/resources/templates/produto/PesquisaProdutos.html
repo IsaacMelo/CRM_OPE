@@ -108,11 +108,11 @@
 						
 						<td class="text-center">
 						
-							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" 
 									th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+							<a class="btn  btn-link  btn-xs icon_red js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
 									data:url="@{/produtos/{codigo}(codigo=${produto.codigo})}"
 									data:objeto="${produto.nome}">
 								<i class="glyphicon glyphicon-remove"></i>

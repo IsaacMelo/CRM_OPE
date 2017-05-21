@@ -298,7 +298,10 @@ public class Venda {
 	}
 	
 	public boolean isSalvarPermitido() {
-		return !status.equals(StatusVenda.CANCELADA);
+		return !status.equals(StatusVenda.CANCELADA) 
+				&& !status.equals(StatusVenda.FINALIZADA) 
+				&& !status.equals(StatusVenda.FATURADA)
+				&& !status.equals(StatusVenda.TRANSPORTE);
 	}
 	
 	public boolean isCancelarPermitido() {

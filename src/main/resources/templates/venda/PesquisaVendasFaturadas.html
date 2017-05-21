@@ -7,7 +7,7 @@
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 	
 <head>
-	<title>Pesquisa de vendas</title>
+	<title>Vendas faturadas</title>
 </head>
 
 <body>
@@ -16,22 +16,14 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1>Pesquisa de vendas</h1>
-				</div>
-				
-				<div class="col-xs-2">
-					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/vendas/nova}">
-							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova venda</span>
-						</a>
-					</div>
+					<h1>Pesquisa de vendas faturadas</h1>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="container-fluid">
-		<form method="GET" th:object="${vendaFilter}" th:action="@{/vendas}">
+		<form method="GET" th:object="${vendaFilter}" th:action="@{/vendas/faturadas}">
 			<div class="row">
 				<div class="form-group  col-sm-3">
 					<label class="control-label" for="codigo">Código</label>
@@ -97,7 +89,9 @@
 			<table class="table  table-hover">
 	            <thead>
 	            	<tr>
-	                	<th>Código</th>
+	                	<th>
+	                		<brewer:order page="${pagina}" field="codigo" text="Código"/>
+	                	</th>
 	                	<th>
 	                		<brewer:order page="${pagina}" field="c.nome" text="Cliente"/>
 	                	</th>
@@ -105,7 +99,7 @@
 	                	<th>Valor total</th>
 	                	<th>Vendedor</th>
 	                	<th>Status</th>
-	                 	<th class="table-col-acoes"></th>
+	                 	<th class="table-col3-acoes"></th>
 					</tr>
 				</thead>
 				
@@ -117,17 +111,24 @@
 						<td th:text="|R$ ${{venda.valorTotal}}|"></td>
 						<td th:text="${venda.usuario.nome}"></td>
 						<td th:text="${venda.status.descricao}"></td>
-	                 	<td >
-		   					
-		   					<a class="btn  btn-link icon_black btn-xs  js-tooltip" title="Editar" 
+	                 	<td class="text-center">
+
+		   					<a class="btn  btn-link  btn-xs icon_red js-tooltip" title="Visualizar" 
 		   							th:href="@{/vendas/{codigo}(codigo=${venda.codigo})}">
-		   						<i class="glyphicon glyphicon-pencil"></i>
+		   						<i class="fa fa-file-pdf-o fa-lg"></i>
 		   					</a>
 		   					
-		   					<a class="btn  btn-link btn-xs  js-tooltip" title="Faturar"
-		   							th:if="${venda.status.descricao == 'Emitida' ? true : False}"
-		   							th:href="@{/vendas/faturar/{codigo}(codigo=${venda.codigo})}">
-		   						<i class="fa fa-usd fa-lg"></i>
+		   					<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Em transporte" 
+		   							th:if="${venda.status.descricao == 'Em Transporte' ? false : true}"
+		   							th:href="@{/vendas/transporte/{codigo}(codigo=${venda.codigo})}">
+		   							
+		   						<i class="fa  fa-fw fa-truck fa-lg"></i>
+		   					</a>
+		   					
+		   					<a class="btn  btn-link  btn-xs icon_green js-tooltip" title="Finalizar" 
+		   							th:if="${venda.status.descricao == 'Em Transporte' ? true : False}"
+		   							th:href="@{/vendas/finalizar/{codigo}(codigo=${venda.codigo})}">
+		   						<i class="fa fa-check fa-lg" ></i>
 		   					</a>
 	                 	</td>
 	                </tr>

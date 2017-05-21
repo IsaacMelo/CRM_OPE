@@ -59,11 +59,11 @@
 						<td class="text-center" th:text="${categoria.codigo}">1</td>
 						<td th:text="${categoria.nome}">Pale Lager</td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" 
 									th:href="@{/categorias/{codigo}(codigo=${categoria.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>							
-							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+							<a class="btn  btn-link  btn-xs icon_red js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
 									data:url="@{/categorias/{codigo}(codigo=${categoria.codigo})}"
 									data:objeto="${categoria.nome}">
 								<i class="glyphicon glyphicon-remove"></i>

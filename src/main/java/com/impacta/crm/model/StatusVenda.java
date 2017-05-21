@@ -3,7 +3,10 @@ package com.impacta.crm.model;
 public enum StatusVenda {
 
 	 
-	EMITIDA("Emitida"), 
+	EMITIDA("Emitida"),
+	FATURADA("Faturada"),
+	TRANSPORTE("Em Transporte"),
+	FINALIZADA("Finalizada"),
 	ORCAMENTO("Orçamento"),
 	CANCELADA("Cancelada");
 

@@ -1,5 +1,6 @@
 package com.impacta.crm.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,16 +46,22 @@ public class ProdutoController {
 	private Produtos produtos;
 
 	@RequestMapping("/nova")
-	public ModelAndView nova(Produto produto) {
+	public ModelAndView nova(Produto produto, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("produto/CadastroProduto");
+		
+			if(produto.isNova()){
+				produto.setComissao((BigDecimal) request.getSession().getAttribute("comissao"));
+			}
+			
+			mv.addObject("margemProduto", request.getSession().getAttribute("margemProduto"));
 			mv.addObject("categorias", categorias.findAll());
 		return mv;
 	}
 	
 	@RequestMapping(value = { "/nova", "{\\d+}" }, method = RequestMethod.POST)
-	public ModelAndView salvar(@Valid Produto produto, BindingResult result, Model model, RedirectAttributes attributes) {
+	public ModelAndView salvar(@Valid Produto produto, BindingResult result, Model model, RedirectAttributes attributes, HttpServletRequest request) {
 		if (result.hasErrors()) {
-			return nova(produto);
+			return nova(produto,request);
 		}
 		
 		cadastroProdutoService.salvar(produto);
@@ -71,6 +78,7 @@ public class ProdutoController {
 		PageWrapper<Produto> paginaWrapper = new PageWrapper<>(produtos.filtrar(produtoFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
+		
 		return mv;
 	}
 	
@@ -90,8 +98,8 @@ public class ProdutoController {
 	}
 	
 	@GetMapping("/{codigo}")
-	public ModelAndView editar(@PathVariable("codigo") Produto produto) {
-		ModelAndView mv = nova(produto);
+	public ModelAndView editar(@PathVariable("codigo") Produto produto, HttpServletRequest request) {
+		ModelAndView mv = nova(produto, request);
 		mv.addObject(produto);
 		return mv;
 	}

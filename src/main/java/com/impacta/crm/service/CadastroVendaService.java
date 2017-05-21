@@ -71,5 +71,35 @@ public class CadastroVendaService {
 		
 		publisher.publishEvent(new VendaEvent(vendaExistente));
 	}
+	
+	@Transactional
+	public void tranporte(Venda venda) {
+		Venda vendaExistente = vendas.findOne(venda.getCodigo());
+		
+		vendaExistente.setStatus(StatusVenda.TRANSPORTE);
+		vendas.save(vendaExistente);
+		
+		publisher.publishEvent(new VendaEvent(vendaExistente));
+	}
+	
+	@Transactional
+	public void finalizar(Venda venda) {
+		Venda vendaExistente = vendas.findOne(venda.getCodigo());
+		
+		vendaExistente.setStatus(StatusVenda.FINALIZADA);
+		vendas.save(vendaExistente);
+		
+		publisher.publishEvent(new VendaEvent(vendaExistente));
+	}
+	
+	@Transactional
+	public void faturar(Venda venda) {
+		Venda vendaExistente = vendas.findOne(venda.getCodigo());
+		
+		vendaExistente.setStatus(StatusVenda.FATURADA);
+		vendas.save(vendaExistente);
+		
+		publisher.publishEvent(new VendaEvent(vendaExistente));
+	}
 
 }
