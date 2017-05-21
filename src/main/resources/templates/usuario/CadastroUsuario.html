@@ -3,7 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:th="http://www.thymeleaf.org"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <head>
 	<title>Cadastro de usuário</title>
@@ -37,71 +38,249 @@
 				th:action="${usuario.novo} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">
 			<brewer:message/>
 			
-			<input type="hidden" th:field="*{codigo}"/>
+					<input type="hidden" id="uuid"  name="uuid" th:field="*{uuid}"/>
+					<input type="hidden" th:field="*{codigo}"/>
 			
 			<div class="row">
-				<div class="form-group  col-sm-12  bw-required" brewer:classforerror="nome">
-					<label for="nome" class="control-label">Nome</label>
-					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
-				</div>
-			</div>
-				
-			<div class="row">
-				<div class="form-group  col-sm-6  bw-required" brewer:classforerror="email">
-					<label for="email" class="control-label">E-mail</label>
-					<input type="text" class="form-control" id="email" th:field="*{email}"/>
-				</div>
-				
-				<div class="form-group  col-sm-3">
-					<label for="dataNascimento" class="control-label">Data de nascimento</label>
-					<input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataNascimento}" autocomplete="off"/>
+				<div class="form-group  col-lg-12">
+					<ul class="nav nav-tabs" id="js-abas-usuario">
+					  <li role="presentation" class="active"><a href="#dadosPessoais">Dados Pessoais</a></li>
+					  <li role="presentation"><a href="#dadosBancarios">Dados Bancários</a></li>
+					  <li role="presentation"><a href="#perfilUsuario">Perfil Usuário</a></li>
+					</ul>
 				</div>
 			</div>
 			
-			<div class="row">
-				<div class="form-group  col-sm-3" brewer:classforerror="senha" th:classappend="${usuario.novo} ? bw-required">
-					<label for="senha" class="control-label">Senha</label> 
-					<input type="password" class="form-control" id="senha" th:field="*{senha}"/>
-				</div>
-				
-				<div class="form-group  col-sm-3" brewer:classforerror="confirmacaoSenha">
-					<label for="confirmacaoSenha" class="control-label">Confirmação de senha</label> 
-					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
-				</div>
-				
-				<div class="form-group  col-sm-3" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
-					<label class="control-label">Status</label>
-					<div>
-						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
-							data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
+			
+			
+			<div class="tab-content">
+			
+				<div role="tabpanel" class="tab-pane active" id="dadosPessoais">
+			
+					<div class="row">
+						<div class="form-group  col-sm-12  bw-required" brewer:classforerror="nome">
+							<label for="nome" class="control-label">Nome</label>
+							<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+						</div>
 					</div>
+					<div class="row">
+						<div class="form-group  col-sm-3 bw-required" brewer:classforerror="dataNascimento">
+							<label for="dataNascimento" class="control-label">Data de nascimento</label>
+							<input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataNascimento}" autocomplete="off"/>
+						</div>
+						
+						<div class="form-group  col-sm-3  bw-required" brewer:classforerror="cpf">
+							<label for="cpf" class="control-label">CPF</label>
+							<input type="text" class="form-control" id="cpf" th:field="*{cpf}"/>
+						</div>
+						
+						<div class="form-group  col-sm-3  bw-required" brewer:classforerror="rg">
+							<label for="rg" class="control-label">RG</label>
+							<input type="text" class="form-control" id="rg" th:field="*{rg}"/>
+						</div>
+						
+						<div class="form-group  col-sm-3" brewer:classforerror="telefone">
+							<label for="telefone">Telefone*</label>
+							<input type="text" class="form-control  js-phone-number" id="telefone" th:field="*{telefone}"/>
+						</div>
+						
+					</div>
+					
+					<div class="row">
+			
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.cep">
+							<label for="cep">CEP*</label>
+							<div class="bw-field-action" >
+								<input type="text" class="form-control  js-cep" id="cep" data:url="@{/webservice}" th:field="*{endereco.cep}"/>
+							
+								<div class="bw-field-action__icon  js-img-loading" style="display: none">
+									<img th:src="@{/images/mini-loading.gif}"/>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				
+					<div class="row">
+			
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.logradouro">
+							<label for="logradouro">Logradouro*</label>
+							<input type="text" class="form-control" id="logradouro" th:field="*{endereco.logradouro}"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.numero">
+							<label for="numero">Número*</label>
+							<input type="text" class="form-control" id="numero" th:field="*{endereco.numero}"/>
+						</div>
+						
+						<div class="form-group  col-sm-4">
+							<label for="complemento">Complemento</label>
+							<input type="text" class="form-control" id="complemento" th:field="*{endereco.complemento}" maxlength="20"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.bairro">
+							<label for="bairro">Bairro*</label>
+							<input type="text" class="form-control" id="bairro" th:field="*{endereco.bairro}" maxlength="50"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.estado">
+							<label for="estado">Estado*</label>
+							<input type="text" class="form-control" id="estado" th:field="*{endereco.estado}" maxlength="2"/>
+						</div>
+						
+						<div class="form-group  col-sm-4" brewer:classforerror="endereco.cidade">
+							<label  for="cidade">Cidade*</label>
+							<input type="text" class="form-control" id="cidade" th:field="*{endereco.cidade}" maxlength="50"/>
+						</div>		
+					</div>
+					
 				</div>
 				
-			</div>
-			
-			<div class="row">
-				<div class="form-group  col-sm-6  bw-required" brewer:classforerror="grupos">
-					<label class="control-label">Grupos</label> 
-					<div>
-						<th:block th:each="grupo : ${grupos}">
-	  						<div class="checkbox  checkbox-inline"> 
-		    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
-		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
-	    					</div>
-	    				</th:block>
+				<div role="tabpanel" class="tab-pane" id="dadosBancarios">
+					
+					<div class="panel panel-default" >
+					  <div class="panel-heading">
+					   <h3 class="panel-title">
+					    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalCadastroRapidoConta" data-param="salvar">
+					    		<i class="glyphicon  glyphicon-plus-sign"></i> 
+					    		<span class="hidden-xs  hidden-sm">Cadastrar Conta</span>
+					    	</button>
+					   </h3>
+					  </div>
+					  <div class="panel-body panel-conta">
+					    <div class="table-responsive  bw-tabela-simples tabela-conta">
+							<table class="table  table-hover table-hover-conta">
+								<thead>
+									<tr>
+										<th class="table-clientes-col-nome">Banco</th>
+										<th class="table-clientes-col-cpf-cnpj">Agencia</th>
+										<th class="table-clientes-col-telefone">Conta</th>
+										<th class="table-clientes-col-telefone">Principal?</th>
+										<th class="table-col-acoes"> </th>
+									</tr>
+								</thead>
+								
+								<tbody id="table-body-conta">
+									<tr th:each="conta : ${contas}" >
+										<td th:text="${conta.banco}"></td>
+										<td class="text-right" th:text="${conta.agencia}"></td>
+										<td class="text-right" th:text="${conta.conta}"></td>
+										<td class="text-right">
+											<th:block th:if="${conta.principal}">
+												<span class="label  label-success">Sim</span>
+											</th:block>
+											<th:block th:if="${not conta.principal}">
+												<span class="label  label-danger">Não</span>
+											</th:block>
+										</td>
+										<td class="text-right">
+											<a class="btn  btn-link  btn-xs js-tooltip" title="Editar" data-toggle="modal" data-param="editar" data-target="#modalCadastroRapidoConta"
+											data:banco="${conta.banco}" data:agencia="${conta.agencia}" data:conta="${conta.conta}" data:codigo="${conta.codigo}" data:id="${conta.codigo}" data:principal="${conta.principal}"> 
+												<i class="glyphicon glyphicon-pencil"></i>
+											</a>
+											<a class="btn  btn-link  btn-xs js-tooltip js-exclusao-conta-btn" title="Excluir" data:objeto="${conta.banco}"
+							 					href="#" data-url="/contas" data:id="${conta.codigo}">
+												<i class="glyphicon glyphicon-remove"></i>
+											</a>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(contas)}">
+										<td colspan="5">Nenhuma conta encontrada</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					  </div>
 					</div>
+					
 				</div>
-			</div>
+				
+				<div role="tabpanel" class="tab-pane" id="perfilUsuario">
+					
+					<div class="row">
+						<div class="form-group  col-sm-6  bw-required" brewer:classforerror="email">
+							<label for="email" class="control-label">E-mail</label>
+							<input type="text" class="form-control" id="email" th:field="*{email}"/>
+						</div>			
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-3" brewer:classforerror="senha" th:classappend="${usuario.novo} ? bw-required">
+							<label for="senha" class="control-label">Senha</label> 
+							<input type="password" class="form-control" id="senha" th:field="*{senha}"/>
+						</div>
+						
+						<div class="form-group  col-sm-3" brewer:classforerror="confirmacaoSenha">
+							<label for="confirmacaoSenha" class="control-label">Confirmação de senha</label> 
+							<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
+						</div>
+						
+						<div class="form-group  col-sm-3" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
+							<label class="control-label">Status</label>
+							<div>
+								<input type="checkbox" id="status" data-toggle="toggle" data-size="small" data-off-color="danger" 
+									 data-off-text="Inativo" data-on-text="Ativo" th:field="*{ativo}"/>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-6  bw-required" brewer:classforerror="grupos">
+							<label class="control-label">Grupos</label> 
+							<div>
+								<th:block th:each="grupo : ${grupos}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
+				    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>		
+					
+				</div>
 			
+			</div>
+					
 			<button type="submit" class="btn  btn-primary">Salvar</button>
 		</form>
-	</div>
+		
+	</div>	
+	
+	<th:block th:replace="hbs/TabelaContaBancaria":: tabelaContaBancaria></th:block>
+	<th:block th:replace="usuario/CadastroRapidoConta :: modal"></th:block>
 </section>
+
+
 
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/usuario.mascara-cpf.js}"></script>
+	<script th:src="@{/javascripts/brewer.pesquisa-de-cep.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/brewer.dialogo-excluir-conta.js}"></script>
+	<script th:src="@{/javascripts/conta.cadastro-rapido.js}"></script>
 	<script>
-		$('.js-status').bootstrapSwitch();
+	$(function(){
+		$('#status').bootstrapSwitch();
+		$('#status').on('switchChange.bootstrapSwitch', function (event, state) {
+			$('#status').val(state);
+		});
+		$('#principal').bootstrapSwitch();
+		$('#principal').on('switchChange.bootstrapSwitch', function (event, state) {
+			$('#principal').val(state);
+		}); 
+	});
+	
+	</script>
+	<script>
+	$(function() {
+		$('#js-abas-usuario a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
 	</script>
 </th:block>
 </html>

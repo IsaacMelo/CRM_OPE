@@ -1,0 +1,34 @@
+<script id="js-tabela-conta-bancaria" type="text/x-handlebars-template">
+
+		{{#if .}}
+			{{#each .}}
+			<tr >
+				<td>{{banco}}</td>
+				<td class="text-right" >{{agencia}}</td>
+				<td class="text-right" >{{conta}}</td>
+				<td class="text-right">
+					{{#if principal}}
+						<span class="label  label-success">Sim</span>
+					{{else}}		
+						<span class="label  label-danger">Não</span>
+					{{/if}}
+				</td>
+				<td class="text-right">
+					<a class="btn  btn-link  btn-xs js-tooltip" title="Editar" data-param="editar" data-toggle="modal"  data-target="#modalCadastroRapidoConta"
+					data-banco="{{banco}}" data-agencia="{{agencia}}" data-conta="{{conta}}" data-codigo="{{codigo}}"  data-id="{{id}}" data-principal="{{principal}}"> 
+						<i class="glyphicon glyphicon-pencil"></i>
+					</a>
+					<a class="btn  btn-link  btn-xs js-tooltip js-exclusao-conta-btn" title="Excluir" data-objeto="{{banco}}"
+							 			data-id="{{id}}" href="#" data-url="/contas">
+						<i class="glyphicon glyphicon-remove"></i>
+					</a>
+				</td>
+			</tr>
+		  {{/each}}
+		{{else}}
+				<tr>
+					<td colspan="5">Nenhuma conta cadastrada</td>
+				</tr>
+		{{/if}}
+</script>
+	

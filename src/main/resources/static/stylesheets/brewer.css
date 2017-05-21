@@ -75,6 +75,18 @@
     vertical-align: middle;
 }
 
+.panel-conta{
+	padding:0px !important;
+}
+
+.tabela-conta{
+	margin:0px !important;
+}
+
+.table-hover-conta{
+	margin:0px !important;
+}
+
 /*
 ###################
 # PÃ�GINAS DO SISTEMA
