@@ -18,11 +18,6 @@ public class PeriodoRelatorio {
 		return this.dataInicio == null ? true : this.dataInicio.isBefore(this.dataFim) || this.dataInicio.isEqual(this.dataFim);
 	}
 	
-	@AssertTrue(message="Data fim dever menor ou igual a data atual")
-	private boolean isValid(){
-		return this.dataInicio == null ? true : this.dataFim.isBefore(LocalDate.now()) || this.dataFim.isEqual(LocalDate.now());
-	}
-	
 	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
