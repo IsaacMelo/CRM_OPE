@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import com.impacta.crm.dto.FiltroRelatorioComissaoVendedor;
 import com.impacta.crm.dto.FiltroRelatorioProduto;
 import com.impacta.crm.dto.PeriodoRelatorio;
 import com.impacta.crm.dto.TipoRelatorioProduto;
+import com.impacta.crm.model.Venda;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -142,5 +144,17 @@ public class RelatoriosController {
 		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
 		
 		return new ModelAndView("relatorio_vendas_finalizadas", parametros);
+	}
+	
+	@RequestMapping(value = "/impressaoVenda/{codigo}", method = RequestMethod.GET)
+	public ModelAndView relatorioVenda(@PathVariable("codigo") int codigo) {
+
+		Map<String, Object> parametros = new HashMap<>();
+
+		parametros.put("format", "pdf");
+		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
+		parametros.put("codigo_venda", codigo);
+
+		return new ModelAndView("relatorio_venda", parametros);
 	}
 }
