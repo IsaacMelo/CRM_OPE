@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/LayoutPadrao}">
 
 <head>
-	<title>Relatório - Vendas Emitidas</title>
+	<title>Relatório - Vendas Finalizadas</title>
 </head>
 
 <section layout:fragment="conteudo">
@@ -13,13 +13,13 @@
 	<div class="page-header">
 		<div class="container-fluid">
 			<h1>
-				Relatório de Vendas Emitidas
+				Relatório de Vendas Finalizadas
 			</h1>
 		</div>
 	</div>
 	
 	<div class="container-fluid">
-		<form method="POST" th:object="${periodoRelatorio}" th:action="@{/relatorios/vendasEmitidas}" target="_blank">
+		<form method="POST" th:object="${periodoRelatorio}" th:action="@{/relatorios/vendasFinalizadas}" target="_blank">
 			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
 			
 			
