@@ -127,7 +127,7 @@ public class UsuariosController {
 		return mv;
 	}
 	//Pesquisa rápida
-	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/pesquisaRapida", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Usuario> pesquisar(String nome){
 		validarTamanhoNome(nome);
 		List<Usuario> users = usuarios.findByNomeStartingWithIgnoreCase(nome);
