@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 	
 <body>
 <aside class="aw-layout-sidebar  js-sidebar" th:fragment="layout-sidebar">
@@ -10,11 +11,11 @@
     	<nav class="aw-menu  js-menu">
       		<ul class="aw-menu__list">
 
-        		<li class="aw-menu__item" brewer:menu="@{/}">
+        		<li class="aw-menu__item" brewer:menu="@{/}" sec:authorize="hasRole('VISUALIZAR_DASHBOARD')">
           			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
         		</li>
         		
-        		<li class="aw-menu__item" brewer:menu="@{/parametros}">
+        		<li class="aw-menu__item" brewer:menu="@{/parametros}" sec:authorize-url="/parametros">
           			<a th:href="@{/parametros}"><i class="fa  fa-fw  fa-cog"></i><span>Configurações</span></a>
         		</li>
         		
@@ -25,15 +26,15 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}" sec:authorize-url="/vendas/nova">
 			            	<a th:href="@{/vendas/nova}">Cadastro de venda</a>
 			            </li>
 			            
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}" sec:authorize-url="/vendas">
 			            	<a th:href="@{/vendas}">Pesquisa de vendas</a>
 			            </li>
 			            
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/faturadas}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/faturadas}" sec:authorize-url="/vendas/faturadas">
 			            	<a th:href="@{/vendas/faturadas}">Vendas faturadas</a>
 			            </li>
 			        </ul>
@@ -46,10 +47,10 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/categorias.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/categorias.*}" sec:authorize-url="/categorias">
 			            	<a th:href="@{/categorias}">Categorias</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/produtos.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/produtos.*}" sec:authorize-url="/produtos">
 			            	<a th:href="@{/produtos}">Produtos</a>
 			            </li>
           			</ul>
@@ -62,13 +63,13 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/fornecedores.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/fornecedores.*}" sec:authorize-url="/fornecedores">
 			            	<a th:href="@{/fornecedores}">Fornecedores</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}" sec:authorize-url="/clientes">
 			            	<a th:href="@{/clientes}">Clientes</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}" sec:authorize-url="/usuarios">
 			            	<a th:href="@{/usuarios}">Usuários</a>
 			            </li>
           			</ul>
@@ -81,12 +82,12 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasEmitidas}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasEmitidas}" sec:authorize-url="/relatorios/vendasEmitidas">
 			            	<a th:href="@{/relatorios/vendasEmitidas}">Vendas emitidas</a>
 			            </li>
           			</ul>
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/comissaoVendedor}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/comissaoVendedor}" sec:authorize-url="/relatorios/comissaoVendedor">
 			            	<a th:href="@{/relatorios/comissaoVendedor}">Comissão Vendedor</a>
 			            </li>
           			</ul>

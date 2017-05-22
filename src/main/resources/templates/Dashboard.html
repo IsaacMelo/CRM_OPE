@@ -4,7 +4,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:data="http://www.thymeleaf.org/extras/data"
 	xmlns:brewer="http://brewer.algaworks.com"
-	layout:decorate="~{layout/LayoutPadrao}">
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 	<title>Dashboard</title>
@@ -17,8 +18,12 @@
 			<h1>Dashboard</h1>
 		</div>
 	</div>
-
 	<div class="container-fluid">
+	
+		<div class="alert alert-info" role="alert">
+		<i class="glyphicon glyphicon-info-sign"></i> <span th:text="|Bem-vindo, ${#authentication.principal.usuario.nome} ao TSS - The Seller System|"></span></div>
+	</div>
+	<div class="container-fluid" sec:authorize="hasRole('VISUALIZAR_DASHBOARD')">
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="aw-box">
