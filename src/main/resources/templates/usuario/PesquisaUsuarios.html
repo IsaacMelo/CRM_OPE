@@ -22,7 +22,7 @@
 				
 				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/usuarios/novo}">
+						<a class="btn  btn-default" th:href="@{/usuarios/novo}" title="Cadastrar um novo usuário">
 							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Usuário</span>
 						</a>
 					</div>
@@ -36,16 +36,16 @@
 			<div class="row">
 				<div class="form-group  col-sm-6">
 					<label class="control-label" for="nome">Nome</label>
-					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}" title="Informe o nome de usuário"/>
 				</div>
 				
 				<div class="form-group  col-sm-6">
 					<label class="control-label" for="email">E-mail</label>
-					<input type="text" class="form-control" id="email" th:field="*{email}"/>
+					<input type="text" class="form-control" id="email" th:field="*{email}" title="Informe o e-mail do usuário"/>
 				</div>
 			</div>
 			
-			<div class="row">
+			<div class="row" title="Informe o perfil do usuário">
 				<div class="form-group  col-sm-12">
 					<label class="control-label">Grupos</label> 
 					<div>
@@ -59,15 +59,15 @@
   				</div>
 			</div>
 			
-			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			<button type="submit" class="btn  btn-primary" title="Efetuar pesquisa">Pesquisar</button>
 		</form>
 		
 		<div class="aw-datatable-toolbar">
-			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="ATIVAR" data:url="@{/usuarios/status}">
+			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="ATIVAR" data:url="@{/usuarios/status}" title="Ativar usuário no sistema">
 				<span>Ativar</span>
 			</button>
 			
-			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="DESATIVAR" data:url="@{/usuarios/status}">
+			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="DESATIVAR" data:url="@{/usuarios/status}" title="Desativar usuário do sistema">
 				<span>Desativar</span>
 			</button>
 		</div>
@@ -78,7 +78,7 @@
 	            	<tr>
 	            		<th class="table-usuarios-col-status">
 	            			<div class="checkbox  aw-checkbox-no-margin">
-	            				<input type="checkbox" class="js-selecao-todos"/>
+	            				<input type="checkbox" class="js-selecao-todos" title="Selecionar todos os usuários"/>
 	            				<label></label>
 	            			</div>
 	            		</th>

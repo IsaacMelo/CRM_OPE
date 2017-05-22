@@ -14,13 +14,13 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1 th:if="${categoria.nova}">Cadastro de Produto</h1>
+					<h1 th:if="${categoria.nova}">Cadastro de Categoria</h1>
 					<h1 th:unless="${categoria.nova}" th:text="|Edição da ${categoria.nome}|">Edição de Categoria</h1>
 				</div>
 				
 				<div class="col-sm-2">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/categorias}">
+						<a class="btn  btn-default" th:href="@{/categorias}" title="Pesquisar categorias">
 							<i class="glyphicon glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
 						</a>
 					</div>
@@ -38,11 +38,11 @@
 			<div class="row">
 				<div class="form-group  col-sm-12  bw-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
 					<label for="nome" class="control-label">Nome</label>
-					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}" title="Cadastrar nova categoria de produtos"/>
 				</div>
 			</div>
 				
-			<button type="submit" class="btn  btn-primary">Salvar</button>
+			<button type="submit" class="btn  btn-primary" title="Salvar categoria">Salvar</button>
 		</form>
 	</div>
 </section>
