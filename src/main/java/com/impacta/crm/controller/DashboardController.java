@@ -39,6 +39,7 @@ public class DashboardController {
 		session.setAttribute("comissao", parametro.getComissao());
 		session.setAttribute("desconto", parametro.getDesconto());
 		session.setAttribute("margemProduto", parametro.getMargemProduto());
+		session.setAttribute("nomeFantasia", parametro.getNome());
 		
 		mv.addObject("vendasNoAno", vendas.valorTotalNoAno());
 		mv.addObject("vendasNoMes", vendas.valorTotalNoMes());

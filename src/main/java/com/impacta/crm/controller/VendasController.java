@@ -162,7 +162,7 @@ public class VendasController {
 	}
 	
 	@PostMapping(value = "/nova", params = "enviarEmail")
-	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest request) {
 		validarVenda(venda, result);
 		if (result.hasErrors()) {
 			return nova(venda);
@@ -185,7 +185,7 @@ public class VendasController {
 			cadastroVendaService.emitir(venda);
 		}
 		
-		mailer.enviar(venda);
+		mailer.enviar(venda, request);
 				
 		return new ModelAndView("redirect:/vendas/nova");
 	}
