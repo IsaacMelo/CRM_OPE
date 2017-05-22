@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:brewer="http://brewer.algaworks.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Relatório - Comissão Vendedor</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>
+				Relatório de Produtos
+			</h1>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${filtroRelatorioProduto}" th:action="@{/relatorios/produtos}" target="_blank">
+			<brewer:message/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label for="relatorio" class="control-label">Tipo Produto</label>
+					<select id="relatorio" class="form-control" th:field="*{relatorio}">
+	                    <option value="">Todos</option>
+	                    <option th:each="relatorio : ${todosRelatorios}" th:value="${relatorio}" th:text="${relatorio.descricao}"></option>
+	                </select>
+				</div>
+			</div>
+			<button type="submit" class="btn  btn-primary">Emitir</button>
+		</form>
+	</div>
+</section>
+
+</html>

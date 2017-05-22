@@ -19,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.impacta.crm.dto.FiltroRelatorioComissaoVendedor;
+import com.impacta.crm.dto.FiltroRelatorioProduto;
 import com.impacta.crm.dto.PeriodoRelatorio;
+import com.impacta.crm.dto.TipoRelatorioProduto;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -57,6 +59,7 @@ public class RelatoriosController {
 	@GetMapping("/comissaoVendedor")
 	public ModelAndView relatorioComissaoVendedor(FiltroRelatorioComissaoVendedor filtroRelatorioComissao) {
 		ModelAndView mv = new ModelAndView("relatorio/RelatorioComissaoVendedor");
+		mv.addObject(filtroRelatorioComissao);
 		return mv;
 	}
 	
@@ -70,9 +73,9 @@ public class RelatoriosController {
 		
 		Map<String, Object> parametros = new HashMap<>();
 		
-		Date dataInicio = Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataInicio()
+		Date dataInicio = Date.from(LocalDateTime.of(filtroRelatorioComissao.getDataInicio()
 				, LocalTime.of(0, 0, 0)).atZone(ZoneId.systemDefault()).toInstant());
-		Date dataFim = (Date) Date.from(LocalDateTime.of(filtroRelatorioComissao.getPeriodoRelatorio().getDataFim()
+		Date dataFim = (Date) Date.from(LocalDateTime.of(filtroRelatorioComissao.getDataFim()
 				, LocalTime.of(23, 59, 59)).atZone(ZoneId.systemDefault()).toInstant());
 		
 		parametros.put("format", "pdf");
@@ -83,6 +86,33 @@ public class RelatoriosController {
 		
 		return new ModelAndView("relatorio_comissao_vendedor", parametros);
 
+	}
+	
+	@GetMapping("/produtos")
+	public ModelAndView relatorioProdutos(FiltroRelatorioProduto filtroRelatorioProduto) {
+		ModelAndView mv = new ModelAndView("relatorio/RelatorioProdutos");
+		mv.addObject("todosRelatorios", TipoRelatorioProduto.values());
+		mv.addObject(filtroRelatorioProduto);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/produtos", method = RequestMethod.POST)
+	public ModelAndView relatorioProdutos(FiltroRelatorioProduto filtroRelatorioProduto, 
+			BindingResult result, RedirectAttributes attributes) {
+
+		Map<String, Object> parametros = new HashMap<>();
+
+		parametros.put("format", "pdf");
+		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
+		
+		if (filtroRelatorioProduto.getRelatorio() == TipoRelatorioProduto.ATIVO)
+			return new ModelAndView("relatorio_produtos_ativo", parametros);
+		if (filtroRelatorioProduto.getRelatorio() == TipoRelatorioProduto.INATIVO)
+			return new ModelAndView("relatorio_produtos_inativo", parametros);
+		if (filtroRelatorioProduto.getRelatorio() == TipoRelatorioProduto.NEGATIVO)
+			return new ModelAndView("relatorio_produtos_negativos", parametros);
+
+		return new ModelAndView("relatorio_produtos", parametros);
 	}
 	
 }
