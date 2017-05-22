@@ -115,4 +115,32 @@ public class RelatoriosController {
 		return new ModelAndView("relatorio_produtos", parametros);
 	}
 	
+	@GetMapping("/vendasFinalizadas")
+	public ModelAndView relatorioVendasFinalizadas(PeriodoRelatorio periodoRelatorio) {
+		ModelAndView mv = new ModelAndView("relatorio/RelatorioVendasFinalizadas");
+		mv.addObject(periodoRelatorio);
+		return mv;
+	}
+	
+	@PostMapping("/vendasFinalizadas")
+	public ModelAndView gerarRelatorioVendasFinalizadas(@Valid PeriodoRelatorio periodoRelatorio, BindingResult result, RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			return relatorioVendasEmitidas(periodoRelatorio);
+		}
+		
+		Map<String, Object> parametros = new HashMap<>();
+		
+		Date dataInicio = Date.from(LocalDateTime.of(periodoRelatorio.getDataInicio(), LocalTime.of(0, 0, 0))
+				.atZone(ZoneId.systemDefault()).toInstant());
+		Date dataFim = Date.from(LocalDateTime.of(periodoRelatorio.getDataFim(), LocalTime.of(23, 59, 59))
+				.atZone(ZoneId.systemDefault()).toInstant());
+		
+		parametros.put("format", "pdf");
+		parametros.put("data_inicio", dataInicio);
+		parametros.put("data_fim", dataFim);
+		parametros.put("sub_report_page_footer", "relatorios/sub-relatorios/relatorio_page_footer.jasper");
+		
+		return new ModelAndView("relatorio_vendas_finalizadas", parametros);
+	}
 }
