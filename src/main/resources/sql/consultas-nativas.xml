@@ -10,7 +10,7 @@
 				 , count(*) total
   			from venda
   			where data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-  			  and status = 'EMITIDA'
+  			  and status = 'FINALIZADA'
 			group by date_format(data_criacao, '%Y/%m')   
 			order by date_format(data_criacao, '%Y/%m') desc
 	    </query>
@@ -54,7 +54,7 @@
 			INNER JOIN categoria c ON (p.codigo_categoria=c.codigo)
 			INNER JOIN venda v ON (i.codigo_venda=v.codigo)
 			WHERE v.data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-			  AND status = 'EMITIDA'
+			  AND status = 'FINALIZADA'
 			GROUP BY c.nome
 	    </query>
 	</named-native-query>	

@@ -11,7 +11,7 @@
         	<img alt="TSS" th:src="@{/images/logo-branco-logo.png}"/>
       	</a>
 
-      	<ul class="nav  navbar-nav">
+      	<ul class="nav  navbar-nav" title="Menu">
         	<li>
           		<a href="#" class="js-sidebar-toggle"><i class="fa  fa-bars"></i></a>
         	</li>
@@ -23,7 +23,7 @@
     		<p class="navbar-text" th:text="${#authentication.principal.usuario.nome}">Usuário</p>
     	</li>
     
-    	<li>
+    	<li title="Sair do sistema">
         	<a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
       	</li> 
     </ul>

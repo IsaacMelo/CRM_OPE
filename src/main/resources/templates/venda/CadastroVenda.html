@@ -90,7 +90,7 @@
 				      	placeholder="Clique na lupa para pesquisar o cliente"/>
 				      <input id="codigoCliente" type="hidden" th:field="*{cliente}"/>
 				      <span class="input-group-btn">
-				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
+				        <button class="btn  btn-default" type="button" title="Pesquisar cliente"
 				        		data-toggle="modal" data-target="#pesquisaRapidaClientes" th:disabled="${venda.salvarProibido}">
 				        	<i class="glyphicon  glyphicon-search"></i>
 				        </button>
@@ -103,7 +103,7 @@
 					<div class="input-group">
 	      				<div class="input-group-addon">R$</div> 
 						<input type="text" maxlength="14" class="form-control  js-decimal" id="valorFrete" 
-							th:field="*{valorFrete}" data:valor="${valorFrete}" th:disabled="${venda.salvarProibido}"/>
+							th:field="*{valorFrete}" data:valor="${valorFrete}" th:disabled="${venda.salvarProibido}" title="Digite o valor do frete"/>
 					</div>
 				</div>
 				
@@ -112,14 +112,14 @@
 					<div class="input-group">
 	      				<div class="input-group-addon">R$</div> 
 						<input type="text" maxlength="14" class="form-control  js-decimal" id="valorDesconto" 
-							th:field="*{valorDesconto}" data:valor="${valorDesconto}" th:disabled="${venda.salvarProibido}"/>
+							th:field="*{valorDesconto}" data:valor="${valorDesconto}" th:disabled="${venda.salvarProibido}"  title="Digite o valor do desconto"/>
 					</div>
 				</div>
 				
 				<div class="col-sm-4  form-group  bw-required" brewer:classforerror="formaPagamento.codigo">
 					<label for="estilo" class="control-label">Forma de Pagamento</label>
 					<div class="bw-field-action" th:disabled="${venda.salvarProibido}">
-						<select th:disabled="${venda.salvarProibido}" id="formaPagamento" class="form-control" th:field="*{formaPagamento}">
+						<select th:disabled="${venda.salvarProibido}" id="formaPagamento" class="form-control" th:field="*{formaPagamento}" title="Selecione a forma de pagamento">
 							<option value="">Selecione o Pagamento</option>
 							<option th:each="formaPagamento : ${formaPagamentos}" th:value="${formaPagamento.codigo}" th:text="${formaPagamento.nome}">Dinheiro</option>
 						</select>
@@ -131,8 +131,8 @@
 			<div class="row">
 				<div class="form-group  col-lg-12">
 					<ul class="nav nav-tabs  js-abas-venda">
-					  <li role="presentation" class="active"><a href="#produtos">Produtos</a></li>
-					  <li role="presentation"><a href="#entrega">Entrega</a></li>
+					  <li role="presentation" class="active"><a href="#produtos" title="Informações do(s) produto(s)">Produtos</a></li>
+					  <li role="presentation"><a href="#entrega" title="Informações de entrega">Entrega</a></li>
 					</ul>
 				</div>
 			</div>
@@ -157,19 +157,19 @@
 					<div class="row">
 						<div class="form-group  col-sm-3" brewer:classforerror="dataEntrega">
 							<label class="control-label" for="dataEntrega">Data da entrega</label>
-							<input type="text" class="form-control js-date" id="dataEntrega" th:field="*{dataEntrega}" th:disabled="${venda.salvarProibido}"/>
+							<input type="text" class="form-control js-date" id="dataEntrega" th:field="*{dataEntrega}" th:disabled="${venda.salvarProibido}" title="Informe a data de entrega do pedido"/>
 						</div>
 						
 						<div class="form-group  col-sm-3">
 							<label class="control-label" for="horarioEntrega">Horário de entrega</label>
-							<input type="text" class="form-control js-time" id="horarioEntrega" th:field="*{horarioEntrega}" th:disabled="${venda.salvarProibido}"/>
+							<input type="text" class="form-control js-time" id="horarioEntrega" th:field="*{horarioEntrega}" th:disabled="${venda.salvarProibido}" title="Informe o horário de entrega do pedido"/>
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="form-group  col-sm-12">
 							<textarea class="form-control" id="dataEntrega" rows="5" 
-								placeholder="Alguma observação para o entregador desse pedido?" th:field="*{observacao}" th:disabled="${venda.salvarProibido}"></textarea>
+								placeholder="Alguma observação para o entregador desse pedido?" th:field="*{observacao}" th:disabled="${venda.salvarProibido}" title="Caso não haja, deixar em branco"></textarea>
 						</div>
 					</div>
 				</div>
@@ -178,7 +178,7 @@
 			<div class="row" style="clear: both" th:if="${venda.salvarPermitido}">
 				<div class="col-lg-12">
 					<div class="btn-group">
-					  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar"><i class="fa fa-floppy-o"></i> Salvar</button>
+					  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar"title="Salvar informações e manter status atual"><i class="fa fa-floppy-o"></i> Salvar</button>
 					  <button type="button" class="btn  btn-primary  dropdown-toggle" data-toggle="dropdown">
 					    <span class="caret"></span>
 					  </button>

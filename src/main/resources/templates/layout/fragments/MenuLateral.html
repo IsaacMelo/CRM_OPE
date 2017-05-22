@@ -82,13 +82,28 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
+
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasEmitidas}" sec:authorize-url="/relatorios/vendasEmitidas">
 			            	<a th:href="@{/relatorios/vendasEmitidas}">Vendas emitidas</a>
+
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasEmitidas}">
+			            	<a th:href="@{/relatorios/vendasEmitidas}">Vendas Emitidas</a>
+			            </li>
+          			</ul>
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/vendasFinalizadas}">
+			            	<a th:href="@{/relatorios/vendasFinalizadas}">Vendas Finalizadas</a>
+
 			            </li>
           			</ul>
           			<ul class="aw-menu__list  aw-menu__list--sublist">
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{.*/comissaoVendedor}" sec:authorize-url="/relatorios/comissaoVendedor">
 			            	<a th:href="@{/relatorios/comissaoVendedor}">Comissão Vendedor</a>
+			            </li>
+          			</ul>
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/relatorios/produtos}">
+			            	<a th:href="@{/relatorios/produtos}">Produtos</a>
 			            </li>
           			</ul>
         		</li>
