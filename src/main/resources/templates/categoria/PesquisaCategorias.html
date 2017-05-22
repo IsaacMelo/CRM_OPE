@@ -21,7 +21,7 @@
 				
 				<div class="col-sm-2">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/categorias/novo}">
+						<a class="btn  btn-default" th:href="@{/categorias/novo}"  title="Cadastrar nova categoria">
 							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova categoria</span>
 						</a>
 					</div>
@@ -35,11 +35,11 @@
 			<div class="row">
 				<div class="form-group  col-sm-12">
 					<label class="control-label" for="nome">Categoria</label>
-					<input type="text" class="form-control" id="categoria" autofocus="autofocus" th:field="*{nome}"/>
+					<input type="text" class="form-control" id="categoria" autofocus="autofocus" th:field="*{nome}"  title="Informe o nome da categoria do produto"/>
 				</div>
 			</div>
 			
-			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			<button type="submit" class="btn  btn-primary" title="Pesquisar categoria">Pesquisar</button>
 		</form>
 		
 		<div class="table-responsive  bw-tabela-simples">
@@ -47,7 +47,7 @@
 				<thead>
 					<tr>
 						<th class="table-estilos-col-codigo">Código</th>
-						<th>
+						<th  title="Ordenar por nome da categoria">
 							<brewer:order page="${pagina}" field="nome" text="Nome"/>
 						</th>
 						<th class="table-col-acoes"></th>

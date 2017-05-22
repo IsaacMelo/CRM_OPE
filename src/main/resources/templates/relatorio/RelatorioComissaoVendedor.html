@@ -26,7 +26,7 @@
 		<form method="POST" th:object="${filtroRelatorioComissaoVendedor}" th:action="@{/relatorios/comissaoVendedor}" target="_blank">
 			<brewer:message/>
 			
-			<div class="row">
+			<div class="row" title="Informe o período para criar relatório de comissão por vendedor">
 				<div class="form-group  col-sm-2  bw-required">
 					<label for="dataInicio">Data inicio</label>
 					<div class="input-group" brewer:classforerror="dataInicio">
@@ -51,7 +51,7 @@
 					    	placeholder="Clique na lupa para pesquisar o vendedor"/>
 					    <input id="codigoUsuario" type="hidden" th:field="*{codigoVendedor}"/>
 					    <span class="input-group-btn">
-					      <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
+					      <button class="btn  btn-default" type="button" title="Pesquisar vendedor"
 					      		data-toggle="modal" data-target="#pesquisaRapidaUsuarios">
 					      	<i class="glyphicon  glyphicon-search"></i>
 					      </button>
@@ -59,7 +59,7 @@
 					</div>
 				 </div>
 			</div>
-			<button type="submit" class="btn  btn-primary">Emitir</button>
+			<button type="submit" class="btn  btn-primary" title="Emitir relatório">Emitir</button>
 		</form>
 	</div>
 	<th:block th:replace="usuario/PesquisaRapidaUsuarios :: pesquisaRapidaUsuarios"></th:block>
