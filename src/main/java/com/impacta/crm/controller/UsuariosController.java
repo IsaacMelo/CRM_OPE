@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ import com.impacta.crm.repository.Bancos;
 import com.impacta.crm.repository.Grupos;
 import com.impacta.crm.repository.Usuarios;
 import com.impacta.crm.repository.filter.UsuarioFilter;
+import com.impacta.crm.security.UsuarioSistema;
 import com.impacta.crm.service.CadastroUsuarioService;
 import com.impacta.crm.service.StatusUsuario;
 import com.impacta.crm.service.exception.ContaBancariaJaCadastradaException;
@@ -88,8 +90,12 @@ public class UsuariosController {
 		return mv;
 	}
 			
-	@PostMapping({ "/usuarios/novo", "/usuarios/{\\+d}" })
+	@PostMapping({ "/usuarios/novo", "/usuarios/{\\+d}"})
 	public ModelAndView salvar(@Valid Usuario usuario, BindingResult result, RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			return novo(usuario);
+		}
 		
 		usuario.adicionarContas(tabelaContas.getContas(usuario.getUuid()));
 		
@@ -126,6 +132,7 @@ public class UsuariosController {
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
+	
 	//Pesquisa rápida
 	@RequestMapping(value = "/pesquisaRapida", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Usuario> pesquisar(String nome){
@@ -134,7 +141,7 @@ public class UsuariosController {
 		return users;
 	}
 	
-	private void validarTamanhoNome(String nome) {
+	private void validarTamanhoNome(String nome) {new ModelAndView("redirect:/usuarios/novo");
 		if (StringUtils.isEmpty(nome) || nome.length() < 3) {
 			throw new IllegalArgumentException();
 		}
@@ -157,6 +164,66 @@ public class UsuariosController {
 		ModelAndView mv = novo(usuario);
 		mv.addObject(usuario);
 		return mv;
+	}
+	
+	@RequestMapping("/meusDados")
+	public ModelAndView editarMeusDados(Usuario usuario) {
+		ModelAndView mv = new ModelAndView("usuario/MeusDados");
+		
+		if(StringUtils.isEmpty(usuario.getUuid())){
+			usuario.setUuid(UUID.randomUUID().toString());
+			tabelaContas.adiconarTabela(usuario.getContas(), usuario.getUuid());
+		}else{
+			tabelaContas.adiconarTabela(usuario.getContas(), usuario.getUuid());
+		}
+		
+		mv.addObject("grupos", grupos.findAll());
+		mv.addObject("bancos", bancos.findAll());
+		mv.addObject("contas", tabelaContas.getContas(usuario.getUuid()));
+		mv.addObject("principal", false);
+		return mv;
+	}
+	
+	@GetMapping("/meusDados/{codigo}")
+	public ModelAndView meusDados(@PathVariable Long codigo, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		if(!usuarioSistema.getUsuario().getCodigo().equals(codigo)){
+			return new ModelAndView("redirect:/meusDados/"+usuarioSistema.getUsuario().getCodigo());
+		}
+		Usuario usuario = usuarios.buscarComGrupos(codigo);
+		ModelAndView mv = editarMeusDados(usuario);
+		mv.addObject(usuario);
+		return mv;
+	}
+	
+	@PostMapping({"/meusDados/{\\+d}"})
+	public ModelAndView salvarmMeusDados(@Valid Usuario usuario, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		
+		if (result.hasErrors()) {
+			return novo(usuario);
+		}
+		
+		usuario.adicionarContas(tabelaContas.getContas(usuario.getUuid()));
+		
+		try {
+			cadastroUsuarioService.salvar(usuario);
+		} catch (EmailUsuarioJaCadastradoException e) {
+			result.rejectValue("email", e.getMessage(), e.getMessage());
+			return novo(usuario);
+		} catch (SenhaObrigatoriaUsuarioException e) {
+			result.rejectValue("senha", e.getMessage(), e.getMessage());
+			return novo(usuario);
+		} catch(ContaObrigatoriaUsuarioException e){
+			result.reject("", e.getMessage());
+		} catch(ContaPrincipalUsuarioException e){
+			result.reject("", e.getMessage());
+		} 
+		
+		if (result.hasErrors()) {
+			return novo(usuario);
+		}
+		
+		attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso");
+		return new ModelAndView("redirect:/meusDados/"+usuarioSistema.getUsuario().getCodigo());
 	}
 	
 	@RequestMapping(value = "/contas",method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})

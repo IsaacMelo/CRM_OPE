@@ -1,5 +1,5 @@
-INSERT INTO permissao VALUES (1, 'ROLE_CADASTRAR_CATEGORIAS');
-INSERT INTO permissao VALUES (2, 'ROLE_CADASTRAR_USUARIOS');
+INSERT INTO permissao VALUES (1, 'ROLE_MANTER_CATEGORIAS');
+INSERT INTO permissao VALUES (2, 'ROLE_MANTER_USUARIOS');
 
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 1);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 2);

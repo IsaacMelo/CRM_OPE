@@ -112,11 +112,10 @@
 							</th:block>
 						</td>
 	                 	<td class="text-center">
-							<a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"
-								th:if="${#authentication.principal.usuario.codigo == usuario.codigo}"> 
+							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs js-tooltip" title="Excluir" th:if="${#authentication.principal.usuario.codigo == usuario.codigo}" >
+							<a class="btn  btn-link  btn-xs icon_red js-tooltip" title="Excluir">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>

@@ -23,7 +23,7 @@
 		<div class="alert alert-info" role="alert">
 		<i class="glyphicon glyphicon-info-sign"></i> <span th:text="|Bem-vindo, ${#authentication.principal.usuario.nome} ao TSS - The Seller System|"></span></div>
 	</div>
-	<div class="container-fluid" sec:authorize="hasRole('VISUALIZAR_DASHBOARD')">
+	<div class="container-fluid" sec:authorize="hasRole('DASHBOARD')">
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="aw-box">
