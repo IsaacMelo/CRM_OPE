@@ -19,16 +19,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1 th:if="${usuario.novo}">Cadastro de Usuário</h1>
-					<h1 th:unless="${usuario.novo}">Edição de Usuário - [[${usuario.nome}]]</h1>
-				</div>
-				
-				<div class="col-xs-2">
-					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/usuarios}" title="Pesquisar por usuário">
-							<i class="glyphicon glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
-						</a>
-					</div>
+					<h1>Edição de Usuário - [[${usuario.nome}]]</h1>
 				</div>
 			</div>
 		</div>
@@ -36,7 +27,7 @@
 	
 	<div class="container-fluid">
 		<form method="POST" th:object="${usuario}" 
-				th:action="${usuario.novo} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">
+				th:action="@{/meusDados/{codigo}(codigo=${usuario.codigo})}">
 			<brewer:message/>
 			
 					<input type="hidden" id="uuid"  name="uuid" th:field="*{uuid}"/>

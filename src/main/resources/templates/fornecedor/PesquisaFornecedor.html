@@ -81,10 +81,10 @@
 						</td>
 						<td class="text-right" th:text="${fornecedor.endereco.cidade} + '/' + ${fornecedor.endereco.estado}"></td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/fornecedores/{codigo}(codigo=${fornecedor.codigo})}"> 
+							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" th:href="@{/fornecedores/{codigo}(codigo=${fornecedor.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" title="Excluir" data:objeto="${fornecedor.nome}"
+							<a class="btn  btn-link  btn-xs icon_red js-tooltip js-exclusao-btn" title="Excluir" data:objeto="${fornecedor.nome}"
 							 href="#" data:url="@{/fornecedores/{codigo}(codigo=${fornecedor.codigo})}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>

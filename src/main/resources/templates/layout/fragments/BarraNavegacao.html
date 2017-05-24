@@ -20,7 +20,7 @@
 
     <ul class="nav navbar-nav  navbar-right">
     	<li>
-    		<p class="navbar-text" th:text="${#authentication.principal.usuario.nome}">Usuário</p>
+    		<a class="avbar-text" th:href="@{/meusDados/{codigo}(codigo=${#authentication.principal.usuario.codigo})}" th:text="${#authentication.principal.usuario.nome}"></a>
     	</li>
     
     	<li title="Sair do sistema">

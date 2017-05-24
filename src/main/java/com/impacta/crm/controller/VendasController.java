@@ -1,10 +1,7 @@
 package com.impacta.crm.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,12 +31,10 @@ import com.impacta.crm.controller.validator.VendaItemValidator;
 import com.impacta.crm.controller.validator.VendaValidator;
 import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
-import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.mail.Mailer;
-import com.impacta.crm.model.Produto;
-import com.impacta.crm.model.Fornecedor;
 import com.impacta.crm.model.ItemVenda;
 import com.impacta.crm.model.Parametro;
+import com.impacta.crm.model.Produto;
 import com.impacta.crm.model.StatusVenda;
 import com.impacta.crm.model.TipoPessoa;
 import com.impacta.crm.model.Venda;

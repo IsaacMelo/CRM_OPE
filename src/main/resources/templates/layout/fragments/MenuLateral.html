@@ -11,71 +11,71 @@
     	<nav class="aw-menu  js-menu">
       		<ul class="aw-menu__list">
 
-        		<li class="aw-menu__item" brewer:menu="@{/}" sec:authorize="hasRole('VISUALIZAR_DASHBOARD')">
+        		<li class="aw-menu__item" brewer:menu="@{/}" sec:authorize="hasRole('DASHBOARD')">
           			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
         		</li>
         		
-        		<li class="aw-menu__item" brewer:menu="@{/parametros}" sec:authorize-url="/parametros">
+        		<li class="aw-menu__item" brewer:menu="@{/parametros}" sec:authorize="hasRole('MANTER_PARAMETROS')">
           			<a th:href="@{/parametros}"><i class="fa  fa-fw  fa-cog"></i><span>Configurações</span></a>
         		</li>
         		
-        		<li class="aw-menu__item">
+        		<li class="aw-menu__item" sec:authorize="hasAnyRole('MANTER_VENDAS','MANTER_VENDAS_FATURADAS')">
           			<a href="#">
             			<i class="fa  fa-fw  fa-credit-card"></i><span>Vendas</span>
             			<i class="aw-menu__navigation-icon  fa"></i>
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}" sec:authorize-url="/vendas/nova">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}" sec:authorize="hasRole('MANTER_VENDAS')">
 			            	<a th:href="@{/vendas/nova}">Cadastro de venda</a>
 			            </li>
 			            
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}" sec:authorize-url="/vendas">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}" sec:authorize="hasRole('MANTER_VENDAS')">
 			            	<a th:href="@{/vendas}">Pesquisa de vendas</a>
 			            </li>
 			            
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/faturadas}" sec:authorize-url="/vendas/faturadas">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/faturadas}" sec:authorize="hasRole('MANTER_VENDAS_FATURADAS')">
 			            	<a th:href="@{/vendas/faturadas}">Vendas faturadas</a>
 			            </li>
 			        </ul>
 			    </li>
 
-        		<li class="aw-menu__item">
+        		<li class="aw-menu__item" sec:authorize="hasAnyRole('MANTER_PRODUTOS','MANTER_CATEGORIAS')">
           			<a href="#">
             			<i class="fa  fa-fw  fa-truck"></i><span>Estoque</span>
             			<i class="aw-menu__navigation-icon  fa"></i>
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/categorias.*}" sec:authorize-url="/categorias">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/categorias.*}" sec:authorize="hasRole('MANTER_CATEGORIAS')">
 			            	<a th:href="@{/categorias}">Categorias</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/produtos.*}" sec:authorize-url="/produtos">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/produtos.*}" sec:authorize="hasRole('MANTER_PRODUTOS')">
 			            	<a th:href="@{/produtos}">Produtos</a>
 			            </li>
           			</ul>
         		</li>
 
-        		<li class="aw-menu__item">
+        		<li class="aw-menu__item" sec:authorize="hasAnyRole('MANTER_CLIENTES','MANTER_USUARIOS','MANTER_FORNECEDORES')">
           			<a href="#">
             			<i class="fa  fa-fw  fa-database"></i><span>Cadastros</span>
             			<i class="aw-menu__navigation-icon  fa"></i>
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/fornecedores.*}" sec:authorize-url="/fornecedores">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/fornecedores.*}" sec:authorize="hasRole('MANTER_FORNECEDORES')">
 			            	<a th:href="@{/fornecedores}">Fornecedores</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}" sec:authorize-url="/clientes">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}" sec:authorize="hasRole('MANTER_CLIENTES')">
 			            	<a th:href="@{/clientes}">Clientes</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}" sec:authorize-url="/usuarios">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}" sec:authorize="hasRole('MANTER_USUARIOS')">
 			            	<a th:href="@{/usuarios}">Usuários</a>
 			            </li>
           			</ul>
         		</li>	
         		
-        		<li class="aw-menu__item">
+        		<li class="aw-menu__item" sec:authorize="hasRole('RELATORIOS')">
           			<a href="#">
             			<i class="fa  fa-fw  fa-file-pdf-o"></i><span>Relatórios</span>
             			<i class="aw-menu__navigation-icon  fa"></i>
