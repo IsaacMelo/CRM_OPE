@@ -1,12 +1,12 @@
 Brewer = Brewer || {};
 
-Brewer.DialogoExcluir = (function() {
+Brewer.DialogoExcluirLogico = (function() {
 	
-	function DialogoExcluir() {
-		this.exclusaoBtn = $('.js-exclusao-btn-permanente');
+	function DialogoExcluirLogico() {
+		this.exclusaoBtn = $('.js-exclusao-btn-logico');
 	}
 	
-	DialogoExcluir.prototype.iniciar = function() {
+	DialogoExcluirLogico.prototype.iniciar = function() {
 		this.exclusaoBtn.on('click', onExcluirClicado.bind(this));
 		if (window.location.search.indexOf('excluido') > -1) {
 			window.history.pushState('','',window.location.href.replace('?excluido',''));
@@ -20,29 +20,28 @@ Brewer.DialogoExcluir = (function() {
 		var botaoClicado = $(evento.currentTarget);
 		var url = botaoClicado.data('url');
 		var objeto = botaoClicado.data('objeto');
-		var redirect = botaoClicado.data('redirect');
 		
 		swal({
 			title: 'Tem certeza?',
-			text: 'Excluir ' + objeto + ' ? Você não poderá recuperar depois.',
+			text: 'Deseja Inativar ' + objeto + ' ?',
 			showCancelButton: true,
 			confirmButtonColor: '#DD6B55',
-			confirmButtonText: 'Sim, excluir agora!',
+			confirmButtonText: 'Sim, inativar agora!',
 			closeOnConfirm: false
-		}, onExcluirConfirmado.bind(this, url, redirect));
+		}, onExcluirConfirmado.bind(this, url));
 	}
 	
-	function onExcluirConfirmado(url,redirect) {
+	function onExcluirConfirmado(url) {
 		$.ajax({
 			url: url,
 			method: 'DELETE',
-			success: onExcluidoSucesso.bind(this, redirect),
+			success: onExcluidoSucesso.bind(this),
 			error: onErroExcluir.bind(this)
 		});
 	}
 	
-	function onExcluidoSucesso(redirect) {
-		var urlAtual = redirect;
+	function onExcluidoSucesso() {
+		var urlAtual = window.location.href;
 		var separador = urlAtual.indexOf('?') > -1 ? '&' : '?';
 		var novaUrl = urlAtual.indexOf('excluido') > -1 ? urlAtual : urlAtual + separador + 'excluido';
 		window.location = novaUrl;
@@ -52,11 +51,11 @@ Brewer.DialogoExcluir = (function() {
 		swal('Oops!', e.responseText, 'error');
 	}
 	
-	return DialogoExcluir;
+	return DialogoExcluirLogico;
 	
 }());
 
 $(function() {
-	var dialogo = new Brewer.DialogoExcluir();
-	dialogo.iniciar();
+	var dialogoLogico = new Brewer.DialogoExcluirLogico();
+	dialogoLogico.iniciar();
 });

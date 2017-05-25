@@ -68,7 +68,7 @@
 						
 						<div class="form-group  col-sm-3  bw-required" brewer:classforerror="rg">
 							<label for="rg" class="control-label">RG</label>
-							<input type="text" class="form-control" id="rg" th:field="*{rg}" title="Informe RG válido do usuário"/>
+							<input pattern="\b[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9]\b" type="text" class="form-control" id="rg" th:field="*{rg}" title="Informe RG válido do usuário. Ex: 12.345.678-9"/>
 						</div>
 						
 						<div class="form-group  col-sm-3" brewer:classforerror="telefone">
@@ -217,13 +217,13 @@
 						
 					</div>
 					
-					<div sec:authorize="hasRole('MANTER_PERMISSOES')" class="row" title="Definir nível de acesso ao sistema">
+					<div class="row" title="Definir nível de acesso ao sistema">
 						<div class="form-group  col-sm-6  bw-required" brewer:classforerror="grupos">
 							<label class="control-label">Grupos</label> 
 							<div>
 								<th:block th:each="grupo : ${grupos}">
 			  						<div class="checkbox  checkbox-inline"> 
-				    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
+				    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}" readonly="readonly"/>
 				    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
 			    					</div>
 			    				</th:block>
@@ -235,7 +235,7 @@
 			
 			</div>
 					
-			<button type="submit" class="btn  btn-primary" title="Salvar informações">Salvar</button>
+			<button type="submit" class="btn  btn-primary" title="Salvar informações"><i class="fa fa-floppy-o"></i> Salvar</button>
 		</form>
 		
 	</div>	
