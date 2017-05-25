@@ -2,6 +2,9 @@ package com.impacta.crm.repository.filter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import com.impacta.crm.model.StatusVenda;
 
@@ -15,9 +18,27 @@ public class VendaFilter {
 	private LocalDate ate;
 	private BigDecimal valorMinimo;
 	private BigDecimal valorMaximo;
-
+	
 	private String nomeCliente;
 	private String cpfOuCnpjCliente;
+	private Collection<GrantedAuthority> roles;
+	private Long codigoUsuario;
+
+	public Long getCodigoUsuario() {
+		return codigoUsuario;
+	}
+
+	public void setCodigoUsuario(Long codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+	public Collection<GrantedAuthority> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<GrantedAuthority> collection) {
+		this.roles = collection;
+	}
 
 	public Long getCodigo() {
 		return codigo;
