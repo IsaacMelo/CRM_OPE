@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			
-			<button type="submit" class="btn  btn-primary" title="Pesquisar categoria">Pesquisar</button>
+			<button type="submit" class="btn  btn-primary" title="Pesquisar categoria"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
 		</form>
 		
 		<div class="table-responsive  bw-tabela-simples">
@@ -63,11 +63,11 @@
 									th:href="@{/categorias/{codigo}(codigo=${categoria.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>							
-							<a class="btn  btn-link  btn-xs icon_red js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+							<!-- <a class="btn  btn-link  btn-xs icon_red js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
 									data:url="@{/categorias/{codigo}(codigo=${categoria.codigo})}"
 									data:objeto="${categoria.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
-							</a>
+							</a> -->
 						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">

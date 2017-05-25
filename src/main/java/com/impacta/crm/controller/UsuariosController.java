@@ -47,6 +47,7 @@ import com.impacta.crm.service.exception.ContaBancariaJaCadastradaException;
 import com.impacta.crm.service.exception.ContaObrigatoriaUsuarioException;
 import com.impacta.crm.service.exception.ContaPrincipalUsuarioException;
 import com.impacta.crm.service.exception.EmailUsuarioJaCadastradoException;
+import com.impacta.crm.service.exception.ImpossivelExcluirEntidadeException;
 import com.impacta.crm.service.exception.SenhaObrigatoriaUsuarioException;
 import com.impacta.crm.session.TabelaContaBancariaSession;
 
@@ -126,7 +127,6 @@ public class UsuariosController {
 			, @PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");
 		mv.addObject("grupos", grupos.findAll());
-		
 		PageWrapper<Usuario> paginaWrapper = new PageWrapper<>(usuarios.filtrar(usuarioFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
@@ -166,6 +166,18 @@ public class UsuariosController {
 		return mv;
 	}
 	
+	@DeleteMapping("/usuarios/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable Long codigo) {
+		Usuario usuario = usuarios.buscarComGrupos(codigo);
+		try{
+			cadastroUsuarioService.excluir(usuario);
+		} catch(ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+			
+		return ResponseEntity.ok().build();
+	}
+	
 	@RequestMapping("/meusDados")
 	public ModelAndView editarMeusDados(Usuario usuario) {
 		ModelAndView mv = new ModelAndView("usuario/MeusDados");
@@ -177,7 +189,7 @@ public class UsuariosController {
 			tabelaContas.adiconarTabela(usuario.getContas(), usuario.getUuid());
 		}
 		
-		mv.addObject("grupos", grupos.findAll());
+		mv.addObject("grupos", usuario.getGrupos());
 		mv.addObject("bancos", bancos.findAll());
 		mv.addObject("contas", tabelaContas.getContas(usuario.getUuid()));
 		mv.addObject("principal", false);

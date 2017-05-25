@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			
-			<button type="submit" class="btn  btn-primary" title="Pesquisar cliente">Pesquisar</button>
+			<button type="submit" class="btn  btn-primary" title="Pesquisar cliente"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
 		</form>
 		
 		<div class="table-responsive  bw-tabela-simples">
@@ -84,7 +84,7 @@
 							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" th:href="@{/clientes/{codigo}(codigo=${cliente.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs icon_red js-tooltip js-exclusao-btn" title="Excluir" data:objeto="${cliente.nome}"
+							<a class="btn  btn-link  btn-xs icon_red js-tooltip js-exclusao-btn-logico" title="Excluir" data:objeto="${cliente.nome}"
 							 href="#" data:url="@{/clientes/{codigo}(codigo=${cliente.codigo})}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>

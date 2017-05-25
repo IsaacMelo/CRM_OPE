@@ -59,7 +59,7 @@
   				</div>
 			</div>
 			
-			<button type="submit" class="btn  btn-primary" title="Efetuar pesquisa">Pesquisar</button>
+			<button type="submit" class="btn  btn-primary" title="Efetuar pesquisa"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
 		</form>
 		
 		<div class="aw-datatable-toolbar">
@@ -115,9 +115,10 @@
 							<a class="btn  btn-link  btn-xs icon_black js-tooltip" title="Editar" th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs icon_red js-tooltip" title="Excluir">
+							<!--  <a class="btn  btn-link  btn-xs icon_red js-tooltip js-exclusao-btn" title="Excluir"
+							data:url="@{@{/usuarios/{codigo}(codigo=${usuario.codigo})}}" data:objeto="${usuario.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
-							</a>
+							</a>-->
 						</td>
 	                </tr>
 	                

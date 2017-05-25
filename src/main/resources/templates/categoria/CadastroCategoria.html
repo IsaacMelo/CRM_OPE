@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/LayoutPadrao}">
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <head>
 	<title>Cadastro de Categoria</title>
@@ -42,7 +43,14 @@
 				</div>
 			</div>
 				
-			<button type="submit" class="btn  btn-primary" title="Salvar categoria">Salvar</button>
+			<button type="submit" class="btn  btn-primary" title="Salvar categoria">
+				<i class="fa fa-floppy-o"></i> Salvar
+			</button>
+			
+			<a th:if="${not categoria.nova}" class="btn  btn-danger js-exclusao-btn-permanente" data:objeto="${categoria.nome}" data:url="@{/categorias/{codigo}(codigo=${categoria.codigo})}"
+			data:redirect="@{/categorias}"> 
+				<i class="fa fa-trash-o fa-lg"></i> Excluir
+			</a>
 		</form>
 	</div>
 </section>

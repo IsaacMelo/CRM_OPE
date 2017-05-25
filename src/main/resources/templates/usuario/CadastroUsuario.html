@@ -35,7 +35,7 @@
 	</div>
 	
 	<div class="container-fluid">
-		<form method="POST" th:object="${usuario}" 
+		<form method="POST" th:object="${usuario}" class="js-formulario-principal"
 				th:action="${usuario.novo} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">
 			<brewer:message/>
 			
@@ -77,7 +77,7 @@
 						
 						<div class="form-group  col-sm-3  bw-required" brewer:classforerror="rg">
 							<label for="rg" class="control-label">RG</label>
-							<input type="text" class="form-control" id="rg" th:field="*{rg}" title="Informe RG válido do usuário"/>
+							<input type="text" pattern="\b[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9]\b" class="form-control" id="rg" th:field="*{rg}" title="Informe RG válido do usuário. Ex: 12.345.678-9"/>
 						</div>
 						
 						<div class="form-group  col-sm-3" brewer:classforerror="telefone">
@@ -244,7 +244,13 @@
 			
 			</div>
 					
-			<button type="submit" class="btn  btn-primary" title="Salvar informações">Salvar</button>
+			<button type="submit" class="btn  btn-primary" title="Salvar informações">
+				<i class="fa fa-floppy-o"></i> Salvar
+			</button>
+			<a th:if="${not usuario.novo}" class="btn  btn-danger js-exclusao-btn-permanente" data:objeto="${usuario.nome}" data:url="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"
+			data:redirect="@{/usuarios}"> 
+				<i class="fa fa-trash-o fa-lg"></i> Excluir
+			</a>
 		</form>
 		
 	</div>	
@@ -261,6 +267,7 @@
 	<script th:src="@{/javascripts/brewer.pesquisa-de-cep.js}"></script>
 	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
 	<script th:src="@{/javascripts/brewer.dialogo-excluir-conta.js}"></script>
+	<script th:src="@{/javascripts/brewer.dialogo-excluir-usuario.js}"></script>
 	<script th:src="@{/javascripts/conta.cadastro-rapido.js}"></script>
 	<script>
 	$(function(){

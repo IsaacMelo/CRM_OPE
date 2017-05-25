@@ -2,6 +2,8 @@ package com.impacta.crm.service;
 
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import com.impacta.crm.repository.Usuarios;
 import com.impacta.crm.service.exception.ContaObrigatoriaUsuarioException;
 import com.impacta.crm.service.exception.ContaPrincipalUsuarioException;
 import com.impacta.crm.service.exception.EmailUsuarioJaCadastradoException;
+import com.impacta.crm.service.exception.ImpossivelExcluirEntidadeException;
 import com.impacta.crm.service.exception.SenhaObrigatoriaUsuarioException;
 import com.impacta.crm.session.TabelaContaBancariaSession;
 
@@ -83,6 +86,16 @@ public class CadastroUsuarioService {
 			contasBancarias.delete(contaExclusao);
 		}
 		
+	}
+	
+	@Transactional
+	public void excluir(Usuario usuario){
+		try{
+			usuarios.delete(usuario);
+			usuarios.flush();
+		} catch(PersistenceException e){
+			throw new ImpossivelExcluirEntidadeException("Impossível apagar o usuário. Já fez uma venda.");
+		}
 	}
 	
 }
