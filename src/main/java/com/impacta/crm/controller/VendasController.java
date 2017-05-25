@@ -220,9 +220,12 @@ public class VendasController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
-			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
 				
+		vendaFilter.setRoles(usuarioSistema.getAuthorities());
+		vendaFilter.setCodigoUsuario(usuarioSistema.getUsuario().getCodigo());
+		
 		mv.addObject("todosUsuarios", usuarios.findByAtivoEquals(true));
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
@@ -249,8 +252,14 @@ public class VendasController {
 	}
 	
 	@GetMapping("/{codigo}")
-	public ModelAndView editar(@PathVariable Long codigo) {
+	public ModelAndView editar(@PathVariable Long codigo, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		Venda venda = vendas.buscarComItens(codigo);
+		
+		if(!verificarPermissao(usuarioSistema)){
+			if(!venda.getUsuario().getCodigo().equals(usuarioSistema.getUsuario().getCodigo())){
+				return new ModelAndView("/403");
+			}
+		}
 		
 		if(venda.getDataHoraEntrega() != null){
 			venda.setDataEntrega(venda.getDataHoraEntrega().toLocalDate());
@@ -323,7 +332,11 @@ public class VendasController {
 		statusVenda.add(StatusVenda.FATURADA);
 		statusVenda.add(StatusVenda.TRANSPORTE);
 		return statusVenda;
-		
+	}
+	
+	private boolean verificarPermissao(UsuarioSistema usuarioSistema){
+		return usuarioSistema.getAuthorities().stream()
+				.anyMatch(i -> i.getAuthority().equals("ROLE_TODAS_VENDAS"));
 	}
 
 }

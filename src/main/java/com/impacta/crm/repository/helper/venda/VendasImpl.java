@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -45,7 +46,7 @@ public class VendasImpl implements VendasQueries {
 	@Transactional(readOnly = true)
 	@Override
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class).addOrder(Order.desc("codigo"));
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
 		
@@ -56,11 +57,11 @@ public class VendasImpl implements VendasQueries {
 	@Transactional(readOnly = true)
 	@Override
 	public Page<Venda> filtrarFaturada(VendaFilter filtro, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class).addOrder(Order.desc("codigo"));
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltroFaturada(filtro, criteria);
 		
-		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+		return new PageImpl<>(criteria.list(), pageable, totalFaturada(filtro));
 	}
 	
 	@Transactional(readOnly = true)
@@ -137,6 +138,13 @@ public class VendasImpl implements VendasQueries {
 		return (Long) criteria.uniqueResult();
 	}
 	
+	private Long totalFaturada(VendaFilter filtro) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
+		adicionarFiltroFaturada(filtro, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
+	}
+	
 	private void adicionarFiltro(VendaFilter filtro, Criteria criteria) {
 		criteria.createAlias("cliente", "c");
 		criteria.createAlias("usuario", "u");
@@ -178,6 +186,10 @@ public class VendasImpl implements VendasQueries {
 			
 			if (!StringUtils.isEmpty(filtro.getCpfOuCnpjCliente())) {
 				criteria.add(Restrictions.eq("c.cpfOuCnpj", TipoPessoa.removerFormatacao(filtro.getCpfOuCnpjCliente())));
+			}
+			
+			if(!filtro.getRoles().stream().anyMatch(i -> i.getAuthority().equals("ROLE_TODAS_VENDAS"))){
+				criteria.add(Restrictions.eq("u.codigo", filtro.getCodigoUsuario()));
 			}
 			
 		}

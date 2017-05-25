@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.impacta.crm.dto.VendaCategoria;
 import com.impacta.crm.dto.VendaMes;
-import com.impacta.crm.dto.VendaOrigem;
 import com.impacta.crm.model.Venda;
 import com.impacta.crm.repository.filter.VendaFilter;
 
