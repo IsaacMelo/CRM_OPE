@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<head>
+	<title>Pesquisa de vendas</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de Registros</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/controleEstoque/nova}" title="Efetuar novo registro">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo registro</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${RegistroFilter}" th:action="@{/controleEstoque}">
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label class="control-label" for="codigo">Código</label>
+					<input type="text" class="form-control" id="codigo" autofocus="autofocus" th:field="*{codigo}"  title="Digite o código da venda"/>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label for="status" class="control-label">Tipo de Registro</label>
+					<select id="status" class="form-control" th:field="*{status}" title="Selecione o tipo de registro">
+	                    <option value="">Todos os status</option>
+	                    <option th:each="registro : ${todosRegistros}" th:value="${registro}" th:text="${registro.descricao}"></option>
+	                </select>
+				</div>
+
+			</div>
+			
+			<div class="row" title="Informe o período a ser pesquisado">
+				<div class="form-group  col-sm-6">
+					<label for="dataCriacaoInicial">Data de criação</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="dataCriacaoInicial" 
+							th:field="*{desde}" autocomplete="off"/>
+						<label for="dataCriacaoFinal" class="aw-form-label-between">até</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="dataCriacaoInicial" 
+							th:field="*{ate}" autocomplete="off"/>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label class="control-label" for="nomeUsuario">Nome usuário</label>
+					<input type="text" class="form-control" id="nomeUsuario" th:field="*{nomeUsuario}" title="Informe o nome do usuario"/>
+				</div>
+				
+			</div>
+			
+			<button type="submit" class="btn  btn-primary" title="Efetuar pesquisa"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive  bw-tabela-simples">
+			<table class="table  table-hover">
+	            <thead>
+	            	<tr>
+	                	<th>
+	                		<brewer:order page="${pagina}" field="codigo" text="Código"/>
+	                	</th>
+	                	<th>
+	                		<brewer:order page="${pagina}" field="c.nome" text="Usuário"/>
+	                	</th>
+	                	<th>Data de criação</th>
+	                	<th>Tipo Registro</th>
+	                 	<th class="table-col3-acoes"></th>
+					</tr>
+				</thead>
+				
+	            <tbody>
+					<tr th:each="registro : ${pagina.conteudo}">
+						<td th:text="${registro.codigo}"></td>
+						<td th:text="${registro.usuario.nome}"></td>
+						<td th:text="${{registro.dataCriacao}}"></td>
+						<td th:text="${registro.registro.descricao}"></td>
+	                 	<td >
+		   				
+		   					<a class="btn  btn-link icon_black btn-xs  js-tooltip" title="visualizar" 
+		   							th:href="@{/controleEstoque/{codigo}(codigo=${registro.codigo})}">
+		   						<i class="glyphicon glyphicon-pencil"></i>
+		   					</a>
+		   					
+	                 	</td>
+	                </tr>
+	                
+	                <tr th:if="${pagina.vazia}">
+	                	<td colspan="7">Nenhuma venda encontrada</td>
+	                </tr>
+	             </tbody>
+	         </table>
+		</div>
+		
+		<brewer:pagination page="${pagina}"/>
+	</div>
+</section>
+
+</body>
+</html>

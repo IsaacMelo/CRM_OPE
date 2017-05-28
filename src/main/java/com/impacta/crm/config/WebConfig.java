@@ -24,13 +24,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
+import com.impacta.crm.controller.ControleDeEstoqueController;
 import com.impacta.crm.controller.ProdutoController;
 import com.impacta.crm.session.TabelaContaBancariaSession;
+import com.impacta.crm.session.TabelaItensEstoqueSession;
 import com.impacta.crm.thymeleaf.BrewerDialect;
 
 @Configuration
 @EnableSpringDataWebSupport
-@ComponentScan(basePackageClasses = {ProdutoController.class, TabelaContaBancariaSession.class})
+@ComponentScan(basePackageClasses = {ProdutoController.class, ControleDeEstoqueController.class, TabelaContaBancariaSession.class, TabelaItensEstoqueSession.class})
 @EnableCaching
 @EnableAsync
 public class WebConfig extends WebMvcConfigurerAdapter {

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<title>Cadastro de venda</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+	<style type="text/css">
+		.easy-autocomplete {
+			width:auto !important;
+		}
+	</style>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${registroEstoque.novo}">Nova Entrada/Saída</h1>
+					<h1 th:unless="${registroEstoque.novo}" th:text="${|Entrada/Saída Nº registroEstque.codigo}"></h1>
+				</div>
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/controleEstoque}" title="Pesquisar vendas">
+							<i class="glyphicon glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${registroEstoque}" th:action="@{/controleEstoque/novo}"  class="js-formulario-principal" >
+			<brewer:message/>
+		
+			<input type="hidden" id="uuid" th:field="*{uuid}"/>
+			<input type="hidden" />
+			<input type="hidden" />
+						
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="aw-box js-valor-comissao-box-container">
+						<div class="aw-box__icon">
+							<i class="fa  fa-list-ol  fa-3x"></i>
+						</div>
+						<div class="aw-box__value"><span class="js-total-produtos-box" th:text="${registroEstoque.totalProdutos}">3</span></div>
+						<div class="aw-box__title">Total de Produtos</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="aw-box  js-valor-total-box-container">
+						<div class="aw-box__icon">
+							<i class="fa fa-cubes  fa-3x"></i>
+						</div>
+						<div class="aw-box__value"><span class="js-total-itens-box" th:text="${registroEstoque.totalItens}">300</span></div>
+						<div class="aw-box__title">Total de itens</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-3">
+					<div class="aw-box">
+						<div class="aw-box__icon">
+							<i class="fa  fa-tag  fa-3x"></i>
+						</div>
+						<div class="aw-box__value js-registro-box" th:if="${tipoRegistro != null}" th:text="${tipoRegistro.descricao}">Selecione o tipo</div>
+						<div class="aw-box__value js-registro-box" th:unless="${tipoRegistro != null}">Nenhum Tipo</div>
+						<input id="statusVenda" type="hidden" />
+						<div class="aw-box__title">Registro</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-3">
+					<div class="aw-box">
+						<div class="aw-box__icon">
+							<i class="fa  fa-calendar  fa-3x"></i>
+						</div>
+						<div class="aw-box__value">
+							<span class="js-tooltip" th:if="${registroEstoque.diasCriacao == 0}">Hoje</span>
+							<span class="js-tooltip" th:if="${registroEstoque.diasCriacao == 1}">Há 1 dia</span>
+							<span class="js-tooltip" th:if="${registroEstoque.diasCriacao > 1}">Há [[${registro.diasCriacao}]] dias</span>
+						</div>
+						<div class="aw-box__title">Criação</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group  col-sm-8  bw-required" >
+					<label class="control-label" for="nomeUsuario">Usuário</label>
+					
+				      <input id="nomeUsuario" type="text" name="usuario-nome"readonly="readonly" class="form-control" th:value="${#authentication.principal.usuario.nome}"/>
+				      <input id="codigoUsuario" type="hidden" name="usuario" th:value="${#authentication.principal.usuario.codigo}"/>
+				  
+				</div>
+				
+				<div class="col-sm-4  form-group  bw-required" brewer:classforerror="registro">
+					<label for="tipoRegistro" class="control-label">Tipo de Registro</label>
+					<div class="bw-field-action" >
+						<select  id="tipoRegistro" class="form-control" th:field="*{registro}" title="Selecione um tipo de registro">
+							<option value="">Selecione o Tipo</option>
+							<option th:each="registro : ${registros}" th:value="${registro}" th:text="${registro.descricao}"></option>
+						</select>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-lg-12">
+					<ul class="nav nav-tabs  js-abas-venda">
+					  <li role="presentation" class="active"><a href="#produtos" title="Informações do(s) produto(s)">Produtos</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane active" id="produtos">
+
+					<div class="row">
+						<div class="form-group  col-sm-12">
+							<input type="text" class="form-control  js-sku-nome-cerveja-input" id="produto" 
+								placeholder="Pesquise e adicione o produto pelo SKU ou nome" autofocus="autofocus" 
+								data:url="@{/produtos}"/>
+						</div>
+					</div>
+					
+					<div class="bw-tabela-cervejas  js-tabela-cervejas-container" data:itens="${totalItens}" data:produtos="${totalProdutos}" >
+						<th:block th:replace="estoque/TabelaItensEstoque"/>
+					</div>
+
+				</div>
+				
+			</div>
+			
+			<div class="row" style="clear: both" >
+				<div class="col-lg-12">
+				  <button type="submit" class="btn  btn-primary  js-submit-btn"  data:acao="salvar"title="Dar Entrada/Saída no estoque"><i class="fa fa-floppy-o"></i> Salvar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	
+	<th:block th:replace="hbs/TemplateAutocompleteEstoque"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/estoque.autocomplete-itens.js}"></script>
+		<script th:src="@{/javascripts/estoque.tabela-itens.js}"></script>
+	<script th:src="@{/javascripts/estoque.js}"></script>
+	<script>
+	$(function() {
+		$('.js-abas-venda a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
+	
+	$(function() {
+		Handlebars.registerHelper('EstoqueMaior', function (value) {
+			if (value > 1) {
+			return new Handlebars.SafeString("Unidades");
+			} else 
+			return "Unidade";
+			});
+	});
+	</script>
+</th:block>
+
+</html>

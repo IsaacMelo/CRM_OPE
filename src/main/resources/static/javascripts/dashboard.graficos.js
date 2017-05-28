@@ -111,7 +111,6 @@ Brewer.GraficoVendaPorCategoria = (function() {
 
 		//Testando a função:
 		var nova_cor = CorAleat();
-		console.log(nova_cor);
 		
 		
 		var nome = [];
