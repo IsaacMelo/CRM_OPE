@@ -49,7 +49,7 @@ public class ProdutosImpl implements ProdutosQueries {
 	
 	@Override
 	public List<ProdutoDTO> porSkuOuNome(String skuOuNome) {
-		String jpql = "select new com.impacta.crm.dto.ProdutoDTO(codigo, sku, nome, valor, foto) "
+		String jpql = "select new com.impacta.crm.dto.ProdutoDTO(codigo, sku, nome, valor, quantidadeEstoque, foto) "
 				+ "from Produto where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome) and ativo = 1";
 		List<ProdutoDTO> cervejasFiltradas = manager.createQuery(jpql, ProdutoDTO.class)
 					.setParameter("skuOuNome", skuOuNome + "%")
@@ -81,7 +81,7 @@ public class ProdutosImpl implements ProdutosQueries {
 				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
 			}
 
-			if (isEstiloPresente(filtro)) {
+			if (isCategoriaPresent(filtro)) {
 				criteria.add(Restrictions.eq("categoria", filtro.getCategoria()));
 			}
 
@@ -95,7 +95,7 @@ public class ProdutosImpl implements ProdutosQueries {
 		}
 	}
 	
-	private boolean isEstiloPresente(ProdutoFilter filtro) {
+	private boolean isCategoriaPresent(ProdutoFilter filtro) {
 		return filtro.getCategoria() != null && filtro.getCategoria().getCodigo() != null;
 	}
 

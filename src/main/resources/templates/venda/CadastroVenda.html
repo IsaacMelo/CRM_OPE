@@ -12,6 +12,11 @@
 	
 	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
 	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+	<style type="text/css">
+		.easy-autocomplete {
+			width:auto !important;
+		}
+	</style>
 </head>
 
 <section layout:fragment="conteudo">
@@ -125,7 +130,7 @@
 				</div>
 				
 				<div class="col-sm-4  form-group  bw-required" brewer:classforerror="formaPagamento.codigo">
-					<label for="estilo" class="control-label">Forma de Pagamento</label>
+					<label for="formaPagamento" class="control-label">Forma de Pagamento</label>
 					<div class="bw-field-action" th:disabled="${venda.salvarProibido}">
 						<select th:disabled="${venda.salvarProibido}" id="formaPagamento" class="form-control" th:field="*{formaPagamento}" title="Selecione a forma de pagamento">
 							<option value="">Selecione o Pagamento</option>
@@ -137,25 +142,27 @@
 			</div>
 			
 			<div class="row">
-				<div class="form-group  col-lg-12">
-					<ul class="nav nav-tabs  js-abas-venda">
-					  <li role="presentation" class="active"><a href="#produtos" title="Informações do(s) produto(s)">Produtos</a></li>
-					  <li role="presentation"><a href="#entrega" title="Informações de entrega">Entrega</a></li>
-					</ul>
+				<div class="col-xs-12">
+					<div class="form-group">
+						<ul class="nav nav-tabs  js-abas-venda">
+						  <li role="presentation" class="active"><a href="#produtos" title="Informações do(s) produto(s)">Produtos</a></li>
+						  <li role="presentation"><a href="#entrega" title="Informações de entrega">Entrega</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			
 			<div class="tab-content">
 				<div class="tab-pane active" id="produtos">
-
+		
 					<div class="row">
-						<div class="form-group  col-lg-12">
+						<div class="form-group col-sm-12">
 							<input type="text" class="form-control  js-sku-nome-cerveja-input" id="produto" 
 								placeholder="Pesquise e adicione o produto pelo SKU ou nome" autofocus="autofocus" 
 								data:url="@{/produtos}" th:disabled="${venda.salvarProibido}"/>
 						</div>
 					</div>
-					
+			
 					<div class="bw-tabela-cervejas  js-tabela-cervejas-container" data:valor="${valorTotalItens}">
 						<th:block th:replace="venda/TabelaItensVenda"/>
 					</div>

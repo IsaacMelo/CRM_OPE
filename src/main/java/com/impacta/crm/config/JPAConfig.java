@@ -17,10 +17,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.impacta.crm.model.Produto;
 import com.impacta.crm.repository.Produtos;
+import com.impacta.crm.repository.Registros;
 
 @Configuration
 @ComponentScan(basePackageClasses = Produtos.class)
-@EnableJpaRepositories(basePackageClasses = Produtos.class, enableDefaultTransactions = false)
+@EnableJpaRepositories(basePackageClasses = {Produtos.class, Registros.class}, enableDefaultTransactions = false)
 @EnableTransactionManagement
 public class JPAConfig {
 

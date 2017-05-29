@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.impacta.crm.security.AppUserDetailsService;
 
 @EnableWebSecurity
-@ComponentScan(basePackageClasses = AppUserDetailsService.class)
+@ComponentScan(basePackageClasses = {AppUserDetailsService.class, PasswordEncoder.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

@@ -9,15 +9,17 @@ public class ProdutoDTO {
 	private Long codigo;
 	private String sku;
 	private String nome;
+	private Integer quantidadeEstoque;
 	private BigDecimal valor;
 	private String foto;
 	private String urlThumbnailFoto;
 
-	public ProdutoDTO(Long codigo, String sku, String nome, BigDecimal valor, String foto) {
+	public ProdutoDTO(Long codigo, String sku, String nome, BigDecimal valor,Integer quantidadeEstoque, String foto) {
 		this.codigo = codigo;
 		this.sku = sku;
 		this.nome = nome;
 		this.valor = valor;
+		this.quantidadeEstoque = quantidadeEstoque;
 		this.foto = StringUtils.isEmpty(foto) ? "cerveja-mock.png" : foto;
 	}
 
@@ -68,5 +70,14 @@ public class ProdutoDTO {
 	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
 		this.urlThumbnailFoto = urlThumbnailFoto;
 	}
+
+	public Integer getQuantidadeEstoque() {
+		return quantidadeEstoque;
+	}
+
+	public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+		this.quantidadeEstoque = quantidadeEstoque;
+	}
+	
 
 }
