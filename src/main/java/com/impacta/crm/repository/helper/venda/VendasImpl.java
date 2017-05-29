@@ -46,9 +46,10 @@ public class VendasImpl implements VendasQueries {
 	@Transactional(readOnly = true)
 	@Override
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class).addOrder(Order.desc("codigo"));
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
+		adicionarOrdem(pageable,criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
 	}
@@ -57,9 +58,10 @@ public class VendasImpl implements VendasQueries {
 	@Transactional(readOnly = true)
 	@Override
 	public Page<Venda> filtrarFaturada(VendaFilter filtro, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class).addOrder(Order.desc("codigo"));
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltroFaturada(filtro, criteria);
+		adicionarOrdem(pageable,criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, totalFaturada(filtro));
 	}
@@ -242,6 +244,12 @@ public class VendasImpl implements VendasQueries {
 			
 		}
 		
+	}
+	
+	private void adicionarOrdem(Pageable pageable, Criteria criteria) {
+		if(pageable.getSort() == null){
+			criteria.addOrder(Order.desc("codigo"));
+		}
 	}
 
 }

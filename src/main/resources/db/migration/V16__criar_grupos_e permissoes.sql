@@ -19,6 +19,7 @@ INSERT INTO permissao VALUES (9, 'ROLE_MANTER_VENDAS_FATURADAS');
 INSERT INTO permissao VALUES (10, 'ROLE_MANTER_PARAMETROS');
 INSERT INTO permissao VALUES (11, 'ROLE_RELATORIOS');
 INSERT INTO permissao VALUES (12, 'ROLE_MANTER_PERMISSOES');
+INSERT INTO permissao VALUES (13, 'ROLE_TODAS_VENDAS');
 
 
 #################################################################################
@@ -35,6 +36,7 @@ INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 9);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 10);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 11);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 12);
+INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (1, 13);
 
 --VENDEDOR
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (2, 5);
@@ -49,6 +51,7 @@ INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (3, 9);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (3, 10);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (3, 11);
 INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (3, 12);
+INSERT INTO grupo_permissao (codigo_grupo, codigo_permissao) VALUES (3, 13);
 
 
 --ESTOQUISTA

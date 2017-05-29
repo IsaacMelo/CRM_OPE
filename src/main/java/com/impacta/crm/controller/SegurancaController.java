@@ -1,7 +1,5 @@
 package com.impacta.crm.controller;
 
-import javax.management.relation.Role;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;

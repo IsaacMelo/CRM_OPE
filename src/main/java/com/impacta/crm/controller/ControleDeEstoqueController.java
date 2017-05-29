@@ -2,13 +2,17 @@ package com.impacta.crm.controller;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,16 +20,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.impacta.crm.controller.page.PageWrapper;
 import com.impacta.crm.model.Produto;
 import com.impacta.crm.model.Registro;
 import com.impacta.crm.model.RegistroEstoque;
 import com.impacta.crm.repository.Produtos;
+import com.impacta.crm.repository.Registros;
+import com.impacta.crm.repository.filter.RegistroFilter;
 import com.impacta.crm.service.CadastroRegistroService;
-import com.impacta.crm.service.exception.ItensEstqueObrigatorioException;
+import com.impacta.crm.service.exception.ItensEstoqueObrigatorioException;
 import com.impacta.crm.session.TabelaItensEstoqueSession;
 
 @Controller
-@RequestMapping("controleEstoque/")
+@RequestMapping("/controleEstoque")
 public class ControleDeEstoqueController {
 	
 	@Autowired
@@ -33,6 +40,9 @@ public class ControleDeEstoqueController {
 	
 	@Autowired
 	private Produtos produtos;
+	
+	@Autowired
+	private Registros registros;
 	
 	@Autowired
 	private CadastroRegistroService cadastroRegistroService;
@@ -70,7 +80,7 @@ public class ControleDeEstoqueController {
 				attributes.addFlashAttribute("mensagem", registro.getRegistro().getDescricao()+" salva com sucesso");
 				cadastroRegistroService.salvarComoSaida(registro);
 			}
-		}catch(ItensEstqueObrigatorioException e){
+		}catch(ItensEstoqueObrigatorioException e){
 			result.reject("", e.getMessage());
 		}
 		
@@ -106,6 +116,19 @@ public class ControleDeEstoqueController {
 		if (StringUtils.isEmpty(registro.getUuid())) {
 			registro.setUuid(UUID.randomUUID().toString());
 		}
+	}
+	
+	@GetMapping
+	public ModelAndView pesquisar(RegistroFilter registroFilter, BindingResult result
+			, @PageableDefault(size = 4) Pageable pageable, HttpServletRequest httpServletRequest) {
+		ModelAndView mv = new ModelAndView("estoque/PesquisaEstoque");
+		mv.addObject("todosRegistros", Registro.values());
+		
+		PageWrapper<RegistroEstoque> paginaWrapper = new PageWrapper<>(registros.filtrar(registroFilter, pageable)
+				, httpServletRequest);
+		mv.addObject("pagina", paginaWrapper);
+		
+		return mv;
 	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
