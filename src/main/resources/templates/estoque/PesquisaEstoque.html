@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+<head>
+	<title>Pesquisa de Estoque</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de Estoque</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/controleEstoque/novo}" title="Cadastrar novo produto">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Registro</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${registroFilter}">
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label class="control-label" for="codigo">Código</label>
+					<input type="text" class="form-control" id="codigo" autofocus="autofocus" th:field="*{codigo}"  title="Digite o código da venda"/>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="usuario" class="control-label">Tipo Registro</label>
+					<select id="usuario" class="form-control" th:field="*{registro}" title="Selecione o tipo de registro">
+	                    <option value="">Todos os Registros</option>
+	                    <option th:each="registro : ${todosRegistros}" th:value="${registro}" th:text="${registro.descricao}"></option>
+	                </select>
+				</div>
+				
+				<div class="form-group  col-sm-6">
+					<label for="dataCriacaoInicial">Data de criação</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="dataCriacaoInicial" 
+							th:field="*{desde}" autocomplete="off"/>
+						<label for="dataCriacaoFinal" class="aw-form-label-between">até</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="dataCriacaoInicial" 
+							th:field="*{ate}" autocomplete="off"/>
+					</div>
+				</div>
+				
+			</div>
+			
+			<button type="submit" class="btn  btn-primary" title="Pesquisar registros"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive  bw-tabela-simples">
+			<table class="table  table-hover">
+				<thead>
+					<tr>
+	                	<th>
+	                		<brewer:order page="${pagina}" field="codigo" text="Código"/>
+	                	</th>
+	                	<th>
+	                		<brewer:order page="${pagina}" field="dataCriacao" text="Data Criação"/>
+	                	</th>
+	                	<th>Usuário</th>
+	                	<th>Tipo Registro</th>
+	                	<th></th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="registroEstoque : ${pagina.conteudo}">
+
+						<td th:text="${registroEstoque.codigo}"></td>
+						<td th:text="${{registroEstoque.dataCriacao}}"></td>
+						<td th:text="${registroEstoque.usuario.nome}"></td>
+						<td th:text="${registroEstoque.registro}"></td>
+		
+						<td class="text-center">
+						
+		   					<a class="btn  btn-link  btn-xs icon_red js-tooltip" title="Visualizar">
+		   						<i class="fa fa-file-pdf-o fa-lg"></i>
+		   					</a>
+		   					
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhum registro encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<brewer:pagination page="${pagina}"/>
+		
+	</div>
+
+</section>
+</body>
+</html>

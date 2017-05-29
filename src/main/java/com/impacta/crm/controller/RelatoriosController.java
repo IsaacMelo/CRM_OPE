@@ -23,7 +23,6 @@ import com.impacta.crm.dto.FiltroRelatorioComissaoVendedor;
 import com.impacta.crm.dto.FiltroRelatorioProduto;
 import com.impacta.crm.dto.PeriodoRelatorio;
 import com.impacta.crm.dto.TipoRelatorioProduto;
-import com.impacta.crm.model.Venda;
 
 @Controller
 @RequestMapping("/relatorios")

@@ -38,7 +38,6 @@ public class TabelaItensEstoque {
 	}
 	
 	public void excluirItem(Produto produto) {
-		ItemEstoque itemEstoque = buscarItemPorProduto(produto).get();
 		int indice = IntStream.range(0, itens.size())
 				.filter(i -> itens.get(i).getProduto().equals(produto))
 				.findAny().getAsInt();

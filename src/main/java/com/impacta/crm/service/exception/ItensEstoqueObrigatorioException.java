@@ -1,13 +1,13 @@
 package com.impacta.crm.service.exception;
 
-public class ItensEstqueObrigatorioException extends RuntimeException {
+public class ItensEstoqueObrigatorioException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public ItensEstqueObrigatorioException(String message){
+	public ItensEstoqueObrigatorioException(String message){
 		super(message);
 		
 	}
