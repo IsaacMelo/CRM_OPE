@@ -73,6 +73,8 @@
 	                		<brewer:order page="${pagina}" field="dataCriacao" text="Data Criação"/>
 	                	</th>
 	                	<th>Usuário</th>
+	                	<th>Qtd. Produtos</th>
+	                	<th>Qtd. Itens</th>
 	                	<th>Tipo Registro</th>
 	                	<th></th>
 					</tr>
@@ -84,7 +86,12 @@
 						<td th:text="${registroEstoque.codigo}"></td>
 						<td th:text="${{registroEstoque.dataCriacao}}"></td>
 						<td th:text="${registroEstoque.usuario.nome}"></td>
-						<td th:text="${registroEstoque.registro}"></td>
+						<td th:text="${registroEstoque.totalProdutos}"></td>
+						<td th:text="${registroEstoque.totalItens}"></td>
+						<td >
+							<span class="label" th:text="${registroEstoque.registro.descricao}" th:if="${registroEstoque.registro.descricao} == Entrada" th:classappend="label-success"></span>
+							<span class="label" th:text="${registroEstoque.registro.descricao}" th:if="${registroEstoque.registro.descricao} == Saída" th:classappend="label-danger"></span>
+						</td>
 		
 						<td class="text-center">
 						
