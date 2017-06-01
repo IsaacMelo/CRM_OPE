@@ -21,8 +21,14 @@ public interface VendasQueries {
 	public BigDecimal valorTotalNoAno();
 	public BigDecimal valorTotalNoMes();
 	public BigDecimal valorTicketMedioNoAno();
+	public BigDecimal valorTotalNoAnoUsuario(long codigoUsuario);
+	public BigDecimal valorTotalNoMesUsuario(long codigoUsuario);
+	public BigDecimal valorTicketMedioNoAnoUsuario(long codigoUsuario);
 	
 	public List<VendaMes> totalPorMes();
 	public List<VendaCategoria> totalPorCategoria();
+	
+	
+	
 	
 }

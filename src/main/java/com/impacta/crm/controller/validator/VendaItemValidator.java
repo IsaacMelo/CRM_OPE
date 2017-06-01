@@ -56,7 +56,7 @@ public class VendaItemValidator implements Validator {
 					}
 					
 					if(qtdTotalVenda < 0){
-						errors.reject("", "Produto "+produto.getNome()+" com saldo minimo no estoque ("+produto.getQuantidadeMinima()+")");
+						errors.reject("", "Produto "+produto.getNome()+" com saldo minimo ("+produto.getQuantidadeMinima()+") e estoque ("+produto.getQuantidadeEstoque()+")");
 					}	
 				}				
 			}

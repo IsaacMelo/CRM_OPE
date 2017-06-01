@@ -124,6 +124,44 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="container-fluid" sec:authorize="hasRole('DASHBOARD') == false">
+		
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="aw-box">
+					<div class="aw-box__icon">
+						<i class="fa  fa-signal  fa-3x"></i>
+					</div>
+					<div class="aw-box__value">R$[[${{vendasNoAnoUsuario}}]]</div>
+					<div class="aw-box__title">Vendas no ano</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="aw-box">
+					<div class="aw-box__icon">
+						<i class="fa fa-calendar-check-o  fa-3x"></i>
+					</div>
+					<div class="aw-box__value">R$[[${{vendasNoMesUsuario}}]]</div>
+					<div class="aw-box__title">Vendas no mês</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="aw-box">
+					<div class="aw-box__icon">
+						<i class="fa  fa-shopping-cart  fa-3x"></i>
+					</div>
+					<div class="aw-box__value">R$[[${{ticketMedioUsuario}}]]</div>
+					<div class="aw-box__title">Ticket médio</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
 </section>
 
 <th:block layout:fragment="javascript-extra">

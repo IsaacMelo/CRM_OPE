@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -70,13 +69,11 @@ public class Produto implements Serializable {
 
 	@NumberFormat(pattern = "#,##0")
 	@NotNull(message = "A quantidade em estoque é obrigatória")
-	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
 	
 	@NumberFormat(pattern = "#,##0")
 	@NotNull(message = "A quantidade minima em estoque é obrigatória")
-	@Max(value = 9999, message = "A quantidade minima em estoque deve ser menor que 9.999")
 	@Column(name = "quantidade_minima")
 	private Integer quantidadeMinima;
 

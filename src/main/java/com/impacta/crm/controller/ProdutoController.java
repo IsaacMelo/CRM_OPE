@@ -1,7 +1,9 @@
 package com.impacta.crm.controller;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -48,12 +50,27 @@ public class ProdutoController {
 	@RequestMapping("/nova")
 	public ModelAndView nova(Produto produto, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("produto/CadastroProduto");
+			
+			BigDecimal margemLucro 	= (BigDecimal) request.getSession().getAttribute("margemProduto");
+			BigDecimal comissao 	= (BigDecimal) request.getSession().getAttribute("comissao");
+			
 		
 			if(produto.isNova()){
-				produto.setComissao((BigDecimal) request.getSession().getAttribute("comissao"));
+				produto.setComissao(comissao);
+			}else{
+				
+				BigDecimal valorSugerido = produto.getValorCompra()
+						.multiply(Optional.ofNullable(margemLucro).orElse(BigDecimal.ZERO))
+						.divide(new BigDecimal(100))
+						.add(Optional.ofNullable(produto.getValorCompra()).orElse(BigDecimal.ZERO));
+						
+				DecimalFormat vlrSugeridoFN = new DecimalFormat("#,###.00");
+				String valorSugeridoFN = vlrSugeridoFN.format (valorSugerido);
+				
+				mv.addObject("valorSugerido",valorSugeridoFN);
 			}
 			
-			mv.addObject("margemProduto", request.getSession().getAttribute("margemProduto"));
+			mv.addObject("margemProduto", margemLucro);
 			mv.addObject("categorias", categorias.findAll());
 		return mv;
 	}
