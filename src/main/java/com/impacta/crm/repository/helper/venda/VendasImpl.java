@@ -87,6 +87,17 @@ public class VendasImpl implements VendasQueries {
 	}
 	
 	@Override
+	public BigDecimal valorTotalNoAnoUsuario(long codigoUsuario) {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valorTotal) from Venda where year(dataCriacao) = :ano and status = :status and codigo_usuario = :codigoUsuario", BigDecimal.class)
+					.setParameter("ano", Year.now().getValue())
+					.setParameter("status", StatusVenda.FINALIZADA)
+					.setParameter("codigoUsuario", codigoUsuario)
+					.getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
+	
+	@Override
 	public BigDecimal valorTotalNoMes() {
 		Optional<BigDecimal> optional = Optional.ofNullable(
 				manager.createQuery("select sum(valorTotal) from Venda where month(dataCriacao) = :mes and status = :status", BigDecimal.class)
@@ -97,11 +108,33 @@ public class VendasImpl implements VendasQueries {
 	}
 	
 	@Override
+	public BigDecimal valorTotalNoMesUsuario(long codigoUsuario) {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valorTotal) from Venda where month(dataCriacao) = :mes and status = :status and codigo_usuario = :codigoUsuario", BigDecimal.class)
+					.setParameter("mes", MonthDay.now().getMonthValue())
+					.setParameter("status", StatusVenda.FINALIZADA)
+					.setParameter("codigoUsuario", codigoUsuario)
+					.getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
+	
+	@Override
 	public BigDecimal valorTicketMedioNoAno() {
 		Optional<BigDecimal> optional = Optional.ofNullable(
 				manager.createQuery("select sum(valorTotal)/count(*) from Venda where year(dataCriacao) = :ano and status = :status", BigDecimal.class)
 					.setParameter("ano", Year.now().getValue())
 					.setParameter("status", StatusVenda.FINALIZADA)
+					.getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
+	
+	@Override
+	public BigDecimal valorTicketMedioNoAnoUsuario(long codigoUsuario) {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valorTotal)/count(*) from Venda where year(dataCriacao) = :ano and status = :status and codigo_usuario = :codigoUsuario", BigDecimal.class)
+					.setParameter("ano", Year.now().getValue())
+					.setParameter("status", StatusVenda.FINALIZADA)
+					.setParameter("codigoUsuario", codigoUsuario)
 					.getSingleResult());
 		return optional.orElse(BigDecimal.ZERO);
 	}
