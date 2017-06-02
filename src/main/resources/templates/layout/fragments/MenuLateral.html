@@ -11,7 +11,7 @@
     	<nav class="aw-menu  js-menu">
       		<ul class="aw-menu__list">
 
-        		<li class="aw-menu__item" brewer:menu="@{/}" sec:authorize="hasRole('DASHBOARD')">
+        		<li class="aw-menu__item" brewer:menu="@{/}">
           			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
         		</li>
         		
@@ -26,7 +26,7 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}" sec:authorize="hasRole('MANTER_VENDAS')">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/nova}" sec:authorize="hasRole('MANTER_VENDAS')">
 			            	<a th:href="@{/vendas/nova}">Cadastro de venda</a>
 			            </li>
 			            
