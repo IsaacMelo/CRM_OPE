@@ -1,4 +1,4 @@
-package com.impacta.crm.repository.helper.resgistro;
+package com.impacta.crm.repository.helper.registro;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
