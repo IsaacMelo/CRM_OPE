@@ -1,4 +1,4 @@
-package com.impacta.crm.repository.helper.resgistro;
+package com.impacta.crm.repository.helper.registro;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

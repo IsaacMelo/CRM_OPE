@@ -193,7 +193,7 @@ public class VendasImpl implements VendasQueries {
 				criteria.add(Restrictions.eq("status", filtro.getStatus()));
 			}
 			
-			if (filtro.getUsuario() != null) {
+			if (!StringUtils.isEmpty(filtro.getUsuario())) {
 				criteria.add(Restrictions.eq("u.nome", filtro.getUsuario()));
 			}
 			
@@ -243,7 +243,7 @@ public class VendasImpl implements VendasQueries {
 				criteria.add(Restrictions.eq("status", filtro.getStatus()));
 			}
 			
-			if (filtro.getUsuario() != null) {
+			if (!StringUtils.isEmpty(filtro.getUsuario())) {
 				criteria.add(Restrictions.eq("u.nome", filtro.getUsuario()));
 			}
 			
