@@ -76,7 +76,6 @@
 	                	<th>Qtd. Produtos</th>
 	                	<th>Qtd. Itens</th>
 	                	<th>Tipo Registro</th>
-	                	<th></th>
 					</tr>
 				</thead>
 				
@@ -92,14 +91,7 @@
 							<span class="label" th:text="${registroEstoque.registro.descricao}" th:if="${registroEstoque.registro.descricao} == Entrada" th:classappend="label-success"></span>
 							<span class="label" th:text="${registroEstoque.registro.descricao}" th:if="${registroEstoque.registro.descricao} == Saída" th:classappend="label-danger"></span>
 						</td>
-		
-						<td class="text-center">
-						
-		   					<a class="btn  btn-link  btn-xs icon_red js-tooltip" title="Visualizar">
-		   						<i class="fa fa-file-pdf-o fa-lg"></i>
-		   					</a>
-		   					
-						</td>
+
 					</tr>
 					<tr th:if="${pagina.vazia}">
 						<td colspan="7">Nenhum registro encontrado</td>

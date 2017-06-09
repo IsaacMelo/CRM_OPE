@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/clientes/**").hasRole("MANTER_CLIENTES")
 				.antMatchers("/fornecedores/**").hasRole("MANTER_FORNECEDORES")
-				.antMatchers("/produtos/**").hasRole("MANTER_PRODUTOS")
+				.antMatchers("/produtos/{\\+d}").hasRole("MANTER_PRODUTOS")
 				.antMatchers("/categorias/**").hasRole("MANTER_CATEGORIAS")
 				.antMatchers("/usuarios").hasRole("MANTER_USUARIOS")
 				.antMatchers("/usuarios/novo").hasRole("MANTER_USUARIOS")
