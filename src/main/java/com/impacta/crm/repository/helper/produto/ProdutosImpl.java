@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -35,6 +36,7 @@ public class ProdutosImpl implements ProdutosQueries {
 	@Autowired
 	private FotoStorage fotoStorage;
 	
+	@PreAuthorize("hasRole('MANTER_PRODUTOS')")
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
