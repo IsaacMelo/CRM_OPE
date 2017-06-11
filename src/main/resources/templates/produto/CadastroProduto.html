@@ -41,7 +41,8 @@
 				th:action="${produto.nova} ? @{/produtos/nova} : @{/produtos/{codigo}(codigo=${produto.codigo})}">
 			<brewer:message/>
 			
-			<input type="hidden" th:field="*{codigo}"/>
+			<input type="hidden" id="codigo" th:field="*{codigo}"/>
+			<input type="hidden" id="comissao" th:field="*{comissao}"/>
 			<input type="hidden" id="margemProduto" data:valor="${margemProduto}"/>
 	
 			<div class="row">
@@ -127,14 +128,6 @@
 						<input id="valor" type="text" class="form-control  js-decimal" data:valor="${valor}" th:field="*{valor}" title="Informe o valor de venda do produto"/>
 					</div>
 				</div>
-				
-				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="comissao">
-					<label for="comissao" class="control-label">Comissão</label>
-					<div class="input-group">
-						<input id="comissao" type="text" class="form-control  js-decimal" th:field="*{comissao}" title="Informe a porcentagem de comissão sobre a venda do produto"/>
-						<div class="input-group-addon">%</div>
-					</div>
-				</div>				
 				
 			</div>
 			
