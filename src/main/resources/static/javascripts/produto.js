@@ -5,9 +5,16 @@ Brewer.Produto = (function() {
 		this.valorSugeridoBox = $('.js-valor-sugerido-box');
 		this.valorCompraInput = $('#valorCompra');
 		this.margemProdutoInput = $('#margemProduto');
+		this.estoqueInput = $('#estoque');
+		this.codigoInput = $('#codigo');
 		
 		this.valorCompra = this.valorCompraInput.data('valor');
 		this.margemProduto = this.margemProdutoInput.data('valor');
+		
+		if(this.codigoInput.val()){
+			this.estoqueInput.prop("readonly", true);
+		}
+		
 	}
 	
 	Produto.prototype.iniciar = function() {
@@ -29,7 +36,6 @@ Brewer.Produto = (function() {
 }());
 
 $(function() {
-	
 	var produto = new Brewer.Produto();
 	produto.iniciar();
 	
